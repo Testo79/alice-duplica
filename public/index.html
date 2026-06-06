@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Iniciar sesión — Portal Duplica</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <main class="page">
+      <a class="logo-wrap" href="/" aria-label="Inicio">
+        <img src="/mylogo.png" alt="Portal Duplica" class="site-logo" width="200" height="48" decoding="async" onerror="this.onerror=null;this.src='/logo.svg';" />
+      </a>
+
+      <div class="form-frame">
+        <div class="form-card">
+          <h1 class="form-title">Iniciar sesión</h1>
+
+          <form id="login-form" class="login-form" novalidate>
+            <div class="field-outline">
+              <span class="field-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="3" y="5" width="18" height="14" rx="2"/>
+                  <path d="M3 7l9 6 9-6"/>
+                </svg>
+              </span>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                autocomplete="username"
+                required
+                placeholder=" "
+              />
+              <label for="email">Correo electrónico*</label>
+            </div>
+
+            <div class="field-outline">
+              <span class="field-icon" aria-hidden="true">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <rect x="5" y="11" width="14" height="10" rx="2"/>
+                  <path d="M8 11V8a4 4 0 118 0v3"/>
+                </svg>
+              </span>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                autocomplete="current-password"
+                required
+                placeholder=" "
+              />
+              <label for="password">Contraseña*</label>
+            </div>
+
+            <label class="show-pass">
+              <input type="checkbox" id="show-password" />
+              Mostrar contraseña
+            </label>
+
+            <button type="submit" class="btn-primary" id="submit-btn">
+              <span class="btn-label">INICIAR SESIÓN</span>
+              <span class="btn-spinner" hidden aria-hidden="true"></span>
+            </button>
+
+            <p class="recover">
+              ¿No recuerdas tus datos?
+              <a class="link" href="#">Recuperar contraseña</a>
+            </p>
+
+            <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <p>© Portal Duplica <span id="year"></span></p>
+      <a class="link" href="#">Ayuda</a>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+    </script>
+    <script src="/app.js"></script>
+  </body>
+</html>

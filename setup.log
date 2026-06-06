@@ -1,0 +1,42 @@
+Updating repositories and installing Nginx / Certbot...
+Hit:1 https://deb.nodesource.com/node_20.x nodistro InRelease
+Hit:2 http://security.ubuntu.com/ubuntu jammy-security InRelease
+Hit:3 http://nova.clouds.archive.ubuntu.com/ubuntu jammy InRelease
+Hit:4 http://nova.clouds.archive.ubuntu.com/ubuntu jammy-updates InRelease
+Hit:5 http://nova.clouds.archive.ubuntu.com/ubuntu jammy-backports InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+certbot is already the newest version (1.21.0-1build1).
+python3-certbot-nginx is already the newest version (1.21.0-1).
+nginx is already the newest version (1.18.0-6ubuntu14.8).
+0 upgraded, 0 newly installed, 0 to remove and 103 not upgraded.
+Reverting app to port 3000...
+Use --update-env to update environment variables
+[PM2] Applying action restartProcessId on app [app](ids: [ 0 ])
+[PM2] [app](0) ✓
+┌────┬────────┬─────────────┬─────────┬─────────┬──────────┬────────┬──────┬───────────┬──────────┬──────────┬──────────┬──────────┐
+│ id │ name   │ namespace   │ version │ mode    │ pid      │ uptime │ ↺    │ status    │ cpu      │ mem      │ user     │ watching │
+├────┼────────┼─────────────┼─────────┼─────────┼──────────┼────────┼──────┼───────────┼──────────┼──────────┼──────────┼──────────┤
+│ 0  │ app    │ default     │ 1.0.0   │ fork    │ 9482     │ 0s     │ 4    │ online    │ 0%       │ 12.1mb   │ root     │ disabled │
+└────┴────────┴─────────────┴─────────┴─────────┴──────────┴────────┴──────┴───────────┴──────────┴──────────┴──────────┴──────────┘
+Configuring Nginx...
+Restarting Nginx...
+Running Certbot for teliawebmail.online...
+Saving debug log to /var/log/letsencrypt/letsencrypt.log
+Requesting a certificate for teliawebmail.online and www.teliawebmail.online
+
+Certbot failed to authenticate some domains (authenticator: nginx). The Certificate Authority reported these problems:
+  Domain: teliawebmail.online
+  Type:   dns
+  Detail: DNS problem: NXDOMAIN looking up A for teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for teliawebmail.online - check that a DNS record exists for this domain
+
+  Domain: www.teliawebmail.online
+  Type:   dns
+  Detail: DNS problem: NXDOMAIN looking up A for www.teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for www.teliawebmail.online - check that a DNS record exists for this domain
+
+Hint: The Certificate Authority failed to verify the temporary nginx configuration changes made by Certbot. Ensure the listed domains point to this nginx server and that it is accessible from the internet.
+
+Some challenges have failed.
+Ask for help or search for solutions at https://community.letsencrypt.org. See the logfile /var/log/letsencrypt/letsencrypt.log or re-run Certbot with -v for more details.

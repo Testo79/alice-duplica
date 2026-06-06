@@ -1,0 +1,2839 @@
+2026-04-04 10:37:40,315:DEBUG:certbot._internal.main:certbot version: 1.21.0
+2026-04-04 10:37:40,315:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/bin/certbot
+2026-04-04 10:37:40,315:DEBUG:certbot._internal.main:Arguments: ['--nginx', '-d', 'alicewebmail.online', '-d', 'www.alicewebmail.online', '--non-interactive', '--agree-tos', '-m', 'admin@alicewebmail.online', '--redirect']
+2026-04-04 10:37:40,316:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#nginx,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2026-04-04 10:37:40,330:DEBUG:certbot._internal.log:Root logging level set at 30
+2026-04-04 10:37:40,332:DEBUG:certbot._internal.plugins.selection:Requested authenticator nginx and installer nginx
+2026-04-04 10:37:40,468:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * nginx
+Description: Nginx Web Server plugin
+Interfaces: Installer, Authenticator, Plugin
+Entry point: nginx = certbot_nginx._internal.configurator:NginxConfigurator
+Initialized: <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7fce958e5690>
+Prep: True
+2026-04-04 10:37:40,469:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7fce958e5690> and installer <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7fce958e5690>
+2026-04-04 10:37:40,469:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator nginx, Installer nginx
+2026-04-04 10:37:41,130:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2026-04-04 10:37:41,134:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org:443
+2026-04-04 10:37:41,362:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 1033
+2026-04-04 10:37:41,363:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:41 GMT
+Content-Type: application/json
+Content-Length: 1033
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "eiLZrhGylno": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417",
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "profiles": {
+      "classic": "https://letsencrypt.org/docs/profiles#classic",
+      "shortlived": "https://letsencrypt.org/docs/profiles#shortlived",
+      "tlsclient": "https://letsencrypt.org/docs/profiles#tlsclient",
+      "tlsserver": "https://letsencrypt.org/docs/profiles#tlsserver"
+    },
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/acme/renewal-info",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert"
+}
+2026-04-04 10:37:41,364:DEBUG:acme.client:Requesting fresh nonce
+2026-04-04 10:37:41,364:DEBUG:acme.client:Sending HEAD request to https://acme-v02.api.letsencrypt.org/acme/new-nonce.
+2026-04-04 10:37:41,425:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "HEAD /acme/new-nonce HTTP/1.1" 200 0
+2026-04-04 10:37:41,426:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:41 GMT
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44tmra9iG1ToaNjzpJbWlnAYstJ2hLrCLhuP0GKl0Fb3EY
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+
+2026-04-04 10:37:41,426:DEBUG:acme.client:Storing nonce: e8SfZ44tmra9iG1ToaNjzpJbWlnAYstJ2hLrCLhuP0GKl0Fb3EY
+2026-04-04 10:37:41,426:DEBUG:acme.client:JWS payload:
+b'{\n  "contact": [\n    "mailto:admin@alicewebmail.online"\n  ],\n  "termsOfServiceAgreed": true\n}'
+2026-04-04 10:37:41,430:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-acct:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAiandrIjogeyJuIjogInVJaW55SWJrY21FbE9MLWp2NW5zd2N4YUxSbkFtb3BsWEpzbS1raElHeVhhdkRNSUlTbWVNcUlDME45cGRWbVBtQTZVTERnWl93Y3FFOFBuLS1oUFFUeWFtNnM1d0FubnpPYms5bFRUcDRwa3lUV3FhaE9kSjhCUThzaFZuSVJ1TlNJWTU3YzV1R1VtVmNKeE5Tc1I2cjFpc3VCWkVNLUFQNXUtSWZFNTh6Z3hQcEU4WmJXdnp0YkxnRzdlQXdKZ2VDUUhUbElsMU5SckN4cktVeVk0NHVUOVFBdENSWFo5MEMtX0Z2dkJ0ZXNXMEdnNktlQ29MWV80RUNqbEEzRHo2cXVQNUlsajFoMTVpOXVpV3Y2MzhVaXlEZ0JTNFh3ZTJCajdpRUpnZHNjTWVQZ2hEUEx1eEM5NXdhWG9STndWamVwVDg1Smo1U2FFZWU0ZmNSelViUSIsICJlIjogIkFRQUIiLCAia3R5IjogIlJTQSJ9LCAibm9uY2UiOiAiZThTZlo0NHRtcmE5aUcxVG9hTmp6cEpiV2xuQVlzdEoyaExyQ0xodVAwR0tsMEZiM0VZIiwgInVybCI6ICJodHRwczovL2FjbWUtdjAyLmFwaS5sZXRzZW5jcnlwdC5vcmcvYWNtZS9uZXctYWNjdCJ9",
+  "signature": "atTEZGj8ozrVeL3U8fcsSO9kcdrqM6SPeydEZHAOrlB5buHsdzPIKIaG5chSabC59dROmNgfhw0Kt6z_CgqhwtEyr660GfaIdRVDogLYaerI8lmAUccnBVBMwa2SjRLMqwCV1p1h-KP4xq8DteF_t34hMWbpI4WNvpUt6BfsD2TIzy0qqYjjX4iRG_gM1rdKIffju5-6yvu6afywrIy02LhUANCLtkL8jbubTEVHYGIcQBa_8dKQHkyVTiBJ424nztx_PYX6MK4WDkJ1e2WM3k9ZjvTuFpEBl740wscJWjoZ9NLHjlKMcjODhDKA0MQEC-28pLMWVcE5cEqKlVqRAQ",
+  "payload": "ewogICJjb250YWN0IjogWwogICAgIm1haWx0bzphZG1pbkBhbGljZXdlYm1haWwub25saW5lIgogIF0sCiAgInRlcm1zT2ZTZXJ2aWNlQWdyZWVkIjogdHJ1ZQp9"
+}
+2026-04-04 10:37:41,536:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-acct HTTP/1.1" 201 477
+2026-04-04 10:37:41,537:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:41 GMT
+Content-Type: application/json
+Content-Length: 477
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf>;rel="terms-of-service"
+Location: https://acme-v02.api.letsencrypt.org/acme/acct/3208629231
+Replay-Nonce: e8SfZ44tFWZzh_BEs6Cm2TElTDH23znUNMlTFnBOvz-32aNkETc
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "key": {
+    "kty": "RSA",
+    "n": "uIinyIbkcmElOL-jv5nswcxaLRnAmoplXJsm-khIGyXavDMIISmeMqIC0N9pdVmPmA6ULDgZ_wcqE8Pn--hPQTyam6s5wAnnzObk9lTTp4pkyTWqahOdJ8BQ8shVnIRuNSIY57c5uGUmVcJxNSsR6r1isuBZEM-AP5u-IfE58zgxPpE8ZbWvztbLgG7eAwJgeCQHTlIl1NRrCxrKUyY44uT9QAtCRXZ90C-_FvvBtesW0Gg6KeCoLY_4ECjlA3Dz6quP5Ilj1h15i9uiWv638UiyDgBS4Xwe2Bj7iEJgdscMePghDPLuxC95waXoRNwVjepT85Jj5SaEee4fcRzUbQ",
+    "e": "AQAB"
+  },
+  "createdAt": "2026-04-04T10:37:41.460186298Z",
+  "status": "valid"
+}
+2026-04-04 10:37:41,537:DEBUG:acme.client:Storing nonce: e8SfZ44tFWZzh_BEs6Cm2TElTDH23znUNMlTFnBOvz-32aNkETc
+2026-04-04 10:37:41,539:DEBUG:certbot._internal.display.obj:Notifying user: Account registered.
+2026-04-04 10:37:41,540:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=JWKRSA(key=<ComparableRSAKey(<cryptography.hazmat.backends.openssl.rsa._RSAPublicKey object at 0x7fce9578d240>)>), contact=(), agreement=None, status='valid', terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/3208629231', new_authzr_uri=None, terms_of_service='https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf'), 40073703f451fd20c336c2d97d045dd0, Meta(creation_dt=datetime.datetime(2026, 4, 4, 10, 37, 41, tzinfo=<UTC>), creation_host='d2-2-us-east-va-1', register_to_eff=None))>
+2026-04-04 10:37:41,540:DEBUG:certbot._internal.display.obj:Notifying user: Requesting a certificate for alicewebmail.online and www.alicewebmail.online
+2026-04-04 10:37:41,943:DEBUG:certbot.crypto_util:Generating RSA key (2048 bits): /etc/letsencrypt/keys/0000_key-certbot.pem
+2026-04-04 10:37:41,951:DEBUG:certbot.crypto_util:Creating CSR: /etc/letsencrypt/csr/0000_csr-certbot.pem
+2026-04-04 10:37:41,953:DEBUG:acme.client:JWS payload:
+b'{\n  "identifiers": [\n    {\n      "type": "dns",\n      "value": "alicewebmail.online"\n    },\n    {\n      "type": "dns",\n      "value": "www.alicewebmail.online"\n    }\n  ]\n}'
+2026-04-04 10:37:41,955:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-order:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dEZXWnpoX0JFczZDbTJURWxUREgyM3puVU5NbFRGbkJPdnotMzJhTmtFVGMiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL25ldy1vcmRlciJ9",
+  "signature": "lVR58KdNruDBlStVini9PW_Nop5i45F0WrxXlYifPlFhO-mjqT1p3RoKzI1vnOwegylPhVNh5hT--9cmV3k54yVvTyadSHSi_6uWzYxsL0l_QiCROkml59vyCA1OLET1jVJW8-ZmpehIg339szVFUOx1lQJljIgz6XsZm0dZslptDhWtdtVLyUGNAGhrQ0QzJX7n6DhwUW00h5dIObUVaNNb0gVwJV4Mq0Df355Hep9hd1za1MRvH_ecqZLMDrOeitWlmJEodFajSyfD6CbvAh-U6x_9-3I3ZLR1M20qpA75ICDMghOCGeBCafPDSqQ_hQ3Gn9kbweR3HVic-4mEAw",
+  "payload": "ewogICJpZGVudGlmaWVycyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogImFsaWNld2VibWFpbC5vbmxpbmUiCiAgICB9LAogICAgewogICAgICAidHlwZSI6ICJkbnMiLAogICAgICAidmFsdWUiOiAid3d3LmFsaWNld2VibWFpbC5vbmxpbmUiCiAgICB9CiAgXQp9"
+}
+2026-04-04 10:37:42,160:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-order HTTP/1.1" 201 507
+2026-04-04 10:37:42,161:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:42 GMT
+Content-Type: application/json
+Content-Length: 507
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497259891411
+Replay-Nonce: v9ARF6dgo4-VL0aye6bDS8kYuRqUm6ZE6kcoKR8IEuQFBcWhpf8
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "pending",
+  "expires": "2026-04-11T10:37:42Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "alicewebmail.online"
+    },
+    {
+      "type": "dns",
+      "value": "www.alicewebmail.online"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271",
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119411"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497259891411"
+}
+2026-04-04 10:37:42,161:DEBUG:acme.client:Storing nonce: v9ARF6dgo4-VL0aye6bDS8kYuRqUm6ZE6kcoKR8IEuQFBcWhpf8
+2026-04-04 10:37:42,163:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:37:42,164:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZ280LVZMMGF5ZTZiRFM4a1l1UnFVbTZaRTZrY29LUjhJRXVRRkJjV2hwZjgiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMDc5MTE5MjcxIn0",
+  "signature": "FJx3qoC7y5XOBDwU-fKS9lr5soLVRlN7D7OmGTJQeW43d8MvwgqSK4FgBsYc6s1W42bbEtMlbBgwSoNA3mQ2QDgU1rTGt8Vt_LqFtneq9eB1cdUwE7yE0xhZO5BEGjnJRMdUje49FSGtwYbKA_3lOkNwtWnSrYb9okzsjfO1JHZBmdaFtTNK9E8vA4pKfobmRKJgn2qSear_6dElj4QKJjwS2X_uhlGoEq3DDLmHT23Gi1Zc4oMrQ82Ud2caXa1Uc-uBcI13DGSWhr_ViajqJb0xjgQLTjNcOeq1EqejKP3KpFjO1tY8_z0tJdBefY5o3TtwGPGg-n4RFfGDzipweA",
+  "payload": ""
+}
+2026-04-04 10:37:42,416:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683079119271 HTTP/1.1" 200 827
+2026-04-04 10:37:42,417:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:42 GMT
+Content-Type: application/json
+Content-Length: 827
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: v9ARF6dg5Rot3W1TK6nJUeL9AoyNEqGuzPT7wNwJifFk6nFUMLA
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "alicewebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T10:37:42Z",
+  "challenges": [
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/_L1k_g",
+      "status": "pending",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ"
+    },
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/EHx8kg",
+      "status": "pending",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/FJGCtg",
+      "status": "pending",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ"
+    }
+  ]
+}
+2026-04-04 10:37:42,417:DEBUG:acme.client:Storing nonce: v9ARF6dg5Rot3W1TK6nJUeL9AoyNEqGuzPT7wNwJifFk6nFUMLA
+2026-04-04 10:37:42,418:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:37:42,419:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119411:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZzVSb3QzVzFUSzZuSlVlTDlBb3lORXFHdXpQVDd3TndKaWZGazZuRlVNTEEiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMDc5MTE5NDExIn0",
+  "signature": "YRyKXhugV17wStK_NH06159ey6lRrfKw8PLj-HdVVHuMv4S0exsxoF22Vgv4Kx5lopYDUCmwzXwt0EksGs45wAMFNtQuBsL8gkre0g65G9HMY5IGnRj63qqqXSqAF-jNK-FwhKk8BAoVICDMWFCW4VHZol6LTNf5H1VAM_P3kLrQtHgijCoQbEPC1N5EfAoNp2S4WpZPcqhFmEtrmj_KKSuIiZy_Z5hu-iXkbV86pmbQfJW49kab8G9D1IiwZe51rE2VvlMWX5p7auYVkk1MQk8NoruTw_iHfS10nnHC1R_XYJzmBgoQ9Iyn75WtWvaneB6645wd0cSTBaxJ3CCqAg",
+  "payload": ""
+}
+2026-04-04 10:37:42,656:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683079119411 HTTP/1.1" 200 831
+2026-04-04 10:37:42,657:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:42 GMT
+Content-Type: application/json
+Content-Length: 831
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44tbFO0hZFj1B8d6rtT_HGZ5oX31ViR7EkoI3EY0dzEB8E
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.alicewebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T10:37:42Z",
+  "challenges": [
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119411/AvxueQ",
+      "status": "pending",
+      "token": "cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119411/emsMVQ",
+      "status": "pending",
+      "token": "cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE"
+    },
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119411/Ce-ONQ",
+      "status": "pending",
+      "token": "cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE"
+    }
+  ]
+}
+2026-04-04 10:37:42,657:DEBUG:acme.client:Storing nonce: e8SfZ44tbFO0hZFj1B8d6rtT_HGZ5oX31ViR7EkoI3EY0dzEB8E
+2026-04-04 10:37:42,657:INFO:certbot._internal.auth_handler:Performing the following challenges:
+2026-04-04 10:37:42,658:INFO:certbot._internal.auth_handler:http-01 challenge for alicewebmail.online
+2026-04-04 10:37:42,658:INFO:certbot._internal.auth_handler:http-01 challenge for www.alicewebmail.online
+2026-04-04 10:37:42,670:DEBUG:certbot_nginx._internal.http_01:Generated server block:
+[]
+2026-04-04 10:37:42,671:DEBUG:certbot.reverter:Creating backup of /etc/nginx/mime.types
+2026-04-04 10:37:42,672:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf
+2026-04-04 10:37:42,672:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf
+2026-04-04 10:37:42,673:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 10:37:42,673:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-image-filter.conf
+2026-04-04 10:37:42,673:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-mail.conf
+2026-04-04 10:37:42,674:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-stream.conf
+2026-04-04 10:37:42,674:DEBUG:certbot.reverter:Creating backup of /etc/nginx/nginx.conf
+2026-04-04 10:37:42,675:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-geoip2.conf
+2026-04-04 10:37:42,676:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/nginx.conf:
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+include /etc/letsencrypt/le_http_01_cert_challenge.conf;
+server_names_hash_bucket_size 128;
+
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+
+	# gzip_vary on;
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+	##
+	# Virtual Host Configs
+	##
+
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+#
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}
+
+2026-04-04 10:37:42,678:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/sites-enabled/alicewebmail.online:
+server {rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+
+    listen 80;
+    server_name alicewebmail.online www.alicewebmail.online;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+location = /.well-known/acme-challenge/HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ{default_type text/plain;return 200 HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+location = /.well-known/acme-challenge/cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE{default_type text/plain;return 200 cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+}
+
+2026-04-04 10:37:43,703:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 10:37:43,707:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/EHx8kg:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dGJGTzBoWkZqMUI4ZDZydFRfSEdaNW9YMzFWaVI3RWtvSTNFWTBkekVCOEUiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMDc5MTE5MjcxL0VIeDhrZyJ9",
+  "signature": "Lh_ZZYT_ErLxBWdisO5Ds1v6eksn3nma0EOyYnC1HQrumwa2z__gx9CPujUdo01RzJmBBDTP4EOU30x9uR9HmlGX-F2i7DXLQ7rlt4buyT55yw37OjKmj5taHT_mlk_Edh_AkAq4FC_VRhHemof6KvSHvsJo6TVOr6RqsP8HEHdepHsCQH51gNPOnhRy4ULp_pp-toEwb4rO8ZSE_QhhJCiT49D6kT_rYYhU4cbyEFwfDBA5qeFOxD2Je8dWBiVoIwaEqG-dMTaVpRSFRdA5WLUzeB3j0mQG10k9RprRyArW0CJbdwfSf19HUdrI59243dPKToQ3J7VNwPf-qXwcZQ",
+  "payload": "e30"
+}
+2026-04-04 10:37:43,772:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683079119271/EHx8kg HTTP/1.1" 200 195
+2026-04-04 10:37:43,772:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:43 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/EHx8kg
+Replay-Nonce: v9ARF6dgkteNgjyrpcbb6wS4rVHR4lMt5zqafk-cxipcK8Vq5Gg
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/EHx8kg",
+  "status": "pending",
+  "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ"
+}
+2026-04-04 10:37:43,772:DEBUG:acme.client:Storing nonce: v9ARF6dgkteNgjyrpcbb6wS4rVHR4lMt5zqafk-cxipcK8Vq5Gg
+2026-04-04 10:37:43,773:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 10:37:43,774:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119411/Ce-ONQ:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZ2t0ZU5nanlycGNiYjZ3UzRyVkhSNGxNdDV6cWFmay1jeGlwY0s4VnE1R2ciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMDc5MTE5NDExL0NlLU9OUSJ9",
+  "signature": "Q4vt-TuXl_81E7GMjDMmHqUJd-O9cRxk67Bh1bP0O29YW6nxjmi6S3qCUS3FwTYfo6fhvbfziHXesmWFu-R951hC2L3X21l2CY7L7bUwgPEq4vY9JRlM2mnLzGWR6R0lxRYOYciKaRoaDO-JmOiEq3x6TBCS6Htu1k7EC7W1LXYYaxVcn33K_aFebsKWJxSHL983ZCFy0t_ujQRI_mK98VJL8W56YqapP6Z8aLGQvXETxmQbCKUSq8sRd8_lzOjp8wan0NdYRfcFSeyB17q6L9tvB9ybkPSXau2kkugl1DXDttuXf-i2mUdS4Q8P3W52L6W69fv5VdrW6OGGzm_ElQ",
+  "payload": "e30"
+}
+2026-04-04 10:37:43,838:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683079119411/Ce-ONQ HTTP/1.1" 200 195
+2026-04-04 10:37:43,839:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:43 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119411>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119411/Ce-ONQ
+Replay-Nonce: v9ARF6dg7-JSKtCydPTMYLmbXnEG7Smn0mGtZ8IN7YbpNIRnLmg
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119411/Ce-ONQ",
+  "status": "pending",
+  "token": "cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE"
+}
+2026-04-04 10:37:43,840:DEBUG:acme.client:Storing nonce: v9ARF6dg7-JSKtCydPTMYLmbXnEG7Smn0mGtZ8IN7YbpNIRnLmg
+2026-04-04 10:37:43,840:INFO:certbot._internal.auth_handler:Waiting for verification...
+2026-04-04 10:37:44,841:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:37:44,843:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZzctSlNLdEN5ZFBUTVlMbWJYbkVHN1NtbjBtR3RaOElON1licE5JUm5MbWciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMDc5MTE5MjcxIn0",
+  "signature": "AYOKqhvahS9l8mdU19twckriQXaLkXrfDnFpeFXRnOqlDKEiTUA8BnH73kCiz1m0aiWcl3Tvj_v2qqPlPMVm2f12Gpj4BhTkRPznvL66M8gyLa8G1dT4p1oVI--6nP873WzegmucjfYkIA1dWs-M3c2TvuIhIqztyQRe19Y_YadfwDQCkcx8xT7NAL5LAGA0Qwv007HwH_vyUF047S0Lk_XNjEQfXE6q5TuxHLDyGKq1XoQ0aHHw1SanURMZTVBttNrtqEEHM6EDLyY0lR5uj_EmfIPEKbuYXdFY4YubbH4aQW0n7nYy32CBO3iEh6BjLyRLw05WA8CVY8eUoFC9lQ",
+  "payload": ""
+}
+2026-04-04 10:37:44,919:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683079119271 HTTP/1.1" 200 827
+2026-04-04 10:37:44,919:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:44 GMT
+Content-Type: application/json
+Content-Length: 827
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: v9ARF6dg0TdUp1dzXtJIbHfkbwkY8X1ZBkMoVySFM6ikgbFPsGg
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "alicewebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T10:37:42Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/EHx8kg",
+      "status": "pending",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/FJGCtg",
+      "status": "pending",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ"
+    },
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/_L1k_g",
+      "status": "pending",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ"
+    }
+  ]
+}
+2026-04-04 10:37:44,919:DEBUG:acme.client:Storing nonce: v9ARF6dg0TdUp1dzXtJIbHfkbwkY8X1ZBkMoVySFM6ikgbFPsGg
+2026-04-04 10:37:44,920:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:37:44,922:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119411:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZzBUZFVwMWR6WHRKSWJIZmtid2tZOFgxWkJrTW9WeVNGTTZpa2diRlBzR2ciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMDc5MTE5NDExIn0",
+  "signature": "IeqfSC7Pdo88vKuvleZq8BDvhQ5gP2fit4Zz-_egTA_iL4jB-1cwb8-0_t0ygQit02w6cN3K3RDptbW0YP0lE2vMP5vNvqS-5Y86YmWSijkC05J3BVyGyrqxZyoea7GqrQkXjhCULxJI_E2lR0jR2xTtHVp3FJxXkJvu1T7x7a29YIgJhhpxfxTkXJvQdm_qTOE1f9RZBrv1bQUJtvT22NL_DwouRukvaKj5qXqeZEOiOCVGtAXsxNVapjYICSlvxnCEOs2Jb-qXD95Dim9EDC0FpYLa8ex2Dm3CetZrH8lCVx82wXCMLPhVmR4yAmYsq6ELjZEzIlFamJiXz5mZsg",
+  "payload": ""
+}
+2026-04-04 10:37:44,985:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683079119411 HTTP/1.1" 200 1482
+2026-04-04 10:37:44,985:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:44 GMT
+Content-Type: application/json
+Content-Length: 1482
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: v9ARF6dg6AL1YmoIMVihZ0HXX9X2fwDU3ezRsGo45hlNT_jv6L8
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.alicewebmail.online"
+  },
+  "status": "invalid",
+  "expires": "2026-04-11T10:37:42Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119411/Ce-ONQ",
+      "status": "invalid",
+      "validated": "2026-04-04T10:37:43Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:unauthorized",
+        "detail": "40.160.50.53: Invalid response from http://alicewebmail.online: \"\u003c!DOCTYPE html\u003e\\r\\n\u003chtml lang=\\\"it\\\"\u003e\\r\\n  \u003chead\u003e\\r\\n    \u003cmeta charset=\\\"UTF-8\\\" /\u003e\\r\\n    \u003cmeta name=\\\"viewport\\\" content=\\\"width=device-width\"",
+        "status": 403
+      },
+      "token": "cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE",
+      "validationRecord": [
+        {
+          "url": "http://www.alicewebmail.online/.well-known/acme-challenge/cnZ1JY9o84bQ7mJQr4aU_IJszugpNXdbn2sOHIFFyvE",
+          "hostname": "www.alicewebmail.online",
+          "port": "80",
+          "addressesResolved": [
+            "44.227.65.245",
+            "44.227.76.166"
+          ],
+          "addressUsed": "44.227.65.245"
+        },
+        {
+          "url": "http://alicewebmail.online",
+          "hostname": "alicewebmail.online",
+          "port": "80",
+          "addressesResolved": [
+            "40.160.50.53"
+          ],
+          "addressUsed": "40.160.50.53"
+        }
+      ]
+    }
+  ]
+}
+2026-04-04 10:37:44,985:DEBUG:acme.client:Storing nonce: v9ARF6dg6AL1YmoIMVihZ0HXX9X2fwDU3ezRsGo45hlNT_jv6L8
+2026-04-04 10:37:44,986:INFO:certbot._internal.auth_handler:Challenge failed for domain www.alicewebmail.online
+2026-04-04 10:37:47,989:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:37:47,991:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZzZBTDFZbW9JTVZpaFowSFhYOVgyZndEVTNlelJzR280NWhsTlRfanY2TDgiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMDc5MTE5MjcxIn0",
+  "signature": "jmIRdrQefyWLrrlsOgE0l26ZMJ1cL2w6aAUh00Y97GDnjk31yaELCAuSEwhulHnmoKJqRSG7kihTHK3I8l6-7PYiwnOLqIpoJU1BNQq8nfGu0qHpkDFy0Pcj6YkW5W8Yn6JT9kajo4vxEZ8tBm5HQKObaQ5L0eDZcw2RL2nB2k00T0Ukg4m7JfOejAlPUSA2c6lfwnwFFcFwkhsAyD77bqmyUoEat-gl4eCaAkSvwPnuIy-tm6pFL6_Q2AIQC0k7jUYBMtUEfzRmyHvduT-7tWyZ79zfMnhG_kpCB0RYlzqRD3WbvUxFMLt_Hj-D-racvL0fbUXnGuCzuzKRPyVF2w",
+  "payload": ""
+}
+2026-04-04 10:37:48,067:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683079119271 HTTP/1.1" 200 778
+2026-04-04 10:37:48,068:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:37:48 GMT
+Content-Type: application/json
+Content-Length: 778
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44t6KR-Qra4O-hQd-XxR0gUyrH9xxtuVgUvS0N9NP4bjLw
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "alicewebmail.online"
+  },
+  "status": "valid",
+  "expires": "2026-05-04T10:37:44Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/EHx8kg",
+      "status": "valid",
+      "validated": "2026-04-04T10:37:43Z",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ",
+      "validationRecord": [
+        {
+          "url": "http://alicewebmail.online/.well-known/acme-challenge/HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ",
+          "hostname": "alicewebmail.online",
+          "port": "80",
+          "addressesResolved": [
+            "40.160.50.53"
+          ],
+          "addressUsed": "40.160.50.53"
+        }
+      ]
+    }
+  ]
+}
+2026-04-04 10:37:48,068:DEBUG:acme.client:Storing nonce: e8SfZ44t6KR-Qra4O-hQd-XxR0gUyrH9xxtuVgUvS0N9NP4bjLw
+2026-04-04 10:37:48,069:INFO:certbot._internal.auth_handler:http-01 challenge for www.alicewebmail.online
+2026-04-04 10:37:48,069:DEBUG:certbot._internal.display.obj:Notifying user: 
+Certbot failed to authenticate some domains (authenticator: nginx). The Certificate Authority reported these problems:
+  Domain: www.alicewebmail.online
+  Type:   unauthorized
+  Detail: 40.160.50.53: Invalid response from http://alicewebmail.online: "<!DOCTYPE html>\r\n<html lang=\"it\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width"
+
+Hint: The Certificate Authority failed to verify the temporary nginx configuration changes made by Certbot. Ensure the listed domains point to this nginx server and that it is accessible from the internet.
+
+2026-04-04 10:37:48,070:DEBUG:certbot._internal.error_handler:Encountered exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+
+2026-04-04 10:37:48,070:DEBUG:certbot._internal.error_handler:Calling registered functions
+2026-04-04 10:37:48,070:INFO:certbot._internal.auth_handler:Cleaning up challenges
+2026-04-04 10:37:49,189:DEBUG:certbot._internal.log:Exiting abnormally:
+Traceback (most recent call last):
+  File "/usr/bin/certbot", line 33, in <module>
+    sys.exit(load_entry_point('certbot==1.21.0', 'console_scripts', 'certbot')())
+  File "/usr/lib/python3/dist-packages/certbot/main.py", line 15, in main
+    return internal_main.main(cli_args)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1574, in main
+    return config.func(config, plugins)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1287, in run
+    new_lineage = _get_and_save_cert(le_client, config, domains,
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 133, in _get_and_save_cert
+    lineage = le_client.obtain_and_enroll_certificate(domains, certname)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 459, in obtain_and_enroll_certificate
+    cert, chain, key, _ = self.obtain_certificate(domains)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 389, in obtain_certificate
+    orderr = self._get_order_and_authorizations(csr.data, self.config.allow_subset_of_names)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 439, in _get_order_and_authorizations
+    authzr = self.auth_handler.handle_authorizations(orderr, self.config, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+2026-04-04 10:37:49,191:ERROR:certbot._internal.log:Some challenges have failed.
+2026-04-04 10:38:08,020:DEBUG:certbot._internal.main:certbot version: 1.21.0
+2026-04-04 10:38:08,021:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/bin/certbot
+2026-04-04 10:38:08,021:DEBUG:certbot._internal.main:Arguments: ['--nginx', '-d', 'alicewebmail.online', '--non-interactive', '--agree-tos', '-m', 'admin@alicewebmail.online', '--redirect']
+2026-04-04 10:38:08,021:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#nginx,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2026-04-04 10:38:08,031:DEBUG:certbot._internal.log:Root logging level set at 30
+2026-04-04 10:38:08,033:DEBUG:certbot._internal.plugins.selection:Requested authenticator nginx and installer nginx
+2026-04-04 10:38:08,143:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * nginx
+Description: Nginx Web Server plugin
+Interfaces: Installer, Authenticator, Plugin
+Entry point: nginx = certbot_nginx._internal.configurator:NginxConfigurator
+Initialized: <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f1860919750>
+Prep: True
+2026-04-04 10:38:08,144:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f1860919750> and installer <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f1860919750>
+2026-04-04 10:38:08,144:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator nginx, Installer nginx
+2026-04-04 10:38:08,205:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=None, contact=(), agreement=None, status=None, terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/3208629231', new_authzr_uri=None, terms_of_service=None), 40073703f451fd20c336c2d97d045dd0, Meta(creation_dt=datetime.datetime(2026, 4, 4, 10, 37, 41, tzinfo=<UTC>), creation_host='d2-2-us-east-va-1', register_to_eff=None))>
+2026-04-04 10:38:08,206:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2026-04-04 10:38:08,208:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org:443
+2026-04-04 10:38:08,416:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 1033
+2026-04-04 10:38:08,416:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:38:08 GMT
+Content-Type: application/json
+Content-Length: 1033
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "0zZspQQxjyY": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417",
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "profiles": {
+      "classic": "https://letsencrypt.org/docs/profiles#classic",
+      "shortlived": "https://letsencrypt.org/docs/profiles#shortlived",
+      "tlsclient": "https://letsencrypt.org/docs/profiles#tlsclient",
+      "tlsserver": "https://letsencrypt.org/docs/profiles#tlsserver"
+    },
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/acme/renewal-info",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert"
+}
+2026-04-04 10:38:08,417:DEBUG:certbot._internal.display.obj:Notifying user: Requesting a certificate for alicewebmail.online
+2026-04-04 10:38:08,733:DEBUG:certbot.crypto_util:Generating RSA key (2048 bits): /etc/letsencrypt/keys/0001_key-certbot.pem
+2026-04-04 10:38:08,740:DEBUG:certbot.crypto_util:Creating CSR: /etc/letsencrypt/csr/0001_csr-certbot.pem
+2026-04-04 10:38:08,742:DEBUG:acme.client:Requesting fresh nonce
+2026-04-04 10:38:08,742:DEBUG:acme.client:Sending HEAD request to https://acme-v02.api.letsencrypt.org/acme/new-nonce.
+2026-04-04 10:38:08,784:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "HEAD /acme/new-nonce HTTP/1.1" 200 0
+2026-04-04 10:38:08,785:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:38:08 GMT
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: g0sCnD0o9jHFEzJ1c6x5iHjRAlL-VlPfj_R4iAcMx3j2dUBgpNY
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+
+2026-04-04 10:38:08,785:DEBUG:acme.client:Storing nonce: g0sCnD0o9jHFEzJ1c6x5iHjRAlL-VlPfj_R4iAcMx3j2dUBgpNY
+2026-04-04 10:38:08,786:DEBUG:acme.client:JWS payload:
+b'{\n  "identifiers": [\n    {\n      "type": "dns",\n      "value": "alicewebmail.online"\n    }\n  ]\n}'
+2026-04-04 10:38:08,789:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-order:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwbzlqSEZFekoxYzZ4NWlIalJBbEwtVmxQZmpfUjRpQWNNeDNqMmRVQmdwTlkiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL25ldy1vcmRlciJ9",
+  "signature": "IsGIK-N9zW1uSWY0Luh4SWpoACqZqXNbIFlF1Sa9RYMLskSYlXQWJFpAW-ERsdYcH4D2TMiS17S13W_huQW6QD4nItAnAZyRLFANf4fBgetNN3FqdJy97zvzdR6tPo7WS4MYRtzZXozIGtTQgG3qObohDCDFNeKSKyziU5NSc-4UECtD-Ha1r1z9HFXiec5W9uh7lQz631Hhm5dwG5-xMHZJcYfNxLXlucqa5YDqhjV3k5hAX-EpcFLURh6mwBjvZDrjK0cs19MLXER5lltepW_axgvBuQuHB9h7a4ffnxPE61h_Y6IMnkpC0fYcrZTDoz0fdOewtKdAGkopS_-sKw",
+  "payload": "ewogICJpZGVudGlmaWVycyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogImFsaWNld2VibWFpbC5vbmxpbmUiCiAgICB9CiAgXQp9"
+}
+2026-04-04 10:38:08,868:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-order HTTP/1.1" 201 351
+2026-04-04 10:38:08,869:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Sat, 04 Apr 2026 10:38:08 GMT
+Content-Type: application/json
+Content-Length: 351
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497259978971
+Replay-Nonce: 5OtdIILq817_T2LzRaMCHbBfbQkhB7Tw0LwIeoSI5rIG3OtzCAc
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "ready",
+  "expires": "2026-04-11T10:38:08Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "alicewebmail.online"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497259978971"
+}
+2026-04-04 10:38:08,869:DEBUG:acme.client:Storing nonce: 5OtdIILq817_T2LzRaMCHbBfbQkhB7Tw0LwIeoSI5rIG3OtzCAc
+2026-04-04 10:38:08,871:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:38:08,873:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICI1T3RkSUlMcTgxN19UMkx6UmFNQ0hiQmZiUWtoQjdUdzBMd0llb1NJNXJJRzNPdHpDQWMiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMDc5MTE5MjcxIn0",
+  "signature": "F7PwRg4cSQ9kclewMBpyyeaih1jHFM4tW9onuBwz6doC_pU9ai3xhKfCpEXu7153oj68ELbTa9TXSi3jTgMz1mhLIfSEBd1Ar5Swvj3RWjpSYBKwFlcZDabHd1VauI6eZQGibSXOp5sQGOAfrhBSZMq1fCC86qYIsMWYO3IABXL0tf3npZv12Cb1-3hC3B8h3NkPI9TiLlWOOhYtLRXyhu9NmRizRmgRyuR-NhUfvO1YxyW74QStAW1VRknAlYD1garUAZ7w9HAZbAEtJs7z37mmIctpsMsm3RyJeSCmxWlEfgP81gPfc2Gi8cddz20RXpHiE3Kv_mRBW3rfNqW__A",
+  "payload": ""
+}
+2026-04-04 10:38:08,917:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683079119271 HTTP/1.1" 200 778
+2026-04-04 10:38:08,918:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:38:08 GMT
+Content-Type: application/json
+Content-Length: 778
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: g0sCnD0ozs2gf9VQ6uz984Z4kEZlaToyLff_j0HERezooX367zw
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "alicewebmail.online"
+  },
+  "status": "valid",
+  "expires": "2026-05-04T10:37:44Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683079119271/EHx8kg",
+      "status": "valid",
+      "validated": "2026-04-04T10:37:43Z",
+      "token": "HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ",
+      "validationRecord": [
+        {
+          "url": "http://alicewebmail.online/.well-known/acme-challenge/HHjvjSEOOe3oWFBX5ProzWV_UJ8RE5-ui8m9eTnYcLQ",
+          "hostname": "alicewebmail.online",
+          "port": "80",
+          "addressesResolved": [
+            "40.160.50.53"
+          ],
+          "addressUsed": "40.160.50.53"
+        }
+      ]
+    }
+  ]
+}
+2026-04-04 10:38:08,918:DEBUG:acme.client:Storing nonce: g0sCnD0ozs2gf9VQ6uz984Z4kEZlaToyLff_j0HERezooX367zw
+2026-04-04 10:38:08,919:DEBUG:certbot._internal.client:CSR: CSR(file='/etc/letsencrypt/csr/0001_csr-certbot.pem', data=b'-----BEGIN CERTIFICATE REQUEST-----\nMIICdjCCAV4CAQAwADCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJnS\nkgIr48ssZuv6tnu1OeOVzDksyBVTIxWa3FJmRk0g8KW8EN0H6kKB8Ee/KvvH1en4\nVx7WD8ZoTkktCgaGiXyX5lsv7Wd5L3AK8AxpEfZyAdkQe+Th0UO2CxSIwXZgv2b3\nLaPsOPAe4wtwfNvqQf/Zp7C6y8IbEvTtP3inxLYYoj7NzZLSUmPK+OKE9b8H9yF1\nUP+wInfEnNaOc4KhJ1+kb8WiEo2oXFcDVFtw1Vzb+9A8ZBoCxE0WCQlcmKPkkyDu\ndiSo5jzeDaTDWRFvfji6su6PrEr0AUEvqcRh7jX/4v/5sLtgqEN8MAKJ1FLdCmIW\nBYON8iJMQmEYOE1tfvECAwEAAaAxMC8GCSqGSIb3DQEJDjEiMCAwHgYDVR0RBBcw\nFYITYWxpY2V3ZWJtYWlsLm9ubGluZTANBgkqhkiG9w0BAQsFAAOCAQEAaRQGD2UB\noDg3fhlnBg4l6jBOGpywFT25g69VeXOi4+JUhQyflmYr5SFSMzusVLHMcA+LugK2\nQhBTpSSldU4in4bZnzI0hm+VCkDdzV1j8etR/hm1JVrtpbtbz4v5WoSquL75FSUL\n7z7ND4f941mnDPorTNivYJ1Qk+l/bS/lFvYs6QQE2eCHdnzopCWd7YYiBsEdH6L2\nFWMCFWne56E+0WmtcinmxSA3ynQSyB/Xmc8IArh9LDP1UIXGOk+Xbtnj2CWXNWF2\n1Oxw87DFBSd8zpy7y2iqdUu8w5u3E40HqEMlaea39zeJdaTWH5h2YUrx+QHZ7LgD\nTPbsMkMdsvSKUg==\n-----END CERTIFICATE REQUEST-----\n', form='pem')
+2026-04-04 10:38:08,920:DEBUG:acme.client:JWS payload:
+b'{\n  "csr": "MIICdjCCAV4CAQAwADCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAJnSkgIr48ssZuv6tnu1OeOVzDksyBVTIxWa3FJmRk0g8KW8EN0H6kKB8Ee_KvvH1en4Vx7WD8ZoTkktCgaGiXyX5lsv7Wd5L3AK8AxpEfZyAdkQe-Th0UO2CxSIwXZgv2b3LaPsOPAe4wtwfNvqQf_Zp7C6y8IbEvTtP3inxLYYoj7NzZLSUmPK-OKE9b8H9yF1UP-wInfEnNaOc4KhJ1-kb8WiEo2oXFcDVFtw1Vzb-9A8ZBoCxE0WCQlcmKPkkyDudiSo5jzeDaTDWRFvfji6su6PrEr0AUEvqcRh7jX_4v_5sLtgqEN8MAKJ1FLdCmIWBYON8iJMQmEYOE1tfvECAwEAAaAxMC8GCSqGSIb3DQEJDjEiMCAwHgYDVR0RBBcwFYITYWxpY2V3ZWJtYWlsLm9ubGluZTANBgkqhkiG9w0BAQsFAAOCAQEAaRQGD2UBoDg3fhlnBg4l6jBOGpywFT25g69VeXOi4-JUhQyflmYr5SFSMzusVLHMcA-LugK2QhBTpSSldU4in4bZnzI0hm-VCkDdzV1j8etR_hm1JVrtpbtbz4v5WoSquL75FSUL7z7ND4f941mnDPorTNivYJ1Qk-l_bS_lFvYs6QQE2eCHdnzopCWd7YYiBsEdH6L2FWMCFWne56E-0WmtcinmxSA3ynQSyB_Xmc8IArh9LDP1UIXGOk-Xbtnj2CWXNWF21Oxw87DFBSd8zpy7y2iqdUu8w5u3E40HqEMlaea39zeJdaTWH5h2YUrx-QHZ7LgDTPbsMkMdsvSKUg"\n}'
+2026-04-04 10:38:08,922:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497259978971:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwb3pzMmdmOVZRNnV6OTg0WjRrRVpsYVRveUxmZl9qMEhFUmV6b29YMzY3enciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2ZpbmFsaXplLzMyMDg2MjkyMzEvNDk3MjU5OTc4OTcxIn0",
+  "signature": "n3qOQp66dTJTfCwkO39S2Zxoo_KAXGqXLV2Oyc3R26-INuvt5xm6IfBKFA3ebzHcvpA3Xn352Z3AE-ZvzIKpnn94GcRBFjP9YwlBIfgCWAbkik0oz0GOijOh5s_rVgK_gZm0zlPaK4r34LItRmCVFqtQQoyRLxPs1IkaWTS5f1PSm-2Di0gLjrKcc5lEbioM19ntWQRIw2Udv-AhpNOMg8hUiYHkaFI44W7GKre0NWTbc1WRqbIdPNVVyAjPc0iHr85mmy5jg3WLl5NzTwu40NfJDbJi_rK5O792bNc_Kjdby6j5kFNdBTwFhQgPxnFW7VAXfmqxaXXErK4SKRI1uw",
+  "payload": "ewogICJjc3IiOiAiTUlJQ2RqQ0NBVjRDQVFBd0FEQ0NBU0l3RFFZSktvWklodmNOQVFFQkJRQURnZ0VQQURDQ0FRb0NnZ0VCQUpuU2tnSXI0OHNzWnV2NnRudTFPZU9WekRrc3lCVlRJeFdhM0ZKbVJrMGc4S1c4RU4wSDZrS0I4RWVfS3Z2SDFlbjRWeDdXRDhab1Rra3RDZ2FHaVh5WDVsc3Y3V2Q1TDNBSzhBeHBFZlp5QWRrUWUtVGgwVU8yQ3hTSXdYWmd2MmIzTGFQc09QQWU0d3R3Zk52cVFmX1pwN0M2eThJYkV2VHRQM2lueExZWW9qN056WkxTVW1QSy1PS0U5YjhIOXlGMVVQLXdJbmZFbk5hT2M0S2hKMS1rYjhXaUVvMm9YRmNEVkZ0dzFWemItOUE4WkJvQ3hFMFdDUWxjbUtQa2t5RHVkaVNvNWp6ZURhVERXUkZ2ZmppNnN1NlByRXIwQVVFdnFjUmg3alhfNHZfNXNMdGdxRU44TUFLSjFGTGRDbUlXQllPTjhpSk1RbUVZT0UxdGZ2RUNBd0VBQWFBeE1DOEdDU3FHU0liM0RRRUpEakVpTUNBd0hnWURWUjBSQkJjd0ZZSVRZV3hwWTJWM1pXSnRZV2xzTG05dWJHbHVaVEFOQmdrcWhraUc5dzBCQVFzRkFBT0NBUUVBYVJRR0QyVUJvRGczZmhsbkJnNGw2akJPR3B5d0ZUMjVnNjlWZVhPaTQtSlVoUXlmbG1ZcjVTRlNNenVzVkxITWNBLUx1Z0syUWhCVHBTU2xkVTRpbjRiWm56STBobS1WQ2tEZHpWMWo4ZXRSX2htMUpWcnRwYnRiejR2NVdvU3F1TDc1RlNVTDd6N05ENGY5NDFtbkRQb3JUTml2WUoxUWstbF9iU19sRnZZczZRUUUyZUNIZG56b3BDV2Q3WVlpQnNFZEg2TDJGV01DRlduZTU2RS0wV210Y2lubXhTQTN5blFTeUJfWG1jOElBcmg5TERQMVVJWEdPay1YYnRuajJDV1hOV0YyMU94dzg3REZCU2Q4enB5N3kyaXFkVXU4dzV1M0U0MEhxRU1sYWVhMzl6ZUpkYVRXSDVoMllVcngtUUhaN0xnRFRQYnNNa01kc3ZTS1VnIgp9"
+}
+2026-04-04 10:38:09,458:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/finalize/3208629231/497259978971 HTTP/1.1" 200 455
+2026-04-04 10:38:09,458:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:38:09 GMT
+Content-Type: application/json
+Content-Length: 455
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497259978971
+Replay-Nonce: g0sCnD0oR_8oiaQWAo3vFmkCdO_Hzkls-wopcy-iASYui5y-PBc
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "valid",
+  "expires": "2026-04-11T10:38:08Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "alicewebmail.online"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497259978971",
+  "certificate": "https://acme-v02.api.letsencrypt.org/acme/cert/0637def86887ba3c25fbf73c781d7d18b2b9"
+}
+2026-04-04 10:38:09,459:DEBUG:acme.client:Storing nonce: g0sCnD0oR_8oiaQWAo3vFmkCdO_Hzkls-wopcy-iASYui5y-PBc
+2026-04-04 10:38:10,460:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:38:10,463:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497259978971:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwb1JfOG9pYVFXQW8zdkZta0NkT19Iemtscy13b3BjeS1pQVNZdWk1eS1QQmMiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL29yZGVyLzMyMDg2MjkyMzEvNDk3MjU5OTc4OTcxIn0",
+  "signature": "UsjDXr7vh2RRwfl0KNgYJchWbXxW9N9Co2GuOySQoErk9MHbV8BiotKEOC3F28i3MFabhWT9zxLhgrkmz2Gpk1lv36k_xZXcq9UdLFVcXLQdhxYOIaZD9mvM00cu0JYlB1mx0N9SE2pjvzKGrcJ_LUP2M8espHwXYgpZzUm7QNy19UWz81Tmi5MB5lAcjPzFKBBcrYFFIDeMyGtNr9hxe4w37NwAe4J9oAuE7EdCmskNp59JwU-RFkIQ1FjwLFU-RrX0bUD2m5EzeovNoD4c7O9Z4rGNCr8cNoRXGEDGV58IwwnlV2VCPqL-6lTIdTh6SF-dR5HzEW1Ipp3BIt42DQ",
+  "payload": ""
+}
+2026-04-04 10:38:10,508:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/order/3208629231/497259978971 HTTP/1.1" 200 455
+2026-04-04 10:38:10,508:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:38:10 GMT
+Content-Type: application/json
+Content-Length: 455
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497259978971
+Replay-Nonce: g0sCnD0oukF5rrBTrzZp7i0TneZ177DXCOaVEBxuNuQ3TMf8e4o
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "valid",
+  "expires": "2026-04-11T10:38:08Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "alicewebmail.online"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683079119271"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497259978971",
+  "certificate": "https://acme-v02.api.letsencrypt.org/acme/cert/0637def86887ba3c25fbf73c781d7d18b2b9"
+}
+2026-04-04 10:38:10,509:DEBUG:acme.client:Storing nonce: g0sCnD0oukF5rrBTrzZp7i0TneZ177DXCOaVEBxuNuQ3TMf8e4o
+2026-04-04 10:38:10,509:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 10:38:10,511:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/cert/0637def86887ba3c25fbf73c781d7d18b2b9:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwb3VrRjVyckJUcnpacDdpMFRuZVoxNzdEWENPYVZFQnh1TnVRM1RNZjhlNG8iLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NlcnQvMDYzN2RlZjg2ODg3YmEzYzI1ZmJmNzNjNzgxZDdkMThiMmI5In0",
+  "signature": "hkqsRkfs1pbgRp2muEVfFMcN42dDTOymFIvazR5IacVyR0e3TF8nFJgx-Rc3b1dxFKQF8nD99zvoElN8Ov2ICRLfYzC8MVJgVqLYfOSYKz_rEs9shwelZWkssPpEevQoekDasFyZ32rwZJfzI-gSnpj7NDocPxcloneoxZp1UpgFAA4EXfVErTN0dudbhVbYwijJ3ud8TRG_OHMXxzn_0rUz1v13lTIEKUze3wpOhIcGQHbVWJlNnIL-YxTFVSb7kWoP2K0qiYIvl35D9RitN7C7hU01_JJ2ldOQDzux8lpy1TfnxyYDbGiOhM4JCJUtj-wnumhghIMMwmC_yDUEIw",
+  "payload": ""
+}
+2026-04-04 10:38:10,555:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/cert/0637def86887ba3c25fbf73c781d7d18b2b9 HTTP/1.1" 200 3595
+2026-04-04 10:38:10,555:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 10:38:10 GMT
+Content-Type: application/pem-certificate-chain
+Content-Length: 3595
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: 5OtdIILqSWJP_c8l1oKjBX3xWZVcU6sBMnnYWJupnHUcDE-HD_M
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+-----BEGIN CERTIFICATE-----
+MIIE/zCCA+egAwIBAgISBjfe+GiHujwl+/c8eB19GLK5MA0GCSqGSIb3DQEBCwUA
+MDMxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBFbmNyeXB0MQwwCgYDVQQD
+EwNSMTMwHhcNMjYwNDA0MDkzOTM4WhcNMjYwNzAzMDkzOTM3WjAeMRwwGgYDVQQD
+ExNhbGljZXdlYm1haWwub25saW5lMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIB
+CgKCAQEAmdKSAivjyyxm6/q2e7U545XMOSzIFVMjFZrcUmZGTSDwpbwQ3QfqQoHw
+R78q+8fV6fhXHtYPxmhOSS0KBoaJfJfmWy/tZ3kvcArwDGkR9nIB2RB75OHRQ7YL
+FIjBdmC/Zvcto+w48B7jC3B82+pB/9mnsLrLwhsS9O0/eKfEthiiPs3NktJSY8r4
+4oT1vwf3IXVQ/7Aid8Sc1o5zgqEnX6RvxaISjahcVwNUW3DVXNv70DxkGgLETRYJ
+CVyYo+STIO52JKjmPN4NpMNZEW9+OLqy7o+sSvQBQS+pxGHuNf/i//mwu2CoQ3ww
+AonUUt0KYhYFg43yIkxCYRg4TW1+8QIDAQABo4ICIDCCAhwwDgYDVR0PAQH/BAQD
+AgWgMBMGA1UdJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYE
+FNUaaS6XGvz+yCSbI/gdTnwH+WcLMB8GA1UdIwQYMBaAFOernw8sM6BT015PeMiy
+hA471pIzMDMGCCsGAQUFBwEBBCcwJTAjBggrBgEFBQcwAoYXaHR0cDovL3IxMy5p
+LmxlbmNyLm9yZy8wHgYDVR0RBBcwFYITYWxpY2V3ZWJtYWlsLm9ubGluZTATBgNV
+HSAEDDAKMAgGBmeBDAECATAuBgNVHR8EJzAlMCOgIaAfhh1odHRwOi8vcjEzLmMu
+bGVuY3Iub3JnLzU4LmNybDCCAQsGCisGAQQB1nkCBAIEgfwEgfkA9wB1AMs49xWJ
+fIShRF9bwd37yW7ymlnNRwppBYWwyxTDFFjnAAABnVgSUlIAAAQDAEYwRAIgc+lo
+p/vbUqZwA1HUSZ2be549iAwj5om+ltb3oBnIgdwCICDXPyUdLGu2f/S4hTD78q2e
+y4gFbVXgF1g6Cqmo46ihAH4AbP5QGUOoXqkWvFLRM+TcyR7xQRx9JYQg0XOAnhgY
+6zoAAAGdWBJS/wAIAAAFAAW8mwEEAwBHMEUCIQDkNZ9lQwocc1MV0Y92XV6RKG2r
+59NuKJ4l9uWGS90V9wIgEL9GR5blrdAJvQhAEIPdrqgB8yrSnFvDbHXv8jm8dEow
+DQYJKoZIhvcNAQELBQADggEBADY0EZxZQLrwuUqqBcFYBxm29fNJOGD3L7r+LTZB
+Xdg90HnGO7s0SPxagbOqSLPmZlz0AIGzvm0po11Nl5Ny9VuHSCEV1bdgX58oDCGg
+91zozPfLU25brx5Xi0fok6wDzpLvz3dAXuXx7anAcox75Xkj7bhQJcS9W43SlEYQ
+FY8fJBqZXsZewL+Kuceesr+ZeKJ0oXLeSTXkJOxluVf187IaVnsBBXXssNkBW8TP
+DxLHLjJuCoVgwujOxxuqtm3Lq6uIFQjkCG1r7i9i6iO/a4mnLRymF3TNZKMEVrmf
+F4uKH+grsxnlNo9qyAOJt7uIPSJzY2vpYqT/Q5l2/Xv4jdw=
+-----END CERTIFICATE-----
+
+-----BEGIN CERTIFICATE-----
+MIIFBTCCAu2gAwIBAgIQWgDyEtjUtIDzkkFX6imDBTANBgkqhkiG9w0BAQsFADBP
+MQswCQYDVQQGEwJVUzEpMCcGA1UEChMgSW50ZXJuZXQgU2VjdXJpdHkgUmVzZWFy
+Y2ggR3JvdXAxFTATBgNVBAMTDElTUkcgUm9vdCBYMTAeFw0yNDAzMTMwMDAwMDBa
+Fw0yNzAzMTIyMzU5NTlaMDMxCzAJBgNVBAYTAlVTMRYwFAYDVQQKEw1MZXQncyBF
+bmNyeXB0MQwwCgYDVQQDEwNSMTMwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEK
+AoIBAQClZ3CN0FaBZBUXYc25BtStGZCMJlA3mBZjklTb2cyEBZPs0+wIG6BgUUNI
+fSvHSJaetC3ancgnO1ehn6vw1g7UDjDKb5ux0daknTI+WE41b0VYaHEX/D7YXYKg
+L7JRbLAaXbhZzjVlyIuhrxA3/+OcXcJJFzT/jCuLjfC8cSyTDB0FxLrHzarJXnzR
+yQH3nAP2/Apd9Np75tt2QnDr9E0i2gB3b9bJXxf92nUupVcM9upctuBzpWjPoXTi
+dYJ+EJ/B9aLrAek4sQpEzNPCifVJNYIKNLMc6YjCR06CDgo28EdPivEpBHXazeGa
+XP9enZiVuppD0EqiFwUBBDDTMrOPAgMBAAGjgfgwgfUwDgYDVR0PAQH/BAQDAgGG
+MB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDATASBgNVHRMBAf8ECDAGAQH/
+AgEAMB0GA1UdDgQWBBTnq58PLDOgU9NeT3jIsoQOO9aSMzAfBgNVHSMEGDAWgBR5
+tFnme7bl5AFzgAiIyBpY9umbbjAyBggrBgEFBQcBAQQmMCQwIgYIKwYBBQUHMAKG
+Fmh0dHA6Ly94MS5pLmxlbmNyLm9yZy8wEwYDVR0gBAwwCjAIBgZngQwBAgEwJwYD
+VR0fBCAwHjAcoBqgGIYWaHR0cDovL3gxLmMubGVuY3Iub3JnLzANBgkqhkiG9w0B
+AQsFAAOCAgEAUTdYUqEimzW7TbrOypLqCfL7VOwYf/Q79OH5cHLCZeggfQhDconl
+k7Kgh8b0vi+/XuWu7CN8n/UPeg1vo3G+taXirrytthQinAHGwc/UdbOygJa9zuBc
+VyqoH3CXTXDInT+8a+c3aEVMJ2St+pSn4ed+WkDp8ijsijvEyFwE47hulW0Ltzjg
+9fOV5Pmrg/zxWbRuL+k0DBDHEJennCsAen7c35Pmx7jpmJ/HtgRhcnz0yjSBvyIw
+6L1QIupkCv2SBODT/xDD3gfQQyKv6roV4G2EhfEyAsWpmojxjCUCGiyg97FvDtm/
+NK2LSc9lybKxB73I2+P2G3CaWpvvpAiHCVu30jW8GCxKdfhsXtnIy2imskQqVZ2m
+0Pmxobb28Tucr7xBK7CtwvPrb79os7u2XP3O5f9b/H66GNyRrglRXlrYjI1oGYL/
+f4I1n/Sgusda6WvA6C190kxjU15Y12mHU4+BxyR9cx2hhGS9fAjMZKJss28qxvz6
+Axu4CaDmRNZpK/pQrXF17yXCXkmEWgvSOEZy6Z9pcbLIVEGckV/iVeq0AOo2pkg9
+p4QRIy0tK2diRENLSF2KysFwbY6B26BFeFs3v1sYVRhFW9nLkOrQVporCS0KyZmf
+wVD89qSTlnctLcZnIavjKsKUu1nA1iU0yYMdYepKR7lWbnwhdx3ewok=
+-----END CERTIFICATE-----
+
+2026-04-04 10:38:10,555:DEBUG:acme.client:Storing nonce: 5OtdIILqSWJP_c8l1oKjBX3xWZVcU6sBMnnYWJupnHUcDE-HD_M
+2026-04-04 10:38:10,558:DEBUG:certbot._internal.storage:Creating directory /etc/letsencrypt/archive.
+2026-04-04 10:38:10,558:DEBUG:certbot._internal.storage:Creating directory /etc/letsencrypt/live.
+2026-04-04 10:38:10,559:DEBUG:certbot._internal.storage:Writing README to /etc/letsencrypt/live/README.
+2026-04-04 10:38:10,559:DEBUG:certbot._internal.storage:Creating directory /etc/letsencrypt/archive/alicewebmail.online.
+2026-04-04 10:38:10,559:DEBUG:certbot._internal.storage:Creating directory /etc/letsencrypt/live/alicewebmail.online.
+2026-04-04 10:38:10,559:DEBUG:certbot._internal.storage:Writing certificate to /etc/letsencrypt/live/alicewebmail.online/cert.pem.
+2026-04-04 10:38:10,560:DEBUG:certbot._internal.storage:Writing private key to /etc/letsencrypt/live/alicewebmail.online/privkey.pem.
+2026-04-04 10:38:10,560:DEBUG:certbot._internal.storage:Writing chain to /etc/letsencrypt/live/alicewebmail.online/chain.pem.
+2026-04-04 10:38:10,560:DEBUG:certbot._internal.storage:Writing full chain to /etc/letsencrypt/live/alicewebmail.online/fullchain.pem.
+2026-04-04 10:38:10,560:DEBUG:certbot._internal.storage:Writing README to /etc/letsencrypt/live/alicewebmail.online/README.
+2026-04-04 10:38:10,570:DEBUG:certbot._internal.plugins.selection:Requested authenticator nginx and installer nginx
+2026-04-04 10:38:10,570:DEBUG:certbot._internal.cli:Var authenticator=nginx (set by user).
+2026-04-04 10:38:10,570:DEBUG:certbot._internal.cli:Var installer=nginx (set by user).
+2026-04-04 10:38:10,571:DEBUG:certbot._internal.storage:Writing new config /etc/letsencrypt/renewal/alicewebmail.online.conf.
+2026-04-04 10:38:10,574:DEBUG:certbot._internal.display.obj:Notifying user: 
+Successfully received certificate.
+Certificate is saved at: /etc/letsencrypt/live/alicewebmail.online/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/alicewebmail.online/privkey.pem
+This certificate expires on 2026-07-03.
+These files will be updated when the certificate renews.
+Certbot has set up a scheduled task to automatically renew this certificate in the background.
+
+2026-04-04 10:38:10,575:DEBUG:certbot._internal.display.obj:Notifying user: Deploying certificate
+2026-04-04 10:38:10,596:DEBUG:certbot.crypto_util:Generating RSA key (1024 bits): /var/lib/letsencrypt/snakeoil/0000_key.pem
+2026-04-04 10:38:10,608:INFO:certbot_nginx._internal.configurator:Deploying Certificate to VirtualHost /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 10:38:10,608:DEBUG:certbot._internal.display.obj:Notifying user: Successfully deployed certificate for alicewebmail.online to /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 10:38:10,609:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-stream.conf
+2026-04-04 10:38:10,609:DEBUG:certbot.reverter:Creating backup of /etc/nginx/nginx.conf
+2026-04-04 10:38:10,609:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 10:38:10,610:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-image-filter.conf
+2026-04-04 10:38:10,610:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-mail.conf
+2026-04-04 10:38:10,610:DEBUG:certbot.reverter:Creating backup of /etc/nginx/mime.types
+2026-04-04 10:38:10,611:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-geoip2.conf
+2026-04-04 10:38:10,611:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf
+2026-04-04 10:38:10,611:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf
+2026-04-04 10:38:10,613:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/sites-enabled/alicewebmail.online:
+server {
+    listen 80;
+    server_name alicewebmail.online www.alicewebmail.online;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/alicewebmail.online/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/alicewebmail.online/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+2026-04-04 10:38:10,614:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/sites-enabled/alicewebmail.online:
+server {
+    listen 80;
+    server_name alicewebmail.online www.alicewebmail.online;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/alicewebmail.online/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/alicewebmail.online/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+2026-04-04 10:38:11,656:INFO:certbot_nginx._internal.configurator:Redirecting all traffic on port 80 to ssl in /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 10:38:11,657:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-stream.conf
+2026-04-04 10:38:11,657:DEBUG:certbot.reverter:Creating backup of /etc/nginx/nginx.conf
+2026-04-04 10:38:11,658:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 10:38:11,658:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-image-filter.conf
+2026-04-04 10:38:11,658:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-mail.conf
+2026-04-04 10:38:11,658:DEBUG:certbot.reverter:Creating backup of /etc/nginx/mime.types
+2026-04-04 10:38:11,659:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-geoip2.conf
+2026-04-04 10:38:11,659:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf
+2026-04-04 10:38:11,659:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf
+2026-04-04 10:38:11,660:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/sites-enabled/alicewebmail.online:
+server {
+    server_name alicewebmail.online www.alicewebmail.online;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/alicewebmail.online/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/alicewebmail.online/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = alicewebmail.online) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name alicewebmail.online www.alicewebmail.online;
+    return 404; # managed by Certbot
+
+
+}
+2026-04-04 10:38:12,685:DEBUG:certbot._internal.display.obj:Notifying user: Congratulations! You have successfully enabled HTTPS on https://alicewebmail.online
+2026-04-04 10:38:12,686:DEBUG:certbot._internal.display.obj:Notifying user: If you like Certbot, please consider supporting our work by:
+ * Donating to ISRG / Let's Encrypt:   https://letsencrypt.org/donate
+ * Donating to EFF:                    https://eff.org/donate-le
+2026-04-04 14:25:21,474:DEBUG:certbot._internal.main:certbot version: 1.21.0
+2026-04-04 14:25:21,474:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/bin/certbot
+2026-04-04 14:25:21,474:DEBUG:certbot._internal.main:Arguments: ['-q']
+2026-04-04 14:25:21,475:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#nginx,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2026-04-04 14:25:21,486:DEBUG:certbot._internal.log:Root logging level set at 40
+2026-04-04 14:25:21,487:DEBUG:certbot._internal.display.obj:Notifying user: Processing /etc/letsencrypt/renewal/alicewebmail.online.conf
+2026-04-04 14:25:21,497:DEBUG:certbot._internal.plugins.selection:Requested authenticator <certbot._internal.cli.cli_utils._Default object at 0x7fa177d89f60> and installer <certbot._internal.cli.cli_utils._Default object at 0x7fa177d89f60>
+2026-04-04 14:25:21,505:INFO:certbot.ocsp:Cannot extract OCSP URI from /etc/letsencrypt/archive/alicewebmail.online/cert1.pem
+2026-04-04 14:25:21,511:DEBUG:certbot._internal.display.obj:Notifying user: Certificate not yet due for renewal
+2026-04-04 14:25:21,512:DEBUG:certbot._internal.plugins.selection:Requested authenticator nginx and installer nginx
+2026-04-04 14:25:21,512:DEBUG:certbot._internal.plugins.selection:Selecting plugin: * nginx
+Description: Nginx Web Server plugin
+Interfaces: Installer, Authenticator, Plugin
+Entry point: nginx = certbot_nginx._internal.configurator:NginxConfigurator
+Initialized: <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7fa177f4bc10>
+2026-04-04 14:25:21,513:DEBUG:certbot._internal.display.obj:Notifying user: 
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+2026-04-04 14:25:21,513:DEBUG:certbot._internal.display.obj:Notifying user: The following certificates are not due for renewal yet:
+2026-04-04 14:25:21,513:DEBUG:certbot._internal.display.obj:Notifying user:   /etc/letsencrypt/live/alicewebmail.online/fullchain.pem expires on 2026-07-03 (skipped)
+2026-04-04 14:25:21,513:DEBUG:certbot._internal.display.obj:Notifying user: No renewals were attempted.
+2026-04-04 14:25:21,513:DEBUG:certbot._internal.display.obj:Notifying user: - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+2026-04-04 14:25:21,513:DEBUG:certbot._internal.renewal:no renewal failures
+2026-04-04 21:18:58,871:DEBUG:certbot._internal.main:certbot version: 1.21.0
+2026-04-04 21:18:58,871:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/bin/certbot
+2026-04-04 21:18:58,871:DEBUG:certbot._internal.main:Arguments: ['--nginx', '-d', 'teliawebmail.online', '-d', 'www.teliawebmail.online', '--non-interactive', '--agree-tos', '-m', 'admin@teliawebmail.online', '--redirect']
+2026-04-04 21:18:58,872:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#nginx,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2026-04-04 21:18:58,892:DEBUG:certbot._internal.log:Root logging level set at 30
+2026-04-04 21:18:58,895:DEBUG:certbot._internal.plugins.selection:Requested authenticator nginx and installer nginx
+2026-04-04 21:18:59,086:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * nginx
+Description: Nginx Web Server plugin
+Interfaces: Installer, Authenticator, Plugin
+Entry point: nginx = certbot_nginx._internal.configurator:NginxConfigurator
+Initialized: <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f02478c1720>
+Prep: True
+2026-04-04 21:18:59,087:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f02478c1720> and installer <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f02478c1720>
+2026-04-04 21:18:59,087:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator nginx, Installer nginx
+2026-04-04 21:18:59,147:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=None, contact=(), agreement=None, status=None, terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/3208629231', new_authzr_uri=None, terms_of_service=None), 40073703f451fd20c336c2d97d045dd0, Meta(creation_dt=datetime.datetime(2026, 4, 4, 10, 37, 41, tzinfo=<UTC>), creation_host='d2-2-us-east-va-1', register_to_eff=None))>
+2026-04-04 21:18:59,149:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2026-04-04 21:18:59,150:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org:443
+2026-04-04 21:19:00,411:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 1033
+2026-04-04 21:19:00,412:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:00 GMT
+Content-Type: application/json
+Content-Length: 1033
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "M4jZlUFbplA": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417",
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "profiles": {
+      "classic": "https://letsencrypt.org/docs/profiles#classic",
+      "shortlived": "https://letsencrypt.org/docs/profiles#shortlived",
+      "tlsclient": "https://letsencrypt.org/docs/profiles#tlsclient",
+      "tlsserver": "https://letsencrypt.org/docs/profiles#tlsserver"
+    },
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/acme/renewal-info",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert"
+}
+2026-04-04 21:19:00,420:DEBUG:certbot._internal.display.obj:Notifying user: Requesting a certificate for teliawebmail.online and www.teliawebmail.online
+2026-04-04 21:19:01,442:DEBUG:certbot.crypto_util:Generating RSA key (2048 bits): /etc/letsencrypt/keys/0002_key-certbot.pem
+2026-04-04 21:19:01,449:DEBUG:certbot.crypto_util:Creating CSR: /etc/letsencrypt/csr/0002_csr-certbot.pem
+2026-04-04 21:19:01,452:DEBUG:acme.client:Requesting fresh nonce
+2026-04-04 21:19:01,452:DEBUG:acme.client:Sending HEAD request to https://acme-v02.api.letsencrypt.org/acme/new-nonce.
+2026-04-04 21:19:01,515:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "HEAD /acme/new-nonce HTTP/1.1" 200 0
+2026-04-04 21:19:01,516:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:01 GMT
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44tYEM1R9irv3MqKuDGdE12ET4nEwZ9vw6grEdsomKWGso
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+
+2026-04-04 21:19:01,516:DEBUG:acme.client:Storing nonce: e8SfZ44tYEM1R9irv3MqKuDGdE12ET4nEwZ9vw6grEdsomKWGso
+2026-04-04 21:19:01,517:DEBUG:acme.client:JWS payload:
+b'{\n  "identifiers": [\n    {\n      "type": "dns",\n      "value": "teliawebmail.online"\n    },\n    {\n      "type": "dns",\n      "value": "www.teliawebmail.online"\n    }\n  ]\n}'
+2026-04-04 21:19:01,521:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-order:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dFlFTTFSOWlydjNNcUt1REdkRTEyRVQ0bkV3Wjl2dzZnckVkc29tS1dHc28iLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL25ldy1vcmRlciJ9",
+  "signature": "kuYOyK4U7cch9AoUr-DKK1aIBDY6-uRIormNGC7i2dPwWNqfMLjgKB62nymtI0Y6NLoEmHrPyLcP8s2TRjmn4-lgwXz7NF0feL6_NEkbSUsn4LssVmrOCJ89UQqoC3EqauyuwDHeqwcYLedmqsnBSqeRCvEDwZyh2fGmNvBKIILQIu6clUopRFuDCQM2Bwqz4bJJCvzBosAcuMSwhRgv_WAcqEMzkQx02fqowuvNHbr0PUWNNhRa9thseXiUVnUJ4HHJV4GDpPynVY540VJ8oza4khAWsp0cr2hkkZsvIda84DetZ3B-hrX7I46UtvwYgWYuOfqcr-egcNTISiWlxQ",
+  "payload": "ewogICJpZGVudGlmaWVycyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogInRlbGlhd2VibWFpbC5vbmxpbmUiCiAgICB9LAogICAgewogICAgICAidHlwZSI6ICJkbnMiLAogICAgICAidmFsdWUiOiAid3d3LnRlbGlhd2VibWFpbC5vbmxpbmUiCiAgICB9CiAgXQp9"
+}
+2026-04-04 21:19:01,723:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-order HTTP/1.1" 201 507
+2026-04-04 21:19:01,724:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:01 GMT
+Content-Type: application/json
+Content-Length: 507
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497396935671
+Replay-Nonce: v9ARF6dg4fObwUOutH6FQ2gkn_uShoqP1X_s5ga1SqJMc5n_L2s
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "pending",
+  "expires": "2026-04-11T21:19:01Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "teliawebmail.online"
+    },
+    {
+      "type": "dns",
+      "value": "www.teliawebmail.online"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431241",
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431331"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497396935671"
+}
+2026-04-04 21:19:01,725:DEBUG:acme.client:Storing nonce: v9ARF6dg4fObwUOutH6FQ2gkn_uShoqP1X_s5ga1SqJMc5n_L2s
+2026-04-04 21:19:01,725:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:01,727:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431241:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZzRmT2J3VU91dEg2RlEyZ2tuX3VTaG9xUDFYX3M1Z2ExU3FKTWM1bl9MMnMiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NDMxMjQxIn0",
+  "signature": "JRT3qbKyAj61YjEk50_hHhFdvDdf7tEimcEzT7XIzJ1VCWAUWAeQeBo-o2hOHEFNoVSGLId7AHRwSuyDqDbSajBvYp7tBvWHfRfdzWgjQNjzDBUIPs7PP60axmwYmEENEr_Q1Xn6qprmLNLW32242NX2XCfbdc_rmdgkeDxmng4YiAecCnCvSAxMUJx_-ucXfpb3TNGqFxFzCm5tFNJ8u5OwKYBs1rWQpvLYAcS_SucZ-D9357sxx7Bm-vd2vIsSF32Z8VgrGitEnG_dOK3KachqUIPlzz44RXoSfaESVTomHg5j_lHV2LD_WmTTVC8aLwOjLjsAfyYnLmbiBWKMWw",
+  "payload": ""
+}
+2026-04-04 21:19:01,792:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284431241 HTTP/1.1" 200 827
+2026-04-04 21:19:01,792:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:01 GMT
+Content-Type: application/json
+Content-Length: 827
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44t4AUzhVqhVAkZO3C5QaHvin3mhe5jKykpOL06Sy-GJIw
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "teliawebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T21:19:01Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431241/mVeEOg",
+      "status": "pending",
+      "token": "FZ4HGtn18ChLk5DlrcDJHyTIAJKhXRN4eiQPlNdql3M"
+    },
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431241/DPiBFg",
+      "status": "pending",
+      "token": "FZ4HGtn18ChLk5DlrcDJHyTIAJKhXRN4eiQPlNdql3M"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431241/z5zHgw",
+      "status": "pending",
+      "token": "FZ4HGtn18ChLk5DlrcDJHyTIAJKhXRN4eiQPlNdql3M"
+    }
+  ]
+}
+2026-04-04 21:19:01,793:DEBUG:acme.client:Storing nonce: e8SfZ44t4AUzhVqhVAkZO3C5QaHvin3mhe5jKykpOL06Sy-GJIw
+2026-04-04 21:19:01,794:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:01,795:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431331:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dDRBVXpoVnFoVkFrWk8zQzVRYUh2aW4zbWhlNWpLeWtwT0wwNlN5LUdKSXciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NDMxMzMxIn0",
+  "signature": "m1euXrOpaKmQbL-q9ejgwAI73LEt43kgAUmoOr1owV-O1EgwGDMAs6ABvXjQZLaVetpYoO7i0wGxMad9Z7AOCgpyvSK2ONIhUCz1ZbilV3CykBr_S2l81-ILwl2dzrBW01FaZIlOGUHMXL24CyeDmBnjoQCp0GqEEqYDmG4vTyi436jIO3usyu0RKp3fnrf16murUUpSZQTQ0jRXm1HrBuB9LelykvAH_t1FFoz-L1B32WEpU4rm10pMZqqj_TYtZgdddIe6b6nJWimp-IkOjVdKbC78KYdV75B9uzGstSZuGKVNOEolX3wNjM1JAzUC3EtdfXthykLCouL2jgRHeg",
+  "payload": ""
+}
+2026-04-04 21:19:01,872:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284431331 HTTP/1.1" 200 831
+2026-04-04 21:19:01,873:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:01 GMT
+Content-Type: application/json
+Content-Length: 831
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44tleIckaIYzrb-vtm4oKmtevSp12dWOYYwHLmXlqGo45g
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.teliawebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T21:19:01Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431331/Soi_bg",
+      "status": "pending",
+      "token": "qd0tH6V0jtqnbRzgZOI3XZmKGeUeneYH3HXzuv9q1Nk"
+    },
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431331/NEQh4w",
+      "status": "pending",
+      "token": "qd0tH6V0jtqnbRzgZOI3XZmKGeUeneYH3HXzuv9q1Nk"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431331/ZAZhgA",
+      "status": "pending",
+      "token": "qd0tH6V0jtqnbRzgZOI3XZmKGeUeneYH3HXzuv9q1Nk"
+    }
+  ]
+}
+2026-04-04 21:19:01,873:DEBUG:acme.client:Storing nonce: e8SfZ44tleIckaIYzrb-vtm4oKmtevSp12dWOYYwHLmXlqGo45g
+2026-04-04 21:19:01,874:INFO:certbot._internal.auth_handler:Performing the following challenges:
+2026-04-04 21:19:01,874:INFO:certbot._internal.auth_handler:http-01 challenge for teliawebmail.online
+2026-04-04 21:19:01,874:INFO:certbot._internal.auth_handler:http-01 challenge for www.teliawebmail.online
+2026-04-04 21:19:01,907:DEBUG:certbot_nginx._internal.http_01:Generated server block:
+[]
+2026-04-04 21:19:01,908:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 21:19:01,908:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-geoip2.conf
+2026-04-04 21:19:01,909:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf
+2026-04-04 21:19:01,909:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/teliawebmail.online
+2026-04-04 21:19:01,910:DEBUG:certbot.reverter:Creating backup of /etc/nginx/nginx.conf
+2026-04-04 21:19:01,910:DEBUG:certbot.reverter:Creating backup of /etc/nginx/mime.types
+2026-04-04 21:19:01,911:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-stream.conf
+2026-04-04 21:19:01,911:DEBUG:certbot.reverter:Creating backup of /etc/letsencrypt/options-ssl-nginx.conf
+2026-04-04 21:19:01,912:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-mail.conf
+2026-04-04 21:19:01,912:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf
+2026-04-04 21:19:01,913:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-image-filter.conf
+2026-04-04 21:19:01,915:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/nginx.conf:
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+include /etc/letsencrypt/le_http_01_cert_challenge.conf;
+server_names_hash_bucket_size 128;
+
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+
+	# gzip_vary on;
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+	##
+	# Virtual Host Configs
+	##
+
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+#
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}
+
+2026-04-04 21:19:01,916:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/sites-enabled/teliawebmail.online:
+server {rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+
+    listen 80;
+    server_name teliawebmail.online www.teliawebmail.online;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+location = /.well-known/acme-challenge/FZ4HGtn18ChLk5DlrcDJHyTIAJKhXRN4eiQPlNdql3M{default_type text/plain;return 200 FZ4HGtn18ChLk5DlrcDJHyTIAJKhXRN4eiQPlNdql3M.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+location = /.well-known/acme-challenge/qd0tH6V0jtqnbRzgZOI3XZmKGeUeneYH3HXzuv9q1Nk{default_type text/plain;return 200 qd0tH6V0jtqnbRzgZOI3XZmKGeUeneYH3HXzuv9q1Nk.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+}
+
+2026-04-04 21:19:02,971:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 21:19:02,974:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431241/mVeEOg:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dGxlSWNrYUlZenJiLXZ0bTRvS210ZXZTcDEyZFdPWVl3SExtWGxxR280NWciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMjg0NDMxMjQxL21WZUVPZyJ9",
+  "signature": "a6WO0JPA-gft62Y9PxrdTkkrqYsmLUJOhtvPwXRlRgI3KtC_TmmxGHoO6oduzh0nR6ZO0_8phg54VdCzo8LNo8X6JNTbnAcMz5urrD80csgjWhDphPqTwKc2w-jgySnEjoNPy0bznnpOQiBcya0Fr_uM0a_EjRIDlX7xoSKWLo7rD7jBicQpPCdrB6YRlez7ZIwnTFUAXZ_jqJptUk9yMxEna8qZd_aWUC8jeJuFap5isXYnAIQhjR-RPFObXMOsFCbWYmJ102_qQhIy9ugAyIQ2kpUjDoIFvD3upIcyutLsnlfVM7TWxzolG9JPI1NL5NPw1XMj0RaHeAE9t-YVsg",
+  "payload": "e30"
+}
+2026-04-04 21:19:03,039:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683284431241/mVeEOg HTTP/1.1" 200 195
+2026-04-04 21:19:03,039:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:03 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431241>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431241/mVeEOg
+Replay-Nonce: v9ARF6dgnQ23lqccgcXyHp_lmBguWxY3YPg4guyeLsip6SO7eOw
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431241/mVeEOg",
+  "status": "pending",
+  "token": "FZ4HGtn18ChLk5DlrcDJHyTIAJKhXRN4eiQPlNdql3M"
+}
+2026-04-04 21:19:03,039:DEBUG:acme.client:Storing nonce: v9ARF6dgnQ23lqccgcXyHp_lmBguWxY3YPg4guyeLsip6SO7eOw
+2026-04-04 21:19:03,040:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 21:19:03,042:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431331/Soi_bg:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZ25RMjNscWNjZ2NYeUhwX2xtQmd1V3hZM1lQZzRndXllTHNpcDZTTzdlT3ciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMjg0NDMxMzMxL1NvaV9iZyJ9",
+  "signature": "qJswNoEi3y_nrat3GSvhZI96UwjDz364fV905qNeO_TTqrL6EKAwnRSD5xTtdZ0twOS0HgBa8q1oo6lZ2Am2_fSZLUEEe0b94iu3wxwyT-qVkF1Aco7W-zdDSvD-4ILwTTUcO9HiUarcJwe1iRmoB46gqYn5EuKGERCpWgEdXK9GAZF24gIUAQ7tWmuVxZ5FxamiZ7aTnPi1ShmFl4oa4iL6F-s0eENErqPHwdA-TOy_8EBRK8SpnaY8cHBbGwzbg-ekcM7ak5AbBm0skjVTtR1xA5IOx5qu81R-meYxYo0iMStBvx1pht1u5R1aGiLs6fNGrQPu8nS0TeZKxqE24A",
+  "payload": "e30"
+}
+2026-04-04 21:19:03,121:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683284431331/Soi_bg HTTP/1.1" 200 195
+2026-04-04 21:19:03,121:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:03 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431331>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431331/Soi_bg
+Replay-Nonce: v9ARF6dgVU2vZqwwsnGR5Sxoc0GWn-DgU-OFzHxGdjJbsG_Pbjg
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431331/Soi_bg",
+  "status": "pending",
+  "token": "qd0tH6V0jtqnbRzgZOI3XZmKGeUeneYH3HXzuv9q1Nk"
+}
+2026-04-04 21:19:03,121:DEBUG:acme.client:Storing nonce: v9ARF6dgVU2vZqwwsnGR5Sxoc0GWn-DgU-OFzHxGdjJbsG_Pbjg
+2026-04-04 21:19:03,122:INFO:certbot._internal.auth_handler:Waiting for verification...
+2026-04-04 21:19:04,123:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:04,125:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431241:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZ1ZVMnZacXd3c25HUjVTeG9jMEdXbi1EZ1UtT0Z6SHhHZGpKYnNHX1BiamciLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NDMxMjQxIn0",
+  "signature": "AkZ-hlC6N5Z43wxSp59sbBhwlb4RB9U1sIu2MQoi6-zXnM4HOxTN31CrHa1akzvFasS5iAkpg5WByGDKyMN9eG6MPefJeGcLFwOm-LMkuce9BpIm4rQDrXJdBX_jSr0SAkhLwQAtIr1jci1YrQ71xTz5ZlLBOlk2bX_8_3ECM-vx4Cjss_O1D4tFw5ChyCvaTxk2PznI99pJllQUaF_czE3ZofJlNnZVuaZp74RBOnuy-CkTu3syqUop8WbvX6dSkV0ZBOMubkAMQtKsmiu_D8HBVebcgZa-GXHRT8F4NX7qk8X5ALULQxl2CE3DffdoTSZKolixCmFT1XL4qgjNAw",
+  "payload": ""
+}
+2026-04-04 21:19:04,189:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284431241 HTTP/1.1" 200 764
+2026-04-04 21:19:04,189:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:04 GMT
+Content-Type: application/json
+Content-Length: 764
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44tUr6a3j-dAUrSZTHB7xh0HeDZm7L2ICTkl30LIQxlh-I
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "teliawebmail.online"
+  },
+  "status": "invalid",
+  "expires": "2026-04-11T21:19:01Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431241/mVeEOg",
+      "status": "invalid",
+      "validated": "2026-04-04T21:19:03Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:dns",
+        "detail": "DNS problem: NXDOMAIN looking up A for teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for teliawebmail.online - check that a DNS record exists for this domain",
+        "status": 400
+      },
+      "token": "FZ4HGtn18ChLk5DlrcDJHyTIAJKhXRN4eiQPlNdql3M"
+    }
+  ]
+}
+2026-04-04 21:19:04,189:DEBUG:acme.client:Storing nonce: e8SfZ44tUr6a3j-dAUrSZTHB7xh0HeDZm7L2ICTkl30LIQxlh-I
+2026-04-04 21:19:04,190:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:04,191:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284431331:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dFVyNmEzai1kQVVyU1pUSEI3eGgwSGVEWm03TDJJQ1RrbDMwTElReGxoLUkiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NDMxMzMxIn0",
+  "signature": "kPVuut95nILGOcKSFSPqZ5PVVUC2MLA5ndn_OX1oMIVfjdtkaRyMr4wE19XgFlDJTJMu6l5TUABqS0sYJpHnAIeNarvUjLMOKGNUqcBI_RdBYxxopDuZRyIXtjeqMC6EtN5IR7M6ysYKhoDMVE3LsYuwp7ObdXXVjiwsDyjyThx-ogJPXTpzxt0614NUvLQL0VUtIxtmUENxfs6gH17bQ8OhgFWi8bg7uo3JuYSfsiRZM7W2vyeFTzyM1V2L48cxLeUBsTf4KdGSS76n969uCXaqdxBuifHvfL-H7m37JU_sk8DrHTIAIngqnnkXmItS_meFADtR7CPbVWfkPE5LZw",
+  "payload": ""
+}
+2026-04-04 21:19:04,255:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284431331 HTTP/1.1" 200 776
+2026-04-04 21:19:04,255:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:04 GMT
+Content-Type: application/json
+Content-Length: 776
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44tDbaTdiYoV0j1kZOZT5mfS2orCryMbyYowWuSftS1tg4
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.teliawebmail.online"
+  },
+  "status": "invalid",
+  "expires": "2026-04-11T21:19:01Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284431331/Soi_bg",
+      "status": "invalid",
+      "validated": "2026-04-04T21:19:03Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:dns",
+        "detail": "DNS problem: NXDOMAIN looking up A for www.teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for www.teliawebmail.online - check that a DNS record exists for this domain",
+        "status": 400
+      },
+      "token": "qd0tH6V0jtqnbRzgZOI3XZmKGeUeneYH3HXzuv9q1Nk"
+    }
+  ]
+}
+2026-04-04 21:19:04,256:DEBUG:acme.client:Storing nonce: e8SfZ44tDbaTdiYoV0j1kZOZT5mfS2orCryMbyYowWuSftS1tg4
+2026-04-04 21:19:04,256:INFO:certbot._internal.auth_handler:Challenge failed for domain teliawebmail.online
+2026-04-04 21:19:04,256:INFO:certbot._internal.auth_handler:Challenge failed for domain www.teliawebmail.online
+2026-04-04 21:19:04,256:INFO:certbot._internal.auth_handler:http-01 challenge for teliawebmail.online
+2026-04-04 21:19:04,257:INFO:certbot._internal.auth_handler:http-01 challenge for www.teliawebmail.online
+2026-04-04 21:19:04,257:DEBUG:certbot._internal.display.obj:Notifying user: 
+Certbot failed to authenticate some domains (authenticator: nginx). The Certificate Authority reported these problems:
+  Domain: teliawebmail.online
+  Type:   dns
+  Detail: DNS problem: NXDOMAIN looking up A for teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for teliawebmail.online - check that a DNS record exists for this domain
+
+  Domain: www.teliawebmail.online
+  Type:   dns
+  Detail: DNS problem: NXDOMAIN looking up A for www.teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for www.teliawebmail.online - check that a DNS record exists for this domain
+
+Hint: The Certificate Authority failed to verify the temporary nginx configuration changes made by Certbot. Ensure the listed domains point to this nginx server and that it is accessible from the internet.
+
+2026-04-04 21:19:04,258:DEBUG:certbot._internal.error_handler:Encountered exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+
+2026-04-04 21:19:04,258:DEBUG:certbot._internal.error_handler:Calling registered functions
+2026-04-04 21:19:04,258:INFO:certbot._internal.auth_handler:Cleaning up challenges
+2026-04-04 21:19:05,431:DEBUG:certbot._internal.log:Exiting abnormally:
+Traceback (most recent call last):
+  File "/usr/bin/certbot", line 33, in <module>
+    sys.exit(load_entry_point('certbot==1.21.0', 'console_scripts', 'certbot')())
+  File "/usr/lib/python3/dist-packages/certbot/main.py", line 15, in main
+    return internal_main.main(cli_args)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1574, in main
+    return config.func(config, plugins)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1287, in run
+    new_lineage = _get_and_save_cert(le_client, config, domains,
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 133, in _get_and_save_cert
+    lineage = le_client.obtain_and_enroll_certificate(domains, certname)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 459, in obtain_and_enroll_certificate
+    cert, chain, key, _ = self.obtain_certificate(domains)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 389, in obtain_certificate
+    orderr = self._get_order_and_authorizations(csr.data, self.config.allow_subset_of_names)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 439, in _get_order_and_authorizations
+    authzr = self.auth_handler.handle_authorizations(orderr, self.config, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+2026-04-04 21:19:05,434:ERROR:certbot._internal.log:Some challenges have failed.
+2026-04-04 21:19:28,203:DEBUG:certbot._internal.main:certbot version: 1.21.0
+2026-04-04 21:19:28,203:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/bin/certbot
+2026-04-04 21:19:28,203:DEBUG:certbot._internal.main:Arguments: ['--nginx', '-d', 'teliawebmail.online', '-d', 'www.teliawebmail.online', '--non-interactive', '--agree-tos', '-m', 'admin@teliawebmail.online', '--redirect']
+2026-04-04 21:19:28,204:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#nginx,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2026-04-04 21:19:28,218:DEBUG:certbot._internal.log:Root logging level set at 30
+2026-04-04 21:19:28,219:DEBUG:certbot._internal.plugins.selection:Requested authenticator nginx and installer nginx
+2026-04-04 21:19:28,374:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * nginx
+Description: Nginx Web Server plugin
+Interfaces: Installer, Authenticator, Plugin
+Entry point: nginx = certbot_nginx._internal.configurator:NginxConfigurator
+Initialized: <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f932ed09600>
+Prep: True
+2026-04-04 21:19:28,374:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f932ed09600> and installer <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f932ed09600>
+2026-04-04 21:19:28,374:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator nginx, Installer nginx
+2026-04-04 21:19:28,435:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=None, contact=(), agreement=None, status=None, terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/3208629231', new_authzr_uri=None, terms_of_service=None), 40073703f451fd20c336c2d97d045dd0, Meta(creation_dt=datetime.datetime(2026, 4, 4, 10, 37, 41, tzinfo=<UTC>), creation_host='d2-2-us-east-va-1', register_to_eff=None))>
+2026-04-04 21:19:28,436:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2026-04-04 21:19:28,438:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org:443
+2026-04-04 21:19:28,644:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 1033
+2026-04-04 21:19:28,646:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:28 GMT
+Content-Type: application/json
+Content-Length: 1033
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "0MrGCEzy0dg": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417",
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "profiles": {
+      "classic": "https://letsencrypt.org/docs/profiles#classic",
+      "shortlived": "https://letsencrypt.org/docs/profiles#shortlived",
+      "tlsclient": "https://letsencrypt.org/docs/profiles#tlsclient",
+      "tlsserver": "https://letsencrypt.org/docs/profiles#tlsserver"
+    },
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/acme/renewal-info",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert"
+}
+2026-04-04 21:19:28,651:DEBUG:certbot._internal.display.obj:Notifying user: Requesting a certificate for teliawebmail.online and www.teliawebmail.online
+2026-04-04 21:19:28,895:DEBUG:certbot.crypto_util:Generating RSA key (2048 bits): /etc/letsencrypt/keys/0003_key-certbot.pem
+2026-04-04 21:19:28,900:DEBUG:certbot.crypto_util:Creating CSR: /etc/letsencrypt/csr/0003_csr-certbot.pem
+2026-04-04 21:19:28,901:DEBUG:acme.client:Requesting fresh nonce
+2026-04-04 21:19:28,902:DEBUG:acme.client:Sending HEAD request to https://acme-v02.api.letsencrypt.org/acme/new-nonce.
+2026-04-04 21:19:29,041:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "HEAD /acme/new-nonce HTTP/1.1" 200 0
+2026-04-04 21:19:29,042:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:29 GMT
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44tljPheY7A-qoKBUKaib8uk1w7Ggm7RfUNm73ptZIG6ks
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+
+2026-04-04 21:19:29,043:DEBUG:acme.client:Storing nonce: e8SfZ44tljPheY7A-qoKBUKaib8uk1w7Ggm7RfUNm73ptZIG6ks
+2026-04-04 21:19:29,043:DEBUG:acme.client:JWS payload:
+b'{\n  "identifiers": [\n    {\n      "type": "dns",\n      "value": "teliawebmail.online"\n    },\n    {\n      "type": "dns",\n      "value": "www.teliawebmail.online"\n    }\n  ]\n}'
+2026-04-04 21:19:29,047:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-order:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dGxqUGhlWTdBLXFvS0JVS2FpYjh1azF3N0dnbTdSZlVObTczcHRaSUc2a3MiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL25ldy1vcmRlciJ9",
+  "signature": "N9pqr9B4q3G3ReSHyIKUjPyqeZpEXja2DDKgBC019RmQv0yKv9R43KEHkd_shUEWBDQsMwiVHuMhe64VgHNwKxditjhQWMf5uDDA70_fRUL7mBqezErnWldIVm2X29H1lIfFLnmvjryLqdNJF8eASsiguI8HsuCZHHttRd48UwKsfsl_oWwwc9llyuaWY8IPFD3F7u0M2AARicimBSgiXqeiFuXeAK8apFtAJIYtsUZBB32hNBjIBrbQOxp48cdm2YWFjTkHEDqwyhrrLeRnOaFTzOU57_RBoNM4nNaUR9ed2zukABeQPMfe0osY6DI5nctoPIxAnATtODGk7C8QkA",
+  "payload": "ewogICJpZGVudGlmaWVycyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogInRlbGlhd2VibWFpbC5vbmxpbmUiCiAgICB9LAogICAgewogICAgICAidHlwZSI6ICJkbnMiLAogICAgICAidmFsdWUiOiAid3d3LnRlbGlhd2VibWFpbC5vbmxpbmUiCiAgICB9CiAgXQp9"
+}
+2026-04-04 21:19:29,554:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-order HTTP/1.1" 201 507
+2026-04-04 21:19:29,554:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:29 GMT
+Content-Type: application/json
+Content-Length: 507
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497397034201
+Replay-Nonce: e8SfZ44taWmftRGn1OQTFjQKfSf9zkZWD5NvpzEGd8tUqxtfJpE
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "pending",
+  "expires": "2026-04-11T21:19:29Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "teliawebmail.online"
+    },
+    {
+      "type": "dns",
+      "value": "www.teliawebmail.online"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572341",
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572601"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497397034201"
+}
+2026-04-04 21:19:29,555:DEBUG:acme.client:Storing nonce: e8SfZ44taWmftRGn1OQTFjQKfSf9zkZWD5NvpzEGd8tUqxtfJpE
+2026-04-04 21:19:29,555:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:29,557:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572341:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dGFXbWZ0UkduMU9RVEZqUUtmU2Y5emtaV0Q1TnZwekVHZDh0VXF4dGZKcEUiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NTcyMzQxIn0",
+  "signature": "sQ83yKs3GMqUs0gW0xu7EhiGkJOHnGDQht_cqSzUZu7KNzVjX6iHGhS_vu2Ke3cA4W1RG_1CSeUGyp1k7bPt1r2kn6RwxuE3c_9P5syVpK4M3sllTJ84fgE1E6w6BnXKyYQMik8e-Svbr-vRm-CLpRfs61x6A00w2dhGw1c7ZdXsWBn6lOTkydxgI6BgFVlyyuk0fRpXGsOJss5HAdgu7T7_NFeDGvUcBMZA-9clJnrA1vwhaMy4qkd4owrJ0wV2RXI01xlBTb98sqwAwaxaJHMz6dZ-Xj-fFWKHvA2l8166nD8M0-dmvZFiNJPNYjthIRH4E50NLzB9NveNy5gfPA",
+  "payload": ""
+}
+2026-04-04 21:19:29,621:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284572341 HTTP/1.1" 200 827
+2026-04-04 21:19:29,621:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:29 GMT
+Content-Type: application/json
+Content-Length: 827
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: v9ARF6dgujsbuTaz2yX-WXMf4ZKvE_qnf5bSXe1eoAc0Wt61nio
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "teliawebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T21:19:29Z",
+  "challenges": [
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572341/gNKCnw",
+      "status": "pending",
+      "token": "xzQahttrnKA3bqAeSobRKS0nDp6ciu6tSv8ZvdHvfXw"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572341/Lf1MdQ",
+      "status": "pending",
+      "token": "xzQahttrnKA3bqAeSobRKS0nDp6ciu6tSv8ZvdHvfXw"
+    },
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572341/iglJ8g",
+      "status": "pending",
+      "token": "xzQahttrnKA3bqAeSobRKS0nDp6ciu6tSv8ZvdHvfXw"
+    }
+  ]
+}
+2026-04-04 21:19:29,622:DEBUG:acme.client:Storing nonce: v9ARF6dgujsbuTaz2yX-WXMf4ZKvE_qnf5bSXe1eoAc0Wt61nio
+2026-04-04 21:19:29,622:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:29,624:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572601:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZ3Vqc2J1VGF6MnlYLVdYTWY0Wkt2RV9xbmY1YlNYZTFlb0FjMFd0NjFuaW8iLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NTcyNjAxIn0",
+  "signature": "db3qD5DF0RqoV-AvOPenyJDN0-2tpTfoI9-sG_CgUqKPZN_rS9wL8cQVhG4Jc0kZqUbHKeKiHo0o7LRBlW9JyXqo6D0PY0SXLyVKA-QlYA5_MMHts6jjbRzg8QW0809Zi1UNvL0QI99Xxng6poo0BeWHdGDnqTdIQghaCLCyaObq_z1EZLbO6izyWlni0wz9h4UuafJ_OZvwvkzG-tVU_jbxAVWM4ap58J-_fj1D3qhNQwVqRzmtXVHVQ3p1eTTTScSMa6D9tZGiVipnY1DPk_Mn9KYEHhiAr3xTtvy7tf61jW44Ni6qwVHARa-6B8h0frjF_rAbq0shT1s0ryoy-A",
+  "payload": ""
+}
+2026-04-04 21:19:29,702:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284572601 HTTP/1.1" 200 831
+2026-04-04 21:19:29,703:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:29 GMT
+Content-Type: application/json
+Content-Length: 831
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: v9ARF6dgWphAS99oa8Ixfj143acxwvUgZTTdb9v9Lrfpva9gpCU
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.teliawebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T21:19:29Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572601/2NeH5g",
+      "status": "pending",
+      "token": "CsH5niYnyOZ8FY8eXHh1ly7KQNTuRx7SrHPZyZajRiA"
+    },
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572601/p3O3Dg",
+      "status": "pending",
+      "token": "CsH5niYnyOZ8FY8eXHh1ly7KQNTuRx7SrHPZyZajRiA"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572601/zygS3Q",
+      "status": "pending",
+      "token": "CsH5niYnyOZ8FY8eXHh1ly7KQNTuRx7SrHPZyZajRiA"
+    }
+  ]
+}
+2026-04-04 21:19:29,703:DEBUG:acme.client:Storing nonce: v9ARF6dgWphAS99oa8Ixfj143acxwvUgZTTdb9v9Lrfpva9gpCU
+2026-04-04 21:19:29,703:INFO:certbot._internal.auth_handler:Performing the following challenges:
+2026-04-04 21:19:29,704:INFO:certbot._internal.auth_handler:http-01 challenge for teliawebmail.online
+2026-04-04 21:19:29,704:INFO:certbot._internal.auth_handler:http-01 challenge for www.teliawebmail.online
+2026-04-04 21:19:29,720:DEBUG:certbot_nginx._internal.http_01:Generated server block:
+[]
+2026-04-04 21:19:29,720:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-image-filter.conf
+2026-04-04 21:19:29,721:DEBUG:certbot.reverter:Creating backup of /etc/nginx/nginx.conf
+2026-04-04 21:19:29,721:DEBUG:certbot.reverter:Creating backup of /etc/letsencrypt/options-ssl-nginx.conf
+2026-04-04 21:19:29,722:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-geoip2.conf
+2026-04-04 21:19:29,722:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf
+2026-04-04 21:19:29,723:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-mail.conf
+2026-04-04 21:19:29,723:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf
+2026-04-04 21:19:29,723:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-stream.conf
+2026-04-04 21:19:29,724:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/teliawebmail.online
+2026-04-04 21:19:29,724:DEBUG:certbot.reverter:Creating backup of /etc/nginx/mime.types
+2026-04-04 21:19:29,725:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 21:19:29,726:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/nginx.conf:
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+include /etc/letsencrypt/le_http_01_cert_challenge.conf;
+server_names_hash_bucket_size 128;
+
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+
+	# gzip_vary on;
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+	##
+	# Virtual Host Configs
+	##
+
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+#
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}
+
+2026-04-04 21:19:29,727:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/sites-enabled/teliawebmail.online:
+server {rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+
+    listen 80;
+    server_name teliawebmail.online www.teliawebmail.online;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+location = /.well-known/acme-challenge/xzQahttrnKA3bqAeSobRKS0nDp6ciu6tSv8ZvdHvfXw{default_type text/plain;return 200 xzQahttrnKA3bqAeSobRKS0nDp6ciu6tSv8ZvdHvfXw.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+location = /.well-known/acme-challenge/CsH5niYnyOZ8FY8eXHh1ly7KQNTuRx7SrHPZyZajRiA{default_type text/plain;return 200 CsH5niYnyOZ8FY8eXHh1ly7KQNTuRx7SrHPZyZajRiA.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+}
+
+2026-04-04 21:19:30,758:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 21:19:30,760:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572341/iglJ8g:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZ1dwaEFTOTlvYThJeGZqMTQzYWN4d3ZVZ1pUVGRiOXY5THJmcHZhOWdwQ1UiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMjg0NTcyMzQxL2lnbEo4ZyJ9",
+  "signature": "PUCyYMCc5h0mytyrkuL63beM6_4Y_Gu1KQqxH332yw-Kr-zFfqiZAflAvroB7ADUZQ15uBbQuQH04CeXmQHnv3l0eZR_jdNROFNVQHXA7VkmWTg-xqBuxR8usa3U_nXJyDvHKGu2PXyMIRSTvtZ0V0xtaDSV_nyGpZoOhwN6BkaIHX9HVgH9wYKSN2_ghaMk6nxmV7Ux2VIFva0M2hlmgnhwdvmm8NfAj_fqG5Cldp5J3xXoPVvDn_9OeaFemfo412GXnKZsIDLKUtJxR6x5DqiCsPNI_Pn9HHyJFKft5XHMY7_H3FnwYNFeo6aAGedK_GRCdHRxRFQPWlrZm3dsIQ",
+  "payload": "e30"
+}
+2026-04-04 21:19:30,834:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683284572341/iglJ8g HTTP/1.1" 200 195
+2026-04-04 21:19:30,835:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:30 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572341>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572341/iglJ8g
+Replay-Nonce: v9ARF6dgDYe73icKEJDBH0TOff9sVU8ITcEnNVhvVcrfnA9TaDk
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572341/iglJ8g",
+  "status": "pending",
+  "token": "xzQahttrnKA3bqAeSobRKS0nDp6ciu6tSv8ZvdHvfXw"
+}
+2026-04-04 21:19:30,835:DEBUG:acme.client:Storing nonce: v9ARF6dgDYe73icKEJDBH0TOff9sVU8ITcEnNVhvVcrfnA9TaDk
+2026-04-04 21:19:30,836:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 21:19:30,839:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572601/2NeH5g:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJ2OUFSRjZkZ0RZZTczaWNLRUpEQkgwVE9mZjlzVlU4SVRjRW5OVmh2VmNyZm5BOVRhRGsiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMjg0NTcyNjAxLzJOZUg1ZyJ9",
+  "signature": "eoe023TLrAYm6qdBwsVImongl0n1kP2hy0ovgqe1cfO2UuoePoFB9u896Qb1BGycnefXVYx070yzk9z-y-p14ctnn970YoP2Qy-U9_JFYlQssx-7ah2pxKRWKlaBStAIZHnL1iNIl1AFKaiDuoaFqXbYS7Bif8IiHyvzFMONsfNLRYo1H-BKXOm2cw3Cn5-Yq7z6bsnqYulfUGbKICm5I-oRsmyXDl_pE2b_D7iydzoS8GrWvHBnn70l8AO_aEySJ2e6MLyKrxDZ-dNxG96FzQEr83Yg0hxEFzl-DzVfwudKYZNikt39fTB_7FlC6icvykymJ2hsc9eOEH7UMNFXMw",
+  "payload": "e30"
+}
+2026-04-04 21:19:30,916:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683284572601/2NeH5g HTTP/1.1" 200 195
+2026-04-04 21:19:30,917:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:30 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572601>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572601/2NeH5g
+Replay-Nonce: e8SfZ44tmx8YFubi9KOe7_mLgdyNKhV-w4VNytmJVqs0B-UP0mE
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572601/2NeH5g",
+  "status": "pending",
+  "token": "CsH5niYnyOZ8FY8eXHh1ly7KQNTuRx7SrHPZyZajRiA"
+}
+2026-04-04 21:19:30,918:DEBUG:acme.client:Storing nonce: e8SfZ44tmx8YFubi9KOe7_mLgdyNKhV-w4VNytmJVqs0B-UP0mE
+2026-04-04 21:19:30,918:INFO:certbot._internal.auth_handler:Waiting for verification...
+2026-04-04 21:19:31,919:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:31,921:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572341:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dG14OFlGdWJpOUtPZTdfbUxnZHlOS2hWLXc0Vk55dG1KVnFzMEItVVAwbUUiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NTcyMzQxIn0",
+  "signature": "bxvmAQChP1xBwaMY-3O7KZLtxIlSNmvMQAjGsZbjUkX54djeFbOxV1VrFagiav5aN7XJwLrXGNBfS811RZ0PU-8EmBaxiBM5Hns2Vg5uf5zQvVUQrgVx31u2Yk-HtW8mudTy0iiHsmWiu2MeAd9eHQ8FrCffOsDmWYmqWzktUxwmHCcmn9nQsWsha3AzX6-ytwIZ4Y3H6zfHoYXzyzowAorqY3FAltKsQyNBUsPdM2e_dmUHIE2ZPrcG8JKj9j96X19IAQMjsF47TFSp7zl-YkYdtXkErSLVqu8XhW4wV03MmK9dcIdVE80kV1iogyvXeVwTGRn58ZqB2wbnG2dlfg",
+  "payload": ""
+}
+2026-04-04 21:19:31,986:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284572341 HTTP/1.1" 200 764
+2026-04-04 21:19:31,987:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:31 GMT
+Content-Type: application/json
+Content-Length: 764
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: e8SfZ44ttvavcwvi__1xOsa-KMR5r4QtQBScxAhGdNMhjvteHpA
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "teliawebmail.online"
+  },
+  "status": "invalid",
+  "expires": "2026-04-11T21:19:29Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572341/iglJ8g",
+      "status": "invalid",
+      "validated": "2026-04-04T21:19:30Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:dns",
+        "detail": "DNS problem: NXDOMAIN looking up A for teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for teliawebmail.online - check that a DNS record exists for this domain",
+        "status": 400
+      },
+      "token": "xzQahttrnKA3bqAeSobRKS0nDp6ciu6tSv8ZvdHvfXw"
+    }
+  ]
+}
+2026-04-04 21:19:31,988:DEBUG:acme.client:Storing nonce: e8SfZ44ttvavcwvi__1xOsa-KMR5r4QtQBScxAhGdNMhjvteHpA
+2026-04-04 21:19:31,988:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:19:31,990:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683284572601:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJlOFNmWjQ0dHR2YXZjd3ZpX18xeE9zYS1LTVI1cjRRdFFCU2N4QWhHZE5NaGp2dGVIcEEiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg0NTcyNjAxIn0",
+  "signature": "WHpX1-hxT_eYag68ImIb-Zu3IniZZly5m-S91HlmaOeOYetc3oL3m1Qsae9FAHKkE0Y_W7y1LjZI2kbnpJdlk7Wde8YhIpeAJpx64N-eq4J0HyXIsSHUafJk93kA0tKU7krSAhs76U_tc5c0D4WrWCxO_x-O43-ufXre9aG5ea9slsbNOxpDQoxiYn8_Lyq5WzkzhyzLBsVApZ9zNFsto9IwA_J4uO6YgceqX_dNoBDVLDNXyRGRywMZMP3yhlj8BHA7-IpfxBzFaiZHjJH4RWmROwsjYKyCqiZ-OwWf-0EmEpeMfrmGku-AIpB1xtjbukVL_yxSv88f8NZxePowpQ",
+  "payload": ""
+}
+2026-04-04 21:19:32,053:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683284572601 HTTP/1.1" 200 776
+2026-04-04 21:19:32,054:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:19:32 GMT
+Content-Type: application/json
+Content-Length: 776
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: v9ARF6dgA4isSHybr1EP4RabwkjaZQt7ORKKucaABg1DVqwYpfU
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.teliawebmail.online"
+  },
+  "status": "invalid",
+  "expires": "2026-04-11T21:19:29Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683284572601/2NeH5g",
+      "status": "invalid",
+      "validated": "2026-04-04T21:19:30Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:dns",
+        "detail": "DNS problem: NXDOMAIN looking up A for www.teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for www.teliawebmail.online - check that a DNS record exists for this domain",
+        "status": 400
+      },
+      "token": "CsH5niYnyOZ8FY8eXHh1ly7KQNTuRx7SrHPZyZajRiA"
+    }
+  ]
+}
+2026-04-04 21:19:32,054:DEBUG:acme.client:Storing nonce: v9ARF6dgA4isSHybr1EP4RabwkjaZQt7ORKKucaABg1DVqwYpfU
+2026-04-04 21:19:32,055:INFO:certbot._internal.auth_handler:Challenge failed for domain teliawebmail.online
+2026-04-04 21:19:32,055:INFO:certbot._internal.auth_handler:Challenge failed for domain www.teliawebmail.online
+2026-04-04 21:19:32,055:INFO:certbot._internal.auth_handler:http-01 challenge for teliawebmail.online
+2026-04-04 21:19:32,055:INFO:certbot._internal.auth_handler:http-01 challenge for www.teliawebmail.online
+2026-04-04 21:19:32,055:DEBUG:certbot._internal.display.obj:Notifying user: 
+Certbot failed to authenticate some domains (authenticator: nginx). The Certificate Authority reported these problems:
+  Domain: teliawebmail.online
+  Type:   dns
+  Detail: DNS problem: NXDOMAIN looking up A for teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for teliawebmail.online - check that a DNS record exists for this domain
+
+  Domain: www.teliawebmail.online
+  Type:   dns
+  Detail: DNS problem: NXDOMAIN looking up A for www.teliawebmail.online - check that a DNS record exists for this domain; DNS problem: NXDOMAIN looking up AAAA for www.teliawebmail.online - check that a DNS record exists for this domain
+
+Hint: The Certificate Authority failed to verify the temporary nginx configuration changes made by Certbot. Ensure the listed domains point to this nginx server and that it is accessible from the internet.
+
+2026-04-04 21:19:32,056:DEBUG:certbot._internal.error_handler:Encountered exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+
+2026-04-04 21:19:32,056:DEBUG:certbot._internal.error_handler:Calling registered functions
+2026-04-04 21:19:32,057:INFO:certbot._internal.auth_handler:Cleaning up challenges
+2026-04-04 21:19:33,237:DEBUG:certbot._internal.log:Exiting abnormally:
+Traceback (most recent call last):
+  File "/usr/bin/certbot", line 33, in <module>
+    sys.exit(load_entry_point('certbot==1.21.0', 'console_scripts', 'certbot')())
+  File "/usr/lib/python3/dist-packages/certbot/main.py", line 15, in main
+    return internal_main.main(cli_args)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1574, in main
+    return config.func(config, plugins)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1287, in run
+    new_lineage = _get_and_save_cert(le_client, config, domains,
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 133, in _get_and_save_cert
+    lineage = le_client.obtain_and_enroll_certificate(domains, certname)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 459, in obtain_and_enroll_certificate
+    cert, chain, key, _ = self.obtain_certificate(domains)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 389, in obtain_certificate
+    orderr = self._get_order_and_authorizations(csr.data, self.config.allow_subset_of_names)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 439, in _get_order_and_authorizations
+    authzr = self.auth_handler.handle_authorizations(orderr, self.config, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+2026-04-04 21:19:33,239:ERROR:certbot._internal.log:Some challenges have failed.
+2026-04-04 21:30:02,485:DEBUG:certbot._internal.main:certbot version: 1.21.0
+2026-04-04 21:30:02,485:DEBUG:certbot._internal.main:Location of certbot entry point: /usr/bin/certbot
+2026-04-04 21:30:02,485:DEBUG:certbot._internal.main:Arguments: ['--nginx', '-d', 'teliawebmail.online', '-d', 'www.teliawebmail.online', '--non-interactive', '--agree-tos', '-m', 'admin@teliawebmail.online', '--redirect']
+2026-04-04 21:30:02,486:DEBUG:certbot._internal.main:Discovered plugins: PluginsRegistry(PluginEntryPoint#manual,PluginEntryPoint#nginx,PluginEntryPoint#null,PluginEntryPoint#standalone,PluginEntryPoint#webroot)
+2026-04-04 21:30:02,500:DEBUG:certbot._internal.log:Root logging level set at 30
+2026-04-04 21:30:02,501:DEBUG:certbot._internal.plugins.selection:Requested authenticator nginx and installer nginx
+2026-04-04 21:30:02,686:DEBUG:certbot._internal.plugins.selection:Single candidate plugin: * nginx
+Description: Nginx Web Server plugin
+Interfaces: Installer, Authenticator, Plugin
+Entry point: nginx = certbot_nginx._internal.configurator:NginxConfigurator
+Initialized: <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f6c55755720>
+Prep: True
+2026-04-04 21:30:02,686:DEBUG:certbot._internal.plugins.selection:Selected authenticator <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f6c55755720> and installer <certbot_nginx._internal.configurator.NginxConfigurator object at 0x7f6c55755720>
+2026-04-04 21:30:02,687:INFO:certbot._internal.plugins.selection:Plugins selected: Authenticator nginx, Installer nginx
+2026-04-04 21:30:02,746:DEBUG:certbot._internal.main:Picked account: <Account(RegistrationResource(body=Registration(key=None, contact=(), agreement=None, status=None, terms_of_service_agreed=None, only_return_existing=None, external_account_binding=None), uri='https://acme-v02.api.letsencrypt.org/acme/acct/3208629231', new_authzr_uri=None, terms_of_service=None), 40073703f451fd20c336c2d97d045dd0, Meta(creation_dt=datetime.datetime(2026, 4, 4, 10, 37, 41, tzinfo=<UTC>), creation_host='d2-2-us-east-va-1', register_to_eff=None))>
+2026-04-04 21:30:02,747:DEBUG:acme.client:Sending GET request to https://acme-v02.api.letsencrypt.org/directory.
+2026-04-04 21:30:02,749:DEBUG:urllib3.connectionpool:Starting new HTTPS connection (1): acme-v02.api.letsencrypt.org:443
+2026-04-04 21:30:02,946:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "GET /directory HTTP/1.1" 200 1033
+2026-04-04 21:30:02,947:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:02 GMT
+Content-Type: application/json
+Content-Length: 1033
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "keyChange": "https://acme-v02.api.letsencrypt.org/acme/key-change",
+  "meta": {
+    "caaIdentities": [
+      "letsencrypt.org"
+    ],
+    "profiles": {
+      "classic": "https://letsencrypt.org/docs/profiles#classic",
+      "shortlived": "https://letsencrypt.org/docs/profiles#shortlived",
+      "tlsclient": "https://letsencrypt.org/docs/profiles#tlsclient",
+      "tlsserver": "https://letsencrypt.org/docs/profiles#tlsserver"
+    },
+    "termsOfService": "https://letsencrypt.org/documents/LE-SA-v1.6-August-18-2025.pdf",
+    "website": "https://letsencrypt.org"
+  },
+  "newAccount": "https://acme-v02.api.letsencrypt.org/acme/new-acct",
+  "newNonce": "https://acme-v02.api.letsencrypt.org/acme/new-nonce",
+  "newOrder": "https://acme-v02.api.letsencrypt.org/acme/new-order",
+  "renewalInfo": "https://acme-v02.api.letsencrypt.org/acme/renewal-info",
+  "revokeCert": "https://acme-v02.api.letsencrypt.org/acme/revoke-cert",
+  "w7USFBzad0Y": "https://community.letsencrypt.org/t/adding-random-entries-to-the-directory/33417"
+}
+2026-04-04 21:30:02,951:DEBUG:certbot._internal.display.obj:Notifying user: Requesting a certificate for teliawebmail.online and www.teliawebmail.online
+2026-04-04 21:30:03,318:DEBUG:certbot.crypto_util:Generating RSA key (2048 bits): /etc/letsencrypt/keys/0004_key-certbot.pem
+2026-04-04 21:30:03,323:DEBUG:certbot.crypto_util:Creating CSR: /etc/letsencrypt/csr/0004_csr-certbot.pem
+2026-04-04 21:30:03,324:DEBUG:acme.client:Requesting fresh nonce
+2026-04-04 21:30:03,325:DEBUG:acme.client:Sending HEAD request to https://acme-v02.api.letsencrypt.org/acme/new-nonce.
+2026-04-04 21:30:03,367:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "HEAD /acme/new-nonce HTTP/1.1" 200 0
+2026-04-04 21:30:03,368:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:03 GMT
+Connection: keep-alive
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: 5OtdIILqozYpUZ9QZguoIsGmqGB2Rt8xHJfwzAPEkUO8vPzU9zM
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+
+2026-04-04 21:30:03,368:DEBUG:acme.client:Storing nonce: 5OtdIILqozYpUZ9QZguoIsGmqGB2Rt8xHJfwzAPEkUO8vPzU9zM
+2026-04-04 21:30:03,369:DEBUG:acme.client:JWS payload:
+b'{\n  "identifiers": [\n    {\n      "type": "dns",\n      "value": "teliawebmail.online"\n    },\n    {\n      "type": "dns",\n      "value": "www.teliawebmail.online"\n    }\n  ]\n}'
+2026-04-04 21:30:03,372:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/new-order:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICI1T3RkSUlMcW96WXBVWjlRWmd1b0lzR21xR0IyUnQ4eEhKZnd6QVBFa1VPOHZQelU5ek0iLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL25ldy1vcmRlciJ9",
+  "signature": "R9MybHoHGP496gQDtKktfqJiE6wgFUE_kdqUnTHza-D9MaL8HbR3K7v5IpvIvuEos9vGif5zPRnpzZtnyIVMtCFdNgvB4LiDzYGuHnCorQIMUozGIs7VVeerNrnw_7AyBWNB_c_hZh1_WWmbodHVcXvEa4cNhiDLWYYvERP_MmkDHaiRjuK5OHO58gnt_4dE46oYTlL_6g1r2pIylXKcUnhfsLvMUrWRuPFSRHvnz3tbuxyaLr9uGsTXKhALHjmHwIiWh7D9MvjQcbOiPwrSoKHP9cVS7InP5jGZcev3rSjv0l7b6GfWHO2O_7DThzwfPxzXQR7J4qivmXrQSBh8Tg",
+  "payload": "ewogICJpZGVudGlmaWVycyI6IFsKICAgIHsKICAgICAgInR5cGUiOiAiZG5zIiwKICAgICAgInZhbHVlIjogInRlbGlhd2VibWFpbC5vbmxpbmUiCiAgICB9LAogICAgewogICAgICAidHlwZSI6ICJkbnMiLAogICAgICAidmFsdWUiOiAid3d3LnRlbGlhd2VibWFpbC5vbmxpbmUiCiAgICB9CiAgXQp9"
+}
+2026-04-04 21:30:03,454:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/new-order HTTP/1.1" 201 507
+2026-04-04 21:30:03,454:DEBUG:acme.client:Received response:
+HTTP 201
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:03 GMT
+Content-Type: application/json
+Content-Length: 507
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Location: https://acme-v02.api.letsencrypt.org/acme/order/3208629231/497399212661
+Replay-Nonce: g0sCnD0onoW-DCCC5ums7FceyaB5_4DFkps58gYZbOgFtgAhl1s
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "status": "pending",
+  "expires": "2026-04-11T21:30:03Z",
+  "identifiers": [
+    {
+      "type": "dns",
+      "value": "teliawebmail.online"
+    },
+    {
+      "type": "dns",
+      "value": "www.teliawebmail.online"
+    }
+  ],
+  "authorizations": [
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835511",
+    "https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835521"
+  ],
+  "finalize": "https://acme-v02.api.letsencrypt.org/acme/finalize/3208629231/497399212661"
+}
+2026-04-04 21:30:03,455:DEBUG:acme.client:Storing nonce: g0sCnD0onoW-DCCC5ums7FceyaB5_4DFkps58gYZbOgFtgAhl1s
+2026-04-04 21:30:03,455:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:30:03,457:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835511:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwb25vVy1EQ0NDNXVtczdGY2V5YUI1XzRERmtwczU4Z1laYk9nRnRnQWhsMXMiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg3ODM1NTExIn0",
+  "signature": "gZPcuxiP1Z1h5al_6NkGS90_jQ75V7MetynccT0Gl4fsxA2AD_jAnHan8C7KJWm68V22aHRmTI5vyu9VqJPqbmr5ncRXx70Ba7F7HHv4niqUA2S4hItiSJfv5-ycZCxH6N0mzrDdHPacQO8uomEAoc2TUUroCbiPqeF3bLSjs7fArmEQ1_hwI7oj2iC_p1eQ9yBtnGdjCXIO2H4EVrymS9cJgp5iLVcYaPLM1Po-HVxxNiU0Ld3tsli2NVGf9h5BDdThBzuimDbU1Ub8LVaosdM0QzQ_4cUogv9zawv_0qk_Zw2_F0YuALCA9Ewenm0RYprv0I1GTfTTyhssnmm7Hg",
+  "payload": ""
+}
+2026-04-04 21:30:03,503:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683287835511 HTTP/1.1" 200 827
+2026-04-04 21:30:03,504:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:03 GMT
+Content-Type: application/json
+Content-Length: 827
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: 5OtdIILqFM2wI4crjP8fdg9aJiZ16zVeNZ-oYyaAO7ZmganBjaE
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "teliawebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T21:30:03Z",
+  "challenges": [
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/l9TdIA",
+      "status": "pending",
+      "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/X3T2bw",
+      "status": "pending",
+      "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8"
+    },
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/vD5QVw",
+      "status": "pending",
+      "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8"
+    }
+  ]
+}
+2026-04-04 21:30:03,505:DEBUG:acme.client:Storing nonce: 5OtdIILqFM2wI4crjP8fdg9aJiZ16zVeNZ-oYyaAO7ZmganBjaE
+2026-04-04 21:30:03,505:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:30:03,507:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835521:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICI1T3RkSUlMcUZNMndJNGNyalA4ZmRnOWFKaVoxNnpWZU5aLW9ZeWFBTzdabWdhbkJqYUUiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg3ODM1NTIxIn0",
+  "signature": "AXmDeHKrxh7q7fFf5DQWucULJfMEKxFeovmrA1Mc803uZlb_inmnAcqyu9pQBYEswRmPhPMYd8TlGJ0rN5tAKn4o1sj-nCuJnxH8JfRbQ7Zw6uDrfAxzFizh4lVQG52w25HaXUaFs7Vaif9DZsxrl2QenYyQuNSJe_BGnLPyYu_0rHyV46atBUX-6Vc4fKPsUBhpRTUefsvcKyCIZd-FruqRUbteqqzRXoz1ts7ss3OUhityBnrbLE5k-p1idsQYFUqcOdT9xqsK7UbSlOeDsq7pdoEltY1YBCXNW9LbE1GeO65aBmDMSb5_twKc5L9IoOuCl8UuY3rv-nrJL-xx4Q",
+  "payload": ""
+}
+2026-04-04 21:30:03,552:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683287835521 HTTP/1.1" 200 831
+2026-04-04 21:30:03,552:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:03 GMT
+Content-Type: application/json
+Content-Length: 831
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: g0sCnD0o5JJY9Xyk2HWyvv-893B2r_Q5vkw2Vpv_U2NNH33MfvU
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.teliawebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T21:30:03Z",
+  "challenges": [
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835521/gSLlZw",
+      "status": "pending",
+      "token": "1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow"
+    },
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835521/OiNiYg",
+      "status": "pending",
+      "token": "1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow"
+    },
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835521/PZ0hsQ",
+      "status": "pending",
+      "token": "1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow"
+    }
+  ]
+}
+2026-04-04 21:30:03,553:DEBUG:acme.client:Storing nonce: g0sCnD0o5JJY9Xyk2HWyvv-893B2r_Q5vkw2Vpv_U2NNH33MfvU
+2026-04-04 21:30:03,553:INFO:certbot._internal.auth_handler:Performing the following challenges:
+2026-04-04 21:30:03,554:INFO:certbot._internal.auth_handler:http-01 challenge for teliawebmail.online
+2026-04-04 21:30:03,554:INFO:certbot._internal.auth_handler:http-01 challenge for www.teliawebmail.online
+2026-04-04 21:30:03,572:DEBUG:certbot_nginx._internal.http_01:Generated server block:
+[]
+2026-04-04 21:30:03,573:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/teliawebmail.online
+2026-04-04 21:30:03,573:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-stream.conf
+2026-04-04 21:30:03,573:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-mail.conf
+2026-04-04 21:30:03,574:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-geoip2.conf
+2026-04-04 21:30:03,574:DEBUG:certbot.reverter:Creating backup of /etc/nginx/sites-enabled/alicewebmail.online
+2026-04-04 21:30:03,574:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-image-filter.conf
+2026-04-04 21:30:03,575:DEBUG:certbot.reverter:Creating backup of /etc/nginx/nginx.conf
+2026-04-04 21:30:03,575:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/50-mod-http-xslt-filter.conf
+2026-04-04 21:30:03,575:DEBUG:certbot.reverter:Creating backup of /etc/letsencrypt/options-ssl-nginx.conf
+2026-04-04 21:30:03,576:DEBUG:certbot.reverter:Creating backup of /etc/nginx/modules-enabled/70-mod-stream-geoip2.conf
+2026-04-04 21:30:03,576:DEBUG:certbot.reverter:Creating backup of /etc/nginx/mime.types
+2026-04-04 21:30:03,577:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/nginx.conf:
+user www-data;
+worker_processes auto;
+pid /run/nginx.pid;
+include /etc/nginx/modules-enabled/*.conf;
+
+events {
+	worker_connections 768;
+	# multi_accept on;
+}
+
+http {
+include /etc/letsencrypt/le_http_01_cert_challenge.conf;
+server_names_hash_bucket_size 128;
+
+	##
+	# Basic Settings
+	##
+
+	sendfile on;
+	tcp_nopush on;
+	types_hash_max_size 2048;
+	# server_tokens off;
+
+	# server_names_hash_bucket_size 64;
+	# server_name_in_redirect off;
+
+	include /etc/nginx/mime.types;
+	default_type application/octet-stream;
+
+	##
+	# SSL Settings
+	##
+
+	ssl_protocols TLSv1 TLSv1.1 TLSv1.2 TLSv1.3; # Dropping SSLv3, ref: POODLE
+	ssl_prefer_server_ciphers on;
+
+	##
+	# Logging Settings
+	##
+
+	access_log /var/log/nginx/access.log;
+	error_log /var/log/nginx/error.log;
+
+	##
+	# Gzip Settings
+	##
+
+	gzip on;
+
+	# gzip_vary on;
+	# gzip_proxied any;
+	# gzip_comp_level 6;
+	# gzip_buffers 16 8k;
+	# gzip_http_version 1.1;
+	# gzip_types text/plain text/css application/json application/javascript text/xml application/xml application/xml+rss text/javascript;
+
+	##
+	# Virtual Host Configs
+	##
+
+	include /etc/nginx/conf.d/*.conf;
+	include /etc/nginx/sites-enabled/*;
+}
+
+
+#mail {
+#	# See sample authentication script at:
+#	# http://wiki.nginx.org/ImapAuthenticateWithApachePhpScript
+#
+#	# auth_http localhost/auth.php;
+#	# pop3_capabilities "TOP" "USER";
+#	# imap_capabilities "IMAP4rev1" "UIDPLUS";
+#
+#	server {
+#		listen     localhost:110;
+#		protocol   pop3;
+#		proxy      on;
+#	}
+#
+#	server {
+#		listen     localhost:143;
+#		protocol   imap;
+#		proxy      on;
+#	}
+#}
+
+2026-04-04 21:30:03,578:DEBUG:certbot_nginx._internal.parser:Writing nginx conf tree to /etc/nginx/sites-enabled/teliawebmail.online:
+server {rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+rewrite ^(/.well-known/acme-challenge/.*) $1 break; # managed by Certbot
+
+
+    listen 80;
+    server_name teliawebmail.online www.teliawebmail.online;
+    location / {
+        proxy_pass http://localhost:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+location = /.well-known/acme-challenge/qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8{default_type text/plain;return 200 qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+location = /.well-known/acme-challenge/1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow{default_type text/plain;return 200 1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow.ygr_lYiihnId1-HdJnQe2dmGCpF9PG40j0_cQDZgwy4;} # managed by Certbot
+
+}
+
+2026-04-04 21:30:04,610:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 21:30:04,612:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/vD5QVw:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwbzVKSlk5WHlrMkhXeXZ2LTg5M0Iycl9RNXZrdzJWcHZfVTJOTkgzM01mdlUiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMjg3ODM1NTExL3ZENVFWdyJ9",
+  "signature": "fZJHc1VWV9Z7IioiVQ_0W6boo2CoP7BubJ8ODbxwMrC4TLms5rsC8YYqiif4Q1FoPimUE5k9TVv2X29ITWbIoisBMxMzYnKawXcY5Rdk5l7pCKGmvHxtUXxFrFB2me6QYCpaaqPDxjslP3QRnyOz0z9P9mJKIIxTQ8tu0oAbxtAE7BeKbfVE0eXoTfC0MIWtmmbkrowhLcW30esz0Hh0rGqq516ocgoSNEC-fcpzzrol2vu_c2u5002xUiUfDUsbDVhnZ3jCPiGhALKYkK2cJh2iZVYEaUpHeI1BlMOl5uACK3nqCoaT-Rzfdj73iJX71usP2cX88u1q5Kmzrm-TAw",
+  "payload": "e30"
+}
+2026-04-04 21:30:04,660:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683287835511/vD5QVw HTTP/1.1" 200 195
+2026-04-04 21:30:04,661:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:04 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835511>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/vD5QVw
+Replay-Nonce: g0sCnD0oXksPkQkzmzCJV3tW_W0t8gCxQohW7o4S441gmrghYCM
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/vD5QVw",
+  "status": "pending",
+  "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8"
+}
+2026-04-04 21:30:04,661:DEBUG:acme.client:Storing nonce: g0sCnD0oXksPkQkzmzCJV3tW_W0t8gCxQohW7o4S441gmrghYCM
+2026-04-04 21:30:04,662:DEBUG:acme.client:JWS payload:
+b'{}'
+2026-04-04 21:30:04,663:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835521/PZ0hsQ:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwb1hrc1BrUWt6bXpDSlYzdFdfVzB0OGdDeFFvaFc3bzRTNDQxZ21yZ2hZQ00iLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2NoYWxsLzMyMDg2MjkyMzEvNjgzMjg3ODM1NTIxL1BaMGhzUSJ9",
+  "signature": "fTxH2sFHaRt3hmd9aMfS2rczhB2P4aADlG1PeAiTlV2NuwSo0MNpB-oQadjl1n9BtQOmM5JhqBlzWYwB0-I9c7Vs6SsQkSX5B6f0Vx1zUoNSonUoQCSaghM3nfxLn0KzCUg4VhxB_2OLvLWQnKXKr0_ZRZ4axlB9scK4gIyrXWdv0986y2OGjBiYQesXhPwjt3FueR7zd0MD-y-4ZbXFoVQGirOJq5qyr12VrkU4M8pjsupraC6d7pwMY3JdBSTKI5MHZ4XkF1EzdM5XYi8RVn8XE816UMjYMefiDxZXiA8xWQtM-DQ11sXB8_Lg-X64m730P_b3BbqcETnA9gVdfw",
+  "payload": "e30"
+}
+2026-04-04 21:30:04,708:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/chall/3208629231/683287835521/PZ0hsQ HTTP/1.1" 200 195
+2026-04-04 21:30:04,709:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:04 GMT
+Content-Type: application/json
+Content-Length: 195
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index", <https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835521>;rel="up"
+Location: https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835521/PZ0hsQ
+Replay-Nonce: g0sCnD0oa5GTQ6f338nRPHuR8HZAlBE5meFDfKSByUsIn37Vlfc
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "type": "http-01",
+  "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835521/PZ0hsQ",
+  "status": "pending",
+  "token": "1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow"
+}
+2026-04-04 21:30:04,709:DEBUG:acme.client:Storing nonce: g0sCnD0oa5GTQ6f338nRPHuR8HZAlBE5meFDfKSByUsIn37Vlfc
+2026-04-04 21:30:04,710:INFO:certbot._internal.auth_handler:Waiting for verification...
+2026-04-04 21:30:05,711:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:30:05,712:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835511:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICJnMHNDbkQwb2E1R1RRNmYzMzhuUlBIdVI4SFpBbEJFNW1lRkRmS1NCeVVzSW4zN1ZsZmMiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg3ODM1NTExIn0",
+  "signature": "XqXkoTXKMphds9F01T2IhY4KcWneMYy6rHzSX46bUEJL6_wDsmxYp8QMnl8IiBABcEVoNUHfvD3t9i_L1fquzt9tf_OK-uTO3f2LC4UT-s8htvRUtQo9IYlIpOSkUcfS4wY4oCmwBezj1J-Rk7C9wNO0uGpQWlOgc_HL0csYZxfRNAsC8tvQGaVgjE-XgDEe1JEpIw4R7BswzZR39amBZnm_Ynzohp6xWaRqrlTVoXr7BataVe34bPJhoE2AYGF-GahoiDsW_J_h1RVxdqhKqC6Um-kEJ3q1Zh8bvkY9VCG37EiDtP1gQU37ohU6vddT9LRlVcolUd6s2R8HSt5C4Q",
+  "payload": ""
+}
+2026-04-04 21:30:05,757:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683287835511 HTTP/1.1" 200 827
+2026-04-04 21:30:05,758:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:05 GMT
+Content-Type: application/json
+Content-Length: 827
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: 5OtdIILqdLp_pgKk6LaKmntPkVDSf6T5devyvrvFCXXUhKkiTho
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "teliawebmail.online"
+  },
+  "status": "pending",
+  "expires": "2026-04-11T21:30:03Z",
+  "challenges": [
+    {
+      "type": "tls-alpn-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/X3T2bw",
+      "status": "pending",
+      "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8"
+    },
+    {
+      "type": "dns-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/l9TdIA",
+      "status": "pending",
+      "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8"
+    },
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/vD5QVw",
+      "status": "pending",
+      "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8"
+    }
+  ]
+}
+2026-04-04 21:30:05,758:DEBUG:acme.client:Storing nonce: 5OtdIILqdLp_pgKk6LaKmntPkVDSf6T5devyvrvFCXXUhKkiTho
+2026-04-04 21:30:05,758:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:30:05,760:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835521:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICI1T3RkSUlMcWRMcF9wZ0trNkxhS21udFBrVkRTZjZUNWRldnl2cnZGQ1hYVWhLa2lUaG8iLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg3ODM1NTIxIn0",
+  "signature": "tJBhErFSEE6ZNsGB10a3ngrWdCZ0fStY9KByaLI8jzZCoLAvKmFGagkZyj9X0NHPhxuZM073XQqed7wuutw2-yX99dsTwqddmdlIe_t3v9E9nHpjoh2TO7HaSalx-NIaleCWhUn4f-yfOcjlcySi1PbwjCNgOfyaOqrDnW-mDPpeIjIjGgBXbzhJknMFi4v7PSY48XQ3c37PuEwo4nPEv24oghJEDDMpFqBvhDSvPs1LWgihMLjKn7O1A39cf_jMuEchK-ZH0Byri5qowcrQDBHjmmsVT0pjCPb1bjy4Rf4veDR7wned8dfSkSRQ4RhZZ5zgsDsVsYie1PAC68gAXQ",
+  "payload": ""
+}
+2026-04-04 21:30:05,828:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683287835521 HTTP/1.1" 200 1482
+2026-04-04 21:30:05,829:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:05 GMT
+Content-Type: application/json
+Content-Length: 1482
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: 5OtdIILq8FYba_b2wwNHyzBwCw4jY6PgDNCMFSuwLt_pW3BXe98
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "www.teliawebmail.online"
+  },
+  "status": "invalid",
+  "expires": "2026-04-11T21:30:03Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835521/PZ0hsQ",
+      "status": "invalid",
+      "validated": "2026-04-04T21:30:04Z",
+      "error": {
+        "type": "urn:ietf:params:acme:error:unauthorized",
+        "detail": "40.160.50.53: Invalid response from http://teliawebmail.online: \"\u003c!DOCTYPE html\u003e\\r\\n\u003chtml lang=\\\"sv\\\"\u003e\\r\\n  \u003chead\u003e\\r\\n    \u003cmeta charset=\\\"UTF-8\\\" /\u003e\\r\\n    \u003cmeta name=\\\"viewport\\\" content=\\\"width=device-width\"",
+        "status": 403
+      },
+      "token": "1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow",
+      "validationRecord": [
+        {
+          "url": "http://www.teliawebmail.online/.well-known/acme-challenge/1YloNMqwSfsC9aSHcOGHUMDxAl5s4nUMp-SkJDwxIow",
+          "hostname": "www.teliawebmail.online",
+          "port": "80",
+          "addressesResolved": [
+            "44.227.76.166",
+            "44.227.65.245"
+          ],
+          "addressUsed": "44.227.76.166"
+        },
+        {
+          "url": "http://teliawebmail.online",
+          "hostname": "teliawebmail.online",
+          "port": "80",
+          "addressesResolved": [
+            "40.160.50.53"
+          ],
+          "addressUsed": "40.160.50.53"
+        }
+      ]
+    }
+  ]
+}
+2026-04-04 21:30:05,829:DEBUG:acme.client:Storing nonce: 5OtdIILq8FYba_b2wwNHyzBwCw4jY6PgDNCMFSuwLt_pW3BXe98
+2026-04-04 21:30:05,830:INFO:certbot._internal.auth_handler:Challenge failed for domain www.teliawebmail.online
+2026-04-04 21:30:08,833:DEBUG:acme.client:JWS payload:
+b''
+2026-04-04 21:30:08,835:DEBUG:acme.client:Sending POST request to https://acme-v02.api.letsencrypt.org/acme/authz/3208629231/683287835511:
+{
+  "protected": "eyJhbGciOiAiUlMyNTYiLCAia2lkIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2FjY3QvMzIwODYyOTIzMSIsICJub25jZSI6ICI1T3RkSUlMcThGWWJhX2Iyd3dOSHl6QndDdzRqWTZQZ0ROQ01GU3V3THRfcFczQlhlOTgiLCAidXJsIjogImh0dHBzOi8vYWNtZS12MDIuYXBpLmxldHNlbmNyeXB0Lm9yZy9hY21lL2F1dGh6LzMyMDg2MjkyMzEvNjgzMjg3ODM1NTExIn0",
+  "signature": "Nf-74VZrbnetOxOm31zx2mkOUGE6t2gsQj2SiLloC_nRKjBAbmddV8RfeGWkAEdrxcTg6UG2Y3uPAgXONqSNTp2ZOap-2uAwoeBX_4QJ5vOs0z01QmL9Liyys-qN6qJlEYzJrUIGIANR1PUfCRjPay5cmhrcZb4pihlIzgYFP1DYc2c928OYs0bpWqRoDgCcMHlVnGzzFODHes84Arxs7plO-hDGqlU7b1iXQ5nma_bX7hk5OSdFrD_b1gFOlCtnbyw6xQvRKFhnIZOgez2huKnlf0ipKJYfO8VsBRj7dhQD7d7Sm1WAyE5Bzvmf9t5wqhoRqnJl-wilz5_okpecLA",
+  "payload": ""
+}
+2026-04-04 21:30:08,892:DEBUG:urllib3.connectionpool:https://acme-v02.api.letsencrypt.org:443 "POST /acme/authz/3208629231/683287835511 HTTP/1.1" 200 778
+2026-04-04 21:30:08,892:DEBUG:acme.client:Received response:
+HTTP 200
+Server: nginx
+Date: Sat, 04 Apr 2026 21:30:08 GMT
+Content-Type: application/json
+Content-Length: 778
+Connection: keep-alive
+Boulder-Requester: 3208629231
+Cache-Control: public, max-age=0, no-cache
+Link: <https://acme-v02.api.letsencrypt.org/directory>;rel="index"
+Replay-Nonce: g0sCnD0olbHJ7oh7MPdrZFezIkUnWoRXA92svPzlXDWkpAgcBZo
+X-Frame-Options: DENY
+Strict-Transport-Security: max-age=604800
+
+{
+  "identifier": {
+    "type": "dns",
+    "value": "teliawebmail.online"
+  },
+  "status": "valid",
+  "expires": "2026-05-04T21:30:05Z",
+  "challenges": [
+    {
+      "type": "http-01",
+      "url": "https://acme-v02.api.letsencrypt.org/acme/chall/3208629231/683287835511/vD5QVw",
+      "status": "valid",
+      "validated": "2026-04-04T21:30:04Z",
+      "token": "qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8",
+      "validationRecord": [
+        {
+          "url": "http://teliawebmail.online/.well-known/acme-challenge/qGm-0V5Mg-fr3UmWXRNpHmCMdznqH8UvnLj6wan2tD8",
+          "hostname": "teliawebmail.online",
+          "port": "80",
+          "addressesResolved": [
+            "40.160.50.53"
+          ],
+          "addressUsed": "40.160.50.53"
+        }
+      ]
+    }
+  ]
+}
+2026-04-04 21:30:08,893:DEBUG:acme.client:Storing nonce: g0sCnD0olbHJ7oh7MPdrZFezIkUnWoRXA92svPzlXDWkpAgcBZo
+2026-04-04 21:30:08,893:INFO:certbot._internal.auth_handler:http-01 challenge for www.teliawebmail.online
+2026-04-04 21:30:08,893:DEBUG:certbot._internal.display.obj:Notifying user: 
+Certbot failed to authenticate some domains (authenticator: nginx). The Certificate Authority reported these problems:
+  Domain: www.teliawebmail.online
+  Type:   unauthorized
+  Detail: 40.160.50.53: Invalid response from http://teliawebmail.online: "<!DOCTYPE html>\r\n<html lang=\"sv\">\r\n  <head>\r\n    <meta charset=\"UTF-8\" />\r\n    <meta name=\"viewport\" content=\"width=device-width"
+
+Hint: The Certificate Authority failed to verify the temporary nginx configuration changes made by Certbot. Ensure the listed domains point to this nginx server and that it is accessible from the internet.
+
+2026-04-04 21:30:08,894:DEBUG:certbot._internal.error_handler:Encountered exception:
+Traceback (most recent call last):
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+
+2026-04-04 21:30:08,894:DEBUG:certbot._internal.error_handler:Calling registered functions
+2026-04-04 21:30:08,894:INFO:certbot._internal.auth_handler:Cleaning up challenges
+2026-04-04 21:30:10,042:DEBUG:certbot._internal.log:Exiting abnormally:
+Traceback (most recent call last):
+  File "/usr/bin/certbot", line 33, in <module>
+    sys.exit(load_entry_point('certbot==1.21.0', 'console_scripts', 'certbot')())
+  File "/usr/lib/python3/dist-packages/certbot/main.py", line 15, in main
+    return internal_main.main(cli_args)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1574, in main
+    return config.func(config, plugins)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 1287, in run
+    new_lineage = _get_and_save_cert(le_client, config, domains,
+  File "/usr/lib/python3/dist-packages/certbot/_internal/main.py", line 133, in _get_and_save_cert
+    lineage = le_client.obtain_and_enroll_certificate(domains, certname)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 459, in obtain_and_enroll_certificate
+    cert, chain, key, _ = self.obtain_certificate(domains)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 389, in obtain_certificate
+    orderr = self._get_order_and_authorizations(csr.data, self.config.allow_subset_of_names)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/client.py", line 439, in _get_order_and_authorizations
+    authzr = self.auth_handler.handle_authorizations(orderr, self.config, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 90, in handle_authorizations
+    self._poll_authorizations(authzrs, max_retries, best_effort)
+  File "/usr/lib/python3/dist-packages/certbot/_internal/auth_handler.py", line 178, in _poll_authorizations
+    raise errors.AuthorizationError('Some challenges have failed.')
+certbot.errors.AuthorizationError: Some challenges have failed.
+2026-04-04 21:30:10,044:ERROR:certbot._internal.log:Some challenges have failed.

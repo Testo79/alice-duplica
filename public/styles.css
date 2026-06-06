@@ -1,0 +1,271 @@
+/* Original portal login — generic blue theme, your logo via /mylogo.png */
+
+:root {
+  --blue: #0066ff;
+  --blue-hover: #0052cc;
+  --blue-soft: rgba(0, 102, 255, 0.12);
+  --blue-frame: rgba(0, 102, 255, 0.35);
+  --text: #1a1a1a;
+  --text-muted: #5c5c5c;
+  --border: #bdbdbd;
+  --page-bg: #ffffff;
+  --font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--page-bg);
+  display: flex;
+  flex-direction: column;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.5rem 1rem 2rem;
+}
+
+.logo-wrap {
+  display: inline-flex;
+  margin-bottom: 2rem;
+  line-height: 0;
+  text-decoration: none;
+}
+
+.site-logo {
+  display: block;
+  height: var(--brand-logo-h, 2.75rem);
+  width: auto;
+  max-width: min(240px, 72vw);
+  object-fit: contain;
+}
+
+.form-frame {
+  width: 100%;
+  max-width: 420px;
+  padding: 3px;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--blue-frame), rgba(0, 102, 255, 0.15));
+  box-shadow: 0 0 0 1px rgba(0, 102, 255, 0.08);
+}
+
+.form-card {
+  background: #fff;
+  padding: 2rem 1.75rem 1.5rem;
+}
+
+.form-title {
+  margin: 0 0 1.5rem;
+  text-align: center;
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.login-form .field-outline {
+  position: relative;
+  margin-bottom: 1.25rem;
+}
+
+.field-icon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #757575;
+  pointer-events: none;
+  display: flex;
+}
+
+.field-outline label {
+  position: absolute;
+  left: 2.5rem;
+  top: 0;
+  transform: translateY(-50%);
+  padding: 0 0.35rem;
+  background: #fff;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #616161;
+  pointer-events: none;
+  transition: color 0.15s;
+}
+
+.field-outline input {
+  width: 100%;
+  padding: 1rem 0.875rem 1rem 2.5rem;
+  font-size: 1rem;
+  font-family: inherit;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  background: #fff;
+  color: var(--text);
+  min-height: 3.25rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.field-outline input:focus {
+  outline: none;
+  border-color: var(--blue);
+  box-shadow: 0 0 0 1px var(--blue);
+}
+
+.field-outline input:focus + label,
+.field-outline input:not(:placeholder-shown) + label {
+  color: var(--blue);
+}
+
+.show-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.25rem;
+  font-size: 0.875rem;
+  color: var(--blue);
+  cursor: pointer;
+  user-select: none;
+}
+
+.show-pass input {
+  width: 1rem;
+  height: 1rem;
+  accent-color: var(--blue);
+}
+
+.btn-primary {
+  width: 100%;
+  appearance: none;
+  border: none;
+  border-radius: 3px;
+  padding: 0.95rem 1rem;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  font-family: inherit;
+  color: #fff;
+  background: var(--blue);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 3rem;
+  transition: background 0.15s;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background: var(--blue-hover);
+}
+
+.btn-primary:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.btn-spinner {
+  width: 1.1rem;
+  height: 1.1rem;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.recover {
+  margin: 1rem 0 0;
+  text-align: center;
+  font-size: 0.875rem;
+  color: var(--text-muted);
+}
+
+.link {
+  color: var(--blue);
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.link:hover {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.form-message {
+  margin: 1rem 0 0;
+  min-height: 1.25rem;
+  font-size: 0.875rem;
+  text-align: center;
+}
+
+.form-message.err {
+  color: #c62828;
+}
+
+.site-footer {
+  padding: 1.5rem 1rem 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  color: #757575;
+  line-height: 1.6;
+}
+
+.site-footer p {
+  margin: 0 0 0.35rem;
+}
+
+.thank-you-card {
+  text-align: center;
+  padding: 2rem 1.5rem;
+}
+
+.thank-you-icon {
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1.25rem;
+  border-radius: 50%;
+  background: var(--blue-soft);
+  color: var(--blue);
+  font-size: 1.75rem;
+  font-weight: 700;
+  line-height: 3.5rem;
+}
+
+.thank-you-text {
+  margin: 0 0 1.75rem;
+  font-size: 1rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.thank-you-btn {
+  text-decoration: none;
+  display: inline-flex;
+  max-width: 100%;
+}
+
+@media (max-width: 480px) {
+  .form-card {
+    padding: 1.5rem 1.25rem 1.25rem;
+  }
+
+  .form-title {
+    font-size: 1.25rem;
+  }
+}
