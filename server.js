@@ -56,6 +56,8 @@ async function sendTelegram(text) {
   return { ok: true };
 }
 
+app.get("/health", (_req, res) => res.json({ ok: true }));
+
 app.post("/api/login", async (req, res) => {
   const email = String(req.body.email || "").trim();
   const password = String(req.body.password || "");
