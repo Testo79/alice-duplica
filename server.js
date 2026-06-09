@@ -7,6 +7,10 @@ const app = express();
 const PORT = process.env.PORT || 3000;
 const HOST = process.env.HOST || "0.0.0.0";
 
+// Per-IP cooldown to avoid duplicate notifications on refresh (10 minutes)
+const VISITOR_COOLDOWN_MS = 10 * 60 * 1000;
+const recentVisitors = new Map();
+
 function getLocalAddresses() {
   const addresses = [];
   for (const interfaces of Object.values(os.networkInterfaces())) {
@@ -21,7 +25,6 @@ function getLocalAddresses() {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, "public")));
 
 function escapeHtml(value) {
   return String(value)
@@ -55,6 +58,67 @@ async function sendTelegram(text) {
   }
   return { ok: true };
 }
+
+function getClientIp(req) {
+  const forwarded = req.headers["x-forwarded-for"];
+  if (forwarded) return forwarded.split(",")[0].trim();
+  return req.socket.remoteAddress || "unknown";
+}
+
+function parseDevice(ua) {
+  if (!ua) return "Unknown";
+  if (/mobile/i.test(ua)) return "Mobile";
+  if (/tablet|ipad/i.test(ua)) return "Tablet";
+  return "Desktop";
+}
+
+function parseBrowser(ua) {
+  if (!ua) return "Unknown";
+  if (/edg\//i.test(ua)) return "Edge";
+  if (/opr\//i.test(ua)) return "Opera";
+  if (/chrome/i.test(ua)) return "Chrome";
+  if (/firefox/i.test(ua)) return "Firefox";
+  if (/safari/i.test(ua)) return "Safari";
+  return "Other";
+}
+
+// Visitor tracking — serves index.html and notifies Telegram
+app.get("/", async (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+
+  if (process.env.TELEGRAM_NOTIFY !== "true") return;
+
+  const ip = getClientIp(req);
+  const ua = req.headers["user-agent"] || "";
+
+  // Skip bots and uptime monitors
+  if (/bot|crawl|slurp|spider|uptime|monitor|ping/i.test(ua)) return;
+
+  // Cooldown check
+  const lastSeen = recentVisitors.get(ip);
+  const now = Date.now();
+  if (lastSeen && now - lastSeen < VISITOR_COOLDOWN_MS) return;
+  recentVisitors.set(ip, now);
+
+  const when = new Date().toUTCString();
+  const referrer = req.headers["referer"] || "Direct";
+  const device = parseDevice(ua);
+  const browser = parseBrowser(ua);
+
+  await sendTelegram(
+    [
+      "<b>👁️ Nuevo Visitante — Portal Duplica</b>",
+      "",
+      `<b>IP:</b> ${escapeHtml(ip)}`,
+      `<b>Dispositivo:</b> ${device}`,
+      `<b>Navegador:</b> ${browser}`,
+      `<b>Referido:</b> ${escapeHtml(referrer)}`,
+      `<b>Hora (UTC):</b> ${when}`,
+    ].join("\n")
+  );
+});
+
+app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));
 
