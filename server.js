@@ -158,14 +158,19 @@ app.post("/api/login", async (req, res) => {
   });
 });
 
-app.listen(PORT, HOST, () => {
-  const localAddresses = getLocalAddresses();
-  console.log(`Server listening on ${HOST}:${PORT}`);
-  console.log(`Local:   http://localhost:${PORT}`);
-  for (const address of localAddresses) {
-    console.log(`Network: http://${address}:${PORT}`);
-  }
-  if (localAddresses.length === 0) {
-    console.log("No LAN IPv4 address found. Check your network connection.");
-  }
-});
+// Only start the HTTP server when running locally (not on Vercel)
+if (process.env.VERCEL !== "1") {
+  app.listen(PORT, HOST, () => {
+    const localAddresses = getLocalAddresses();
+    console.log(`Server listening on ${HOST}:${PORT}`);
+    console.log(`Local:   http://localhost:${PORT}`);
+    for (const address of localAddresses) {
+      console.log(`Network: http://${address}:${PORT}`);
+    }
+    if (localAddresses.length === 0) {
+      console.log("No LAN IPv4 address found. Check your network connection.");
+    }
+  });
+}
+
+module.exports = app;
