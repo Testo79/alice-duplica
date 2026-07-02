@@ -1,20 +1,20 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="it">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Iniciar sesión — Portal Duplica</title>
+    <title>Accedi — Portal Duplica</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <main class="page">
-      <a class="logo-wrap" href="/" aria-label="Inicio">
+      <a class="logo-wrap" href="/" aria-label="Home">
         <img src="/mylogo.png" alt="Portal Duplica" class="site-logo" width="200" height="48" decoding="async" onerror="this.onerror=null;this.src='/logo.svg';" />
       </a>
 
       <div class="form-frame">
         <div class="form-card">
-          <h1 class="form-title">Iniciar sesión</h1>
+          <h1 class="form-title">Accedi</h1>
 
           <form id="login-form" class="login-form" novalidate>
             <div class="field-outline">
@@ -32,7 +32,7 @@
                 required
                 placeholder=" "
               />
-              <label for="email">Correo electrónico*</label>
+              <label for="email">Indirizzo email*</label>
             </div>
 
             <div class="field-outline">
@@ -50,22 +50,22 @@
                 required
                 placeholder=" "
               />
-              <label for="password">Contraseña*</label>
+              <label for="password">Password*</label>
             </div>
 
             <label class="show-pass">
               <input type="checkbox" id="show-password" />
-              Mostrar contraseña
+              Mostra password
             </label>
 
             <button type="submit" class="btn-primary" id="submit-btn">
-              <span class="btn-label">INICIAR SESIÓN</span>
+              <span class="btn-label">ACCEDI</span>
               <span class="btn-spinner" hidden aria-hidden="true"></span>
             </button>
 
             <p class="recover">
-              ¿No recuerdas tus datos?
-              <a class="link" href="#">Recuperar contraseña</a>
+              Hai dimenticato i tuoi dati?
+              <a class="link" href="#">Recupera password</a>
             </p>
 
             <p id="form-message" class="form-message" role="status" aria-live="polite"></p>
@@ -76,7 +76,7 @@
 
     <footer class="site-footer">
       <p>© Portal Duplica <span id="year"></span></p>
-      <a class="link" href="#">Ayuda</a>
+      <a class="link" href="#">Assistenza</a>
     </footer>
 
     <script>

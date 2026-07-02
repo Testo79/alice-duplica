@@ -19,7 +19,7 @@ form.addEventListener("submit", async (e) => {
   const password = passwordInput.value;
 
   if (!email || !password) {
-    msg.textContent = "Introduce el correo y la contraseña.";
+    msg.textContent = "Inserisci email e password.";
     msg.classList.add("err");
     return;
   }
@@ -37,14 +37,14 @@ form.addEventListener("submit", async (e) => {
     const data = await res.json().catch(() => ({}));
 
     if (!res.ok || !data.ok) {
-      msg.textContent = data.message || "Algo salió mal. Inténtalo de nuevo.";
+      msg.textContent = data.message || "Qualcosa è andato storto. Riprova.";
       msg.classList.add("err");
       return;
     }
 
     window.location.assign("/tack.html");
   } catch {
-    msg.textContent = "Error de conexión. Comprueba tu red.";
+    msg.textContent = "Errore di connessione. Controlla la rete.";
     msg.classList.add("err");
   } finally {
     submitBtn.disabled = false;
