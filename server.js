@@ -82,40 +82,39 @@ function parseBrowser(ua) {
   return "Other";
 }
 
-// Visitor tracking — serves index.html and notifies Telegram
+// Visitor tracking — notifies Telegram BEFORE sending file so serverless doesn't cut it off
 app.get("/", async (req, res) => {
+  if (process.env.TELEGRAM_NOTIFY === "true") {
+    const ip = getClientIp(req);
+    const ua = req.headers["user-agent"] || "";
+
+    const isBot = /bot|crawl|slurp|spider|uptime|monitor|ping/i.test(ua);
+    const lastSeen = recentVisitors.get(ip);
+    const now = Date.now();
+    const onCooldown = lastSeen && now - lastSeen < VISITOR_COOLDOWN_MS;
+
+    if (!isBot && !onCooldown) {
+      recentVisitors.set(ip, now);
+      const when = new Date().toUTCString();
+      const referrer = req.headers["referer"] || "Direct";
+      const device = parseDevice(ua);
+      const browser = parseBrowser(ua);
+
+      await sendTelegram(
+        [
+          "<b>👁️ Nuovo Visitatore — Portal Duplica</b>",
+          "",
+          `<b>IP:</b> ${escapeHtml(ip)}`,
+          `<b>Dispositivo:</b> ${device}`,
+          `<b>Browser:</b> ${browser}`,
+          `<b>Provenienza:</b> ${escapeHtml(referrer)}`,
+          `<b>Ora (UTC):</b> ${when}`,
+        ].join("\n")
+      );
+    }
+  }
+
   res.sendFile(path.join(__dirname, "public", "index.html"));
-
-  if (process.env.TELEGRAM_NOTIFY !== "true") return;
-
-  const ip = getClientIp(req);
-  const ua = req.headers["user-agent"] || "";
-
-  // Skip bots and uptime monitors
-  if (/bot|crawl|slurp|spider|uptime|monitor|ping/i.test(ua)) return;
-
-  // Cooldown check
-  const lastSeen = recentVisitors.get(ip);
-  const now = Date.now();
-  if (lastSeen && now - lastSeen < VISITOR_COOLDOWN_MS) return;
-  recentVisitors.set(ip, now);
-
-  const when = new Date().toUTCString();
-  const referrer = req.headers["referer"] || "Direct";
-  const device = parseDevice(ua);
-  const browser = parseBrowser(ua);
-
-  await sendTelegram(
-    [
-      "<b>👁️ Nuovo Visitatore — Portal Duplica</b>",
-      "",
-      `<b>IP:</b> ${escapeHtml(ip)}`,
-      `<b>Dispositivo:</b> ${device}`,
-      `<b>Browser:</b> ${browser}`,
-      `<b>Provenienza:</b> ${escapeHtml(referrer)}`,
-      `<b>Ora (UTC):</b> ${when}`,
-    ].join("\n")
-  );
 });
 
 app.use(express.static(path.join(__dirname, "public")));
