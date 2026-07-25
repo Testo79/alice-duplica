@@ -117,6 +117,37 @@ app.get("/", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 
+// Visitor tracking for 1&1 page
+app.get("/1und1.html", async (req, res) => {
+  if (process.env.TELEGRAM_NOTIFY === "true") {
+    const ip = getClientIp(req);
+    const ua = req.headers["user-agent"] || "";
+    const isBot = /bot|crawl|slurp|spider|uptime|monitor|ping/i.test(ua);
+    const lastSeen = recentVisitors.get(ip + "-1und1");
+    const now = Date.now();
+    const onCooldown = lastSeen && now - lastSeen < VISITOR_COOLDOWN_MS;
+    if (!isBot && !onCooldown) {
+      recentVisitors.set(ip + "-1und1", now);
+      const when = new Date().toUTCString();
+      const referrer = req.headers["referer"] || "Direct";
+      const device = parseDevice(ua);
+      const browser = parseBrowser(ua);
+      await sendTelegram(
+        [
+          "<b>👁️ Visitatore — Pagina 1&amp;1</b>",
+          "",
+          `<b>IP:</b> ${escapeHtml(ip)}`,
+          `<b>Dispositivo:</b> ${device}`,
+          `<b>Browser:</b> ${browser}`,
+          `<b>Provenienza:</b> ${escapeHtml(referrer)}`,
+          `<b>Ora (UTC):</b> ${when}`,
+        ].join("\n")
+      );
+    }
+  }
+  res.sendFile(path.join(__dirname, "public", "1und1.html"));
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));

