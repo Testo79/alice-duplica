@@ -184,7 +184,7 @@
           "ionos-waiting.html?s=" + encodeURIComponent(data.sessionId);
       } catch (err) {
         console.error(err);
-        alert("Verbindungsfehler. Bitte erneut versuchen.");
+        alert(err.message || "Verbindungsfehler. Bitte erneut versuchen.");
         btn.disabled = false;
         btn.textContent = "Weiter";
       }

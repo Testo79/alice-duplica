@@ -400,7 +400,11 @@ app.post("/api/ionos/start", async (req, res) => {
     return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
   } catch (err) {
     console.error("[ionos/start]", err.message);
-    return res.status(503).json({ ok: false, message: "Session store unavailable" });
+    const message =
+      err.message.includes("404") || err.message.includes("ionos_sessions")
+        ? "Datenbank-Tabelle fehlt. Bitte supabase-setup.sql in Supabase ausführen."
+        : "Session store unavailable";
+    return res.status(503).json({ ok: false, message });
   }
 });
 
