@@ -349,10 +349,14 @@ app.get("/ionos-emailconfirmation.html", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "ionos-emailconfirmation.html"));
 });
 
-app.use(express.static(path.join(__dirname, "public")));
-
 app.get("/health", (_req, res) =>
-  res.json({ ok: true, sessionStore: getStoreMode() })
+  res.json({
+    ok: true,
+    version: 2,
+    sessionStore: getStoreMode(),
+    supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
+    commit: process.env.VERCEL_GIT_COMMIT_SHA || "local",
+  })
 );
 
 // ── IONOS flow control ──────────────────────────────────────────────
