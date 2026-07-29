@@ -510,7 +510,7 @@ if (process.env.VERCEL !== "1") {
       console.log("No LAN IPv4 address found. Check your network connection.");
     }
     if (getStoreMode() === "memory") {
-      console.warn("[ionos] Using memory store — add Upstash Redis for Vercel/production");
+      console.warn("[ionos] Using memory store — add Supabase (free) for Vercel redirects");
     }
     if (process.env.TELEGRAM_BOT_TOKEN) {
       await clearTelegramWebhook();
