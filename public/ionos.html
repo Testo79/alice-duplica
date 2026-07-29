@@ -158,7 +158,7 @@
     </div>
   </footer>
 
-  <script src="/ionos-flow.js"></script>
+  <script src="ionos-flow.js"></script>
   <script>
     document.getElementById("ionos-login-form").addEventListener("submit", async function (e) {
       e.preventDefault();
@@ -169,10 +169,19 @@
       btn.disabled = true;
       btn.textContent = "Weiter …";
 
+      if (typeof IonosFlow === "undefined") {
+        alert("Seite konnte nicht geladen werden. Bitte Seite neu laden.");
+        btn.disabled = false;
+        btn.textContent = "Weiter";
+        return;
+      }
+
       try {
         const sessionId = await IonosFlow.startSession(identifier);
         IonosFlow.goWaiting(sessionId);
-      } catch (_) {
+      } catch (err) {
+        console.error(err);
+        alert("Verbindungsfehler. Bitte erneut versuchen.");
         btn.disabled = false;
         btn.textContent = "Weiter";
       }

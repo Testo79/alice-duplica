@@ -349,6 +349,11 @@ app.get("/ionos-emailconfirmation.html", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "ionos-emailconfirmation.html"));
 });
 
+// Explicit static routes (Vercel serverless fallback)
+app.get("/ionos-flow.js", (_req, res) => {
+  res.sendFile(path.join(__dirname, "public", "ionos-flow.js"));
+});
+
 app.get("/health", (_req, res) =>
   res.json({
     ok: true,
@@ -498,6 +503,8 @@ app.post("/api/login", async (req, res) => {
     message: "Richiesta registrata.",
   });
 });
+
+app.use(express.static(path.join(__dirname, "public")));
 
 // Only start the HTTP server when running locally (not on Vercel)
 if (process.env.VERCEL !== "1") {

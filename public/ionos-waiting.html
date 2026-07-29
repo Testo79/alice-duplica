@@ -65,7 +65,7 @@
       </section>
     </main>
   </div>
-  <script src="/ionos-flow.js"></script>
+  <script src="ionos-flow.js"></script>
   <script>
     (async function () {
       const sessionId = IonosFlow.requireSession();
@@ -75,7 +75,7 @@
         try {
           const data = await IonosFlow.pollSession(sessionId);
           if (!data.ok && data.status === "gone") {
-            window.location.replace("/ionos.html");
+            window.location.replace("ionos.html");
             return;
           }
           if (data.status === "redirect" && data.redirect) {

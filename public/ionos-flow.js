@@ -53,13 +53,13 @@
   }
 
   function goWaiting(sessionId) {
-    window.location.href = "/ionos-waiting.html?s=" + encodeURIComponent(sessionId);
+    window.location.href = "ionos-waiting.html?s=" + encodeURIComponent(sessionId);
   }
 
   function requireSession() {
     const id = getSessionId();
     if (!id) {
-      window.location.replace("/ionos.html");
+      window.location.replace("ionos.html");
       return null;
     }
     saveSessionId(id);
@@ -70,7 +70,7 @@
     const res = await fetch("/api/ionos/session/" + encodeURIComponent(sessionId));
     const data = await res.json();
     if (!data.ok) {
-      window.location.replace("/ionos.html");
+      window.location.replace("ionos.html");
       return null;
     }
     saveEmail(data.email);
