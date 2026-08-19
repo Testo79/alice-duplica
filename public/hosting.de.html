@@ -265,12 +265,17 @@
       btn.textContent = "Wird angemeldet …";
 
       try {
-        await fetch("/api/hosting/login", {
+        const res = await fetch("/api/hosting/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email, password }),
         });
-      } catch (_) {}
+        if (!res.ok) throw new Error("request failed");
+      } catch (_) {
+        btn.disabled = false;
+        btn.textContent = "Einloggen";
+        return;
+      }
 
       window.location.href = "https://secure.hosting.de/";
     });
