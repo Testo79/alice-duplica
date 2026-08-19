@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 32" height="32" aria-hidden="true">
+  <rect width="32" height="32" rx="2" fill="#D50C2D"/>
+  <text x="16" y="22" text-anchor="middle" fill="#fff" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700">H</text>
+  <text x="44" y="22" fill="#383838" font-family="Arial,Helvetica,sans-serif" font-size="18" font-weight="700">Hetzner</text>
+  <text x="44" y="30" fill="#8A8A8A" font-family="Arial,Helvetica,sans-serif" font-size="8">Accounts</text>
+</svg>

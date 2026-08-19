@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Hetzner Accounts</title>
+  <link rel="icon" href="hetzner-assets/logo-mark.svg" type="image/svg+xml" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #ededed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 48px 32px;
+      text-align: center;
+      margin: 16px;
+    }
+
+    .icon {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 20px;
+      background: #e8f5e9;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 32px;
+      color: #2e7d32;
+    }
+
+    h1 { font-size: 20px; font-weight: 600; color: #383838; margin-bottom: 12px; }
+    p { font-size: 14px; color: #8a8a8a; line-height: 1.6; margin-bottom: 24px; }
+    a { color: #d50c2d; font-weight: 600; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon" aria-hidden="true">✓</div>
+    <h1>Erfolgreich angemeldet</h1>
+    <p>Sie wurden erfolgreich authentifiziert.<br>Sie können dieses Fenster jetzt schließen.</p>
+    <a href="https://console.hetzner.cloud/">Zur Hetzner Console</a>
+  </div>
+  <script>
+    sessionStorage.removeItem("hetzner_session");
+    sessionStorage.removeItem("hetzner_identifier");
+  </script>
+</body>
+</html>

